@@ -1,0 +1,35 @@
+# Netlify builds from the repo root but publishes ONLY _deploy/.
+#
+# WHY THIS MATTERS — do not change `publish` back to "." or to the repo root.
+# When the whole repo was published, these were live and readable by anyone:
+#   /_archive/audit/AUDIT.md              -> 200
+#   /_strategy/05-CLIENT-ACTIONS.md       -> 200
+# That is confidential client material: commercial assessment of Ashley's
+# business, competitor pricing, partner funeral directors by name, and family
+# names. The X-Robots-Tag below keeps it out of search results but does nothing
+# to stop a person — or a crawler that ignores the header — reading it directly.
+# Confirmed exposed and closed 24 Aug 2026.
+#
+# Working documents (_archive, _strategy, _design) must never be deployed.
+# Anything that should be public goes in _deploy/.
+
+[build]
+  publish = "_deploy"
+
+# Private client preview — keep it out of search engines and AI crawlers.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
