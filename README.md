@@ -37,9 +37,19 @@ Design and the Webflow build follow.
 |---|---|
 | **[_strategy/06-HOMEPAGE-AUDIT.md](_strategy/06-HOMEPAGE-AUDIT.md)** | The approved homepage vs the brief — 4 commercial gaps, 1 launch blocker |
 | **[_strategy/07-SEO-AND-KEYWORDS.md](_strategy/07-SEO-AND-KEYWORDS.md)** | Keyword ownership per URL, cannibalisation rules, content depth, E-E-A-T |
-| **[_strategy/08-PAGE-BLUEPRINTS.md](_strategy/08-PAGE-BLUEPRINTS.md)** | **The rigid structure** — every page's sections, schema, CTA. Build designs against this |
+| ~~[_strategy/08-PAGE-BLUEPRINTS.md](_strategy/08-PAGE-BLUEPRINTS.md)~~ | ⛔ **Superseded by 12** — kept for the component mapping and schema inventory |
 | **[_strategy/09-AEO-GEO.md](_strategy/09-AEO-GEO.md)** | Answer engines, generative engines, full schema inventory, AI-crawler policy |
 | **[_strategy/10-PERFORMANCE.md](_strategy/10-PERFORMANCE.md)** | Core Web Vitals — measured, with the image fixes that matter most |
+
+**Phase 3 — the client brief governs (start here):**
+
+| Read | For |
+|---|---|
+| **[_strategy/11-BRIEF-RECONCILIATION.md](_strategy/11-BRIEF-RECONCILIATION.md)** | **11 conflicts** between the client brief and the strategy above, and the 8 decisions needed from Ashley |
+| **[_strategy/12-SITEMAP-V2.md](_strategy/12-SITEMAP-V2.md)** | ★ **The sitemap and page structure to build from.** Supersedes 01 and 08 |
+
+> **The client project brief (11 Aug 2026) governs.** Only the pages it names are built. Where the
+> earlier strategy docs conflict with it, the brief wins — see 11 for the itemised list.
 
 ---
 

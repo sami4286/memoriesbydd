@@ -1,3 +1,15 @@
+> ## ⛔ SUPERSEDED — do not build from this
+>
+> The client project brief (11 Aug 2026) requires a different page set, and on 24 Aug 2026 it was
+> confirmed as governing. **Build from [`12-SITEMAP-V2.md`](12-SITEMAP-V2.md).**
+>
+> What changed: the brief names 12 pages, forbids an About Us page, and adds Our Products, Blog and a
+> Reception Hall Directory — none of which appear below. The proposed `/help/` hub, `/reviews/`,
+> `/about/`, `/motion-obituary/` and `/banners-and-bookmarkers/` are **not** in the brief.
+>
+> Retained because the *reasoning* still holds and is cited by v2 — particularly why `/order/` needs
+> its own URL, why the libraries must be surfaced, and the redirect logic.
+
 # Sitemap & Information Architecture
 
 **Platform:** Webflow · **Order model:** enquiry-first (no checkout) · **Positioning:** UK Caribbean

@@ -1,3 +1,16 @@
+> ## ⛔ SUPERSEDED — do not build from this
+>
+> Written before the client project brief was available. The brief was confirmed as governing on
+> 24 Aug 2026. **Build from [`12-SITEMAP-V2.md`](12-SITEMAP-V2.md).**
+>
+> Materially wrong below: the 61-URL structure, `/about/`, `/reviews/`, the `/help/*` cluster and the
+> two separate add-on pages are not in the brief; `/order/` is specified here as a Fillout rebuild
+> rather than the brief's 20-screen Typeform; and it is missing Our Products, Blog and the Reception
+> Hall Directory entirely.
+>
+> Still useful and carried into v2: the global frame, the reusable-component mapping from the approved
+> homepage, and the per-template schema inventory.
+
 # Page Blueprints — The Rigid Structure
 
 Every URL, its one job, its sections in order, its schema and its conversion action. This is the
