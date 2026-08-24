@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funeral Booklets with a Touch of Class | Memories</title>
+<meta name="description" content="Funeral order of service booklets designed by hand in 24–48 hours. Caribbean, African, Classic and football ranges. Free proof before print, next-day UK delivery.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MEMORIES — Landing concept 02
+   Design language follows the ZENkai reference.
+   ============================================================ */
+:root{
+  --brand:#ca9e67;
+  --brand-deep:#b0864f;
+  --brand-tint:#f2e9dc;
+
+  --bg:#faf8f5;
+  --bg-plate:#ece5d9;      /* deeper: must read apart from cream cards */
+  --bg-band:#f4f1ec;
+  --ink:#2a2a2a;
+  --ink-soft:#343434;
+  --cream:#faf8f5;
+
+  --text:#2a2a2a;
+  --text-muted:#5f5a54;
+  --border:#e2ddd4;
+  --rule:#d8d2c8;
+
+  --serif:'Lora',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --script:'Italianno','Pinyon Script',cursive;
+
+  --container:82rem;
+  --gutter:4rem;
+  --section:7rem;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:7rem}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-weight:400;font-size:1rem;line-height:1.7;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block;border:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+.section{padding:var(--section) 0}
+.section--tight{padding:5rem 0}
+.section--flushBot{padding-bottom:2.5rem}
+.band{background:var(--bg-band)}
+
+/* ---------- Headings ---------- */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;color:var(--text);margin:0;
+  letter-spacing:-.015em}
+.h-display{font-size:clamp(2.9rem,5.6vw,5rem);line-height:1.05}
+.h1{font-size:clamp(2.3rem,4.4vw,3.9rem);line-height:1.1}
+.h3{font-size:1.1875rem;line-height:1.35;font-weight:500}
+.sc{font-family:var(--script);font-weight:400;font-size:1.5em;line-height:.7;
+  letter-spacing:0;padding:0 .06em;display:inline-block;vertical-align:-.06em}
+
+/* ---------- Labels & text ---------- */
+.label{font-family:var(--serif);font-size:1.0625rem;color:var(--text);margin:0}
+.label--muted{color:var(--text-muted)}
+.label--onDark{color:var(--cream)}
+p{margin:0}
+.body{font-size:1.0625rem;line-height:1.75;color:var(--text-muted)}
+.body--sm{font-size:.9375rem;line-height:1.7;color:var(--text-muted)}
+.body--onDark{color:rgba(250,248,245,.78)}
+.stack>*+*{margin-top:1.25rem}
+.stack-lg>*+*{margin-top:2rem}
+.measure{max-width:34rem}
+.center{text-align:center}
+.center .measure{margin-left:auto;margin-right:auto}
+
+/* ============================================================
+   DOT-AND-LINE LINK
+   ============================================================ */
+.dlink{
+  --dot:10px; --dot-bg:var(--bg);
+  position:relative;display:inline-block;
+  font-family:var(--serif);font-size:1.0625rem;line-height:1.35;
+  color:var(--brand-deep);padding:0 0 .75rem 1.625rem;
+  border-bottom:1px solid currentColor;
+  transition:color .3s var(--ease);
+}
+.dlink::after{
+  content:'';position:absolute;left:0;bottom:calc(var(--dot) / -2);
+  width:var(--dot);height:var(--dot);border-radius:50%;
+  border:1px solid currentColor;
+  background:radial-gradient(circle at 50% 50%,currentColor 0 1.6px,var(--dot-bg) 1.7px);
+  transition:left .6s var(--ease-out);
+}
+.dlink:hover{color:var(--ink)}
+.dlink:hover::after{left:calc(100% - var(--dot))}
+.dlink--onDark{color:var(--brand);--dot-bg:var(--ink)}
+.dlink--onDark:hover{color:var(--cream)}
+.dlink--plate{--dot-bg:var(--bg-band)}
+.dlink--card{--dot-bg:var(--cream)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  font-family:var(--sans);font-size:.875rem;font-weight:500;letter-spacing:.02em;
+  padding:.9375rem 1.75rem;border:1px solid var(--brand);background:var(--brand);
+  color:#fff;cursor:pointer;transition:.25s var(--ease);white-space:nowrap}
+.btn:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
+.btn--onDark{background:var(--brand);border-color:var(--brand);color:var(--ink)}
+.btn--onDark:hover{background:var(--cream);border-color:var(--cream)}
+
+/* ---------- Circular outline icon button ---------- */
+.iconbtn{position:relative;width:46px;height:46px;border-radius:50%;flex:none;
+  border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;
+  color:var(--text);background:transparent;cursor:pointer;
+  transition:border-color .3s var(--ease),color .3s var(--ease),
+             background .3s var(--ease),transform .35s var(--ease)}
+.iconbtn svg{width:19px;height:19px}
+.iconbtn:hover{border-color:var(--brand);color:var(--brand-deep);transform:translateY(-2px)}
+.iconbtn--primary{border-color:var(--brand);color:var(--brand-deep)}
+.iconbtn--primary:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+.iconbtn_tip{position:absolute;top:calc(100% + .625rem);right:0;white-space:nowrap;
+  font-family:var(--sans);font-size:.75rem;letter-spacing:.02em;color:var(--text-muted);
+  background:var(--bg);padding:.25rem .5rem;border:1px solid var(--border);
+  opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.iconbtn:hover .iconbtn_tip{opacity:1;transform:translateY(0)}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:sticky;top:0;z-index:60;background:var(--bg);
+  transition:box-shadow .35s var(--ease)}
+.nav.is-stuck{box-shadow:0 1px 0 var(--border),0 6px 24px rgba(42,42,42,.05)}
+.nav_in{max-width:var(--container);margin:0 auto;padding:1rem var(--gutter);
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem}
+.nav_logo{height:75px;width:auto;transition:transform .4s var(--ease)}
+.nav_logo:hover{transform:scale(1.04)}
+.nav_menu{display:flex;justify-content:center;align-items:center;gap:2.25rem;
+  border-bottom:1px solid var(--ink);padding-bottom:.75rem}
+.nav_link{position:relative;font-size:.9375rem;color:var(--text);padding-bottom:.125rem;
+  transition:color .25s var(--ease)}
+.nav_link::after{content:'';position:absolute;left:0;right:100%;bottom:-.8125rem;
+  height:1px;background:var(--brand);transition:right .45s var(--ease-out)}
+.nav_link:hover::after,.nav_link.is-active::after{right:0}
+.nav_link:hover,.nav_link.is-active{color:var(--brand-deep)}
+.nav_actions{display:flex;align-items:center;gap:.75rem}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;min-height:min(94vh,980px);display:flex;flex-direction:column;
+  overflow:hidden;background:var(--ink)}
+.hero_bg{position:absolute;inset:0}
+.hero_bg img{width:100%;height:100%;object-fit:cover;object-position:center;
+  transform:scale(1.08);transition:transform 3s var(--ease-out)}
+.hero.is-in .hero_bg img{transform:scale(1)}
+/* Scrim tuned to this image: measured brightness runs 45/77/113/74/66/22 top->bottom,
+   so the bright band sits exactly where the centred headline goes. The radial is
+   therefore DARKEST through the middle, not lightest, and the corners stay open. */
+.hero_bg::after{content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(110% 75% at 50% 44%,rgba(18,15,12,.50) 0%,rgba(18,15,12,.42) 55%,rgba(18,15,12,.30) 100%),
+    linear-gradient(180deg,rgba(18,15,12,.46) 0%,rgba(18,15,12,.34) 38%,rgba(18,15,12,.70) 100%)}
+.hero_center{position:relative;z-index:2;flex:1;display:flex;align-items:center;
+  justify-content:center;text-align:center;padding:8.5rem var(--gutter) 2rem}
+.hero_center h1{color:var(--cream);max-width:52rem}
+.hero_bottom{position:relative;z-index:2;max-width:var(--container);width:100%;
+  margin:0 auto;padding:0 var(--gutter) 2.75rem;
+  display:grid;grid-template-columns:1fr auto 1fr;gap:2rem;align-items:end}
+.hero_lead{max-width:22rem}
+.hero_lead p{font-size:.9375rem;line-height:1.65;color:rgba(250,248,245,.82)}
+.hero_trust{display:flex;flex-wrap:wrap;gap:.375rem 1.25rem;margin-top:1rem}
+.hero_trust span{font-size:.75rem;color:rgba(250,248,245,.6);
+  display:inline-flex;align-items:center;gap:.375rem}
+.hero_trust i{width:3px;height:3px;border-radius:50%;background:var(--brand);flex:none}
+.hero_video{justify-self:end;display:flex;align-items:flex-end;gap:1rem;text-align:right}
+.hero_video_cap{font-family:var(--serif);font-size:.9375rem;color:var(--cream);line-height:1.4}
+.hero_video_cap em{display:block;font-family:var(--sans);font-style:normal;
+  font-size:.75rem;color:rgba(250,248,245,.6);margin-top:.25rem}
+.hero_video_frame{position:relative;width:242px;aspect-ratio:16/9;overflow:hidden;flex:none;
+  border:1px solid rgba(250,248,245,.26);transition:border-color .35s var(--ease)}
+.hero_video:hover .hero_video_frame{border-color:var(--brand)}
+.hero_video_frame img{width:100%;height:100%;object-fit:cover;
+  animation:heroVideoDrift 18s ease-in-out infinite alternate}
+@keyframes heroVideoDrift{
+  0%{transform:scale(1.06) translate3d(-1.5%,1%,0)}
+  100%{transform:scale(1.16) translate3d(1.5%,-1%,0)}
+}
+.hero_video_play{position:absolute;inset:0;margin:auto;width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(250,248,245,.7);display:flex;align-items:center;justify-content:center;
+  color:var(--cream);background:rgba(18,15,12,.3);
+  transition:background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
+.hero_video_play svg{width:14px;height:14px;margin-left:2px}
+.hero_video:hover .hero_video_play{background:var(--brand);border-color:var(--brand);color:var(--ink)}
+.hero_scroll{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding-bottom:.25rem}
+.hero_scroll i{width:6px;height:6px;border-radius:50%;background:var(--cream);display:block;
+  animation:dotPulse 2.8s var(--ease) infinite}
+.hero_scroll s{width:1px;height:48px;display:block;transform-origin:top;
+  background:linear-gradient(rgba(250,248,245,.65),transparent);
+  animation:lineDrop 2.8s var(--ease) infinite}
+@keyframes dotPulse{0%,100%{opacity:.35;transform:translateY(0)}45%{opacity:1;transform:translateY(5px)}}
+@keyframes lineDrop{0%,100%{transform:scaleY(.55);opacity:.5}45%{transform:scaleY(1);opacity:1}}
+
+/* ============================================================
+   STORY
+   ============================================================ */
+.story{display:grid;grid-template-columns:1fr 1.05fr;gap:var(--gutter);align-items:start}
+.story_body{margin-top:7rem}
+.story_imgs{display:grid;grid-template-columns:.9fr 1fr;gap:1.5rem;align-items:start}
+.story_imgs figure{margin:0}
+.story_imgs .b{margin-top:4.5rem}
+.story_imgs figcaption{font-size:.8125rem;color:var(--text-muted);
+  font-style:italic;padding-top:.625rem;line-height:1.5}
+.story_imgs .a img{aspect-ratio:1/1;object-fit:cover;width:100%}
+.story_imgs .b img{aspect-ratio:3/4;object-fit:cover;width:100%}
+.rmask{overflow:hidden;display:block}
+.rmask img{transform:scale(1.12);transition:transform 1.6s var(--ease-out)}
+.rmask.is-in img{transform:scale(1)}
+
+/* ============================================================
+   RANGE CARDS — portrait, single booklet cover, full-bleed
+   ============================================================ */
+.plates{display:grid;grid-template-columns:repeat(4,1fr);gap:1.75rem;align-items:start}
+.plate{display:block}
+.plate:nth-child(even){margin-top:3.25rem}
+.plate_img{aspect-ratio:3/4;overflow:hidden;background:#b4b0aa;position:relative}
+.plate_img img{width:100%;height:100%;object-fit:cover;object-position:center;
+  transition:transform .8s var(--ease-out)}
+.plate_img::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(42,42,42,0) 55%,rgba(42,42,42,.28) 100%);
+  opacity:0;transition:opacity .45s var(--ease)}
+.plate:hover .plate_img img{transform:scale(1.05)}
+.plate:hover .plate_img::after{opacity:1}
+.plate_row{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;padding-top:1.125rem}
+.plate_row h3{font-size:1.0625rem;font-weight:500}
+.plate_meta{font-size:.875rem;color:var(--text-muted);padding-top:.125rem}
+.plate_ico{width:19px;height:19px;color:var(--text-muted);flex:none;margin-top:.25rem;
+  transition:transform .45s var(--ease-out),color .3s}
+.plate:hover .plate_ico{transform:translateX(6px);color:var(--brand-deep)}
+.plates_foot{display:flex;justify-content:flex-end;margin-top:5rem}
+/* ============================================================
+   RANGE SPOTLIGHT — working slider, 4 ranges
+   ============================================================ */
+.spot_top{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem}
+.spot_num{font-family:var(--serif);font-size:2.25rem;line-height:1;color:var(--ink)}
+.spot_num small{font-size:1.375rem;color:var(--rule)}
+.spot{display:grid;grid-template-columns:1fr 1.05fr .8fr;gap:var(--gutter);
+  align-items:start;margin-top:2.5rem;
+  transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
+.spot.is-swap{opacity:0;transform:translateY(12px)}
+.spot_hero{overflow:hidden;display:block;background:#b4b0aa}
+.spot_hero img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.spot_copy{padding-top:6.5rem}
+.spot_mood{padding-top:9rem}
+.spot_mood_img{background:var(--bg-plate);aspect-ratio:4/3;display:flex;
+  align-items:center;justify-content:center;overflow:hidden;
+  border:1px solid rgba(42,42,42,.07)}
+.spot_mood_img img{width:90%;height:90%;object-fit:contain;mix-blend-mode:multiply}
+.spot_mood p{font-size:.9375rem;color:var(--text-muted);padding-top:.875rem;line-height:1.6}
+.spot_mood b{font-family:var(--serif);font-style:italic;color:var(--text);font-weight:500}
+.spot_foot{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin-top:2.5rem}
+.spot_tabs{display:flex;flex-wrap:wrap;gap:1.5rem}
+.spot_tab{background:none;border:0;padding:0 0 .4375rem;cursor:pointer;
+  font-family:var(--serif);font-size:1rem;color:var(--text-muted);
+  border-bottom:1px solid transparent;transition:.3s var(--ease)}
+.spot_tab:hover{color:var(--text)}
+.spot_tab.is-on{color:var(--brand-deep);border-bottom-color:var(--brand)}
+.spot_arrows{display:flex;gap:.875rem;justify-content:flex-end}
+.arrow{width:52px;height:52px;border:1px solid var(--rule);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--text);
+  background:transparent;cursor:pointer;transition:.35s var(--ease)}
+.arrow:hover{border-color:var(--brand);color:var(--brand-deep);transform:translateY(-2px)}
+.arrow svg{width:17px;height:17px}
+
+/* ============================================================
+   PROMISE (dark band)
+   ============================================================ */
+.promise{position:relative;background:var(--ink);overflow:hidden}
+.promise_bg{position:absolute;inset:0}
+.promise_bg img{width:118%;max-width:none;height:100%;object-fit:cover;
+  object-position:right center;opacity:.2}
+.promise_bg::after{content:'';position:absolute;inset:0;background:rgba(42,42,42,.7)}
+.promise_in{position:relative;z-index:2;display:grid;
+  grid-template-columns:1fr 1.15fr;gap:var(--gutter);align-items:start}
+.promise_in h2{color:var(--cream)}
+.pcards{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;align-items:start}
+.pcard{background:var(--cream);padding:1.5rem;transition:box-shadow .5s var(--ease)}
+.pcard:nth-child(2),.pcard:nth-child(4){margin-top:-2.5rem}
+.pcard:hover{box-shadow:0 16px 40px rgba(0,0,0,.28)}
+.pcard_top{display:flex;align-items:flex-start;gap:1.25rem;margin-bottom:1.75rem}
+.pcard_n{font-family:var(--serif);font-size:1rem;color:var(--text-muted);flex:none}
+/* deeper plate + hairline so the product never melts into the cream card */
+.pcard_img{flex:1;background:var(--bg-plate);border:1px solid rgba(42,42,42,.09);
+  aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.pcard_img img{width:88%;height:88%;object-fit:contain;mix-blend-mode:multiply}
+.pcard h3{margin-bottom:.5rem}
+
+/* ============================================================
+   PACKAGES
+   ============================================================ */
+.pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;align-items:stretch}
+.pkg{background:var(--cream);border:1px solid var(--border);display:flex;flex-direction:column;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pkg:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(42,42,42,.09)}
+.pkg_img{background:var(--bg-plate);aspect-ratio:16/11;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;border-bottom:1px solid rgba(42,42,42,.07)}
+.pkg_img img{width:86%;height:86%;object-fit:contain;mix-blend-mode:multiply;
+  transition:transform .7s var(--ease-out)}
+.pkg:hover .pkg_img img{transform:scale(1.05)}
+.pkg_body{padding:2rem 1.875rem 2.125rem;display:flex;flex-direction:column;flex:1}
+.pkg_nm{font-family:var(--serif);font-size:1.5rem;line-height:1.2}
+.pkg_for{font-size:.875rem;color:var(--text-muted);margin-top:.25rem}
+.pkg_pr{font-family:var(--serif);font-size:2.875rem;line-height:1;margin-top:1.5rem;
+  padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.pkg_pr small{display:block;font-family:var(--sans);font-size:.8125rem;
+  color:var(--text-muted);margin-top:.5rem;letter-spacing:.01em}
+.pkg ul{list-style:none;margin:1.5rem 0 2rem;padding:0;display:grid;gap:.75rem}
+.pkg li{display:flex;gap:.75rem;font-size:.9375rem;color:var(--text-muted)}
+.pkg li svg{width:14px;height:14px;color:var(--brand);flex:none;margin-top:.4375rem}
+.pkg_cta{margin-top:auto;align-self:flex-start}
+.pkg--hero{background:var(--ink);border-color:var(--ink);margin-top:-2rem;position:relative}
+.pkg--hero .pkg_img{background:var(--ink-soft);border-bottom-color:rgba(250,248,245,.12)}
+.pkg--hero .pkg_img img{mix-blend-mode:normal}
+.pkg--hero .pkg_nm,.pkg--hero .pkg_pr{color:var(--cream)}
+.pkg--hero .pkg_for,.pkg--hero .pkg_pr small,.pkg--hero li{color:rgba(250,248,245,.74)}
+.pkg--hero .pkg_pr{border-bottom-color:rgba(250,248,245,.2)}
+.pkg_flag{position:absolute;top:1.25rem;right:1.25rem;z-index:2;
+  background:var(--brand);color:var(--ink);font-family:var(--sans);font-size:.6875rem;
+  font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.3125rem .75rem}
+.pkg_note{margin-top:3.5rem;font-size:.9375rem;color:var(--text-muted)}
+.pkg_note b{font-family:var(--serif);color:var(--text);font-weight:500}
+
+/* ============================================================
+   VOICES
+   ============================================================ */
+.tsplit{display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gutter);align-items:start}
+.tctl{display:flex;align-items:center;gap:1.75rem;margin-top:3.5rem}
+.tquote{margin:0;border-top:1px solid var(--rule);padding-top:2rem;position:relative}
+.tmark{font-family:var(--script);font-size:5rem;line-height:.5;color:var(--brand);
+  display:block;margin-bottom:1.25rem}
+.tq{margin:0;font-family:var(--serif);font-style:italic;color:var(--text);
+  font-size:clamp(1.3rem,2vw,1.85rem);line-height:1.5}
+.tcap{margin-top:2.5rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.tstars{color:var(--brand);letter-spacing:.22em;font-size:.75rem}
+.tcap_who{font-size:.875rem;line-height:1.5}
+.tcap_who b{display:block;font-family:var(--sans);font-weight:500;color:var(--text)}
+.tcap_who span{color:var(--text-muted);font-size:.8125rem}
+.tdots{display:flex;gap:.5rem;margin-top:2.5rem}
+.tdot{width:7px;height:7px;border-radius:50%;border:1px solid var(--rule);
+  background:transparent;cursor:pointer;padding:0;transition:.3s var(--ease)}
+.tdot.is-on{background:var(--brand);border-color:var(--brand)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot{background:var(--ink);color:var(--cream);padding-top:var(--section)}
+.foot_top{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--gutter);
+  align-items:start;padding-bottom:4.5rem}
+.foot_top h2{color:var(--cream)}
+.foot_cta{display:grid;gap:1.25rem}
+.foot_lines{display:grid;gap:.75rem;margin-top:.5rem}
+.foot_line{display:flex;align-items:center;gap:.875rem;
+  border-bottom:1px solid rgba(250,248,245,.22);padding:0 0 .875rem;
+  font-family:var(--serif);font-size:1.125rem;color:var(--cream);
+  transition:border-color .35s var(--ease),padding-left .35s var(--ease)}
+.foot_line:hover{border-color:var(--brand);padding-left:.5rem}
+.foot_line svg{width:17px;height:17px;color:var(--brand);flex:none}
+.foot_line span{margin-left:auto;font-family:var(--sans);font-size:.8125rem;
+  color:rgba(250,248,245,.5)}
+.foot_cols{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:var(--gutter);
+  border-top:1px solid rgba(250,248,245,.16);padding:4rem 0}
+/* the logo is a black disc with gold type — no filter, and a soft halo so the
+   disc edge separates from the dark ground */
+.foot_logo{height:92px;width:auto;margin-bottom:1.25rem;border-radius:50%;
+  box-shadow:0 0 0 1px rgba(202,158,103,.28),0 0 34px rgba(202,158,103,.13)}
+.foot_cols h4{font-family:var(--serif);font-size:1rem;font-weight:400;
+  color:rgba(250,248,245,.45);margin-bottom:1.25rem}
+.foot_cols ul{list-style:none;margin:0;padding:0;display:grid;gap:.75rem}
+.foot_cols a{font-size:.9375rem;color:rgba(250,248,245,.86);transition:color .25s}
+.foot_cols a:hover{color:var(--brand)}
+.foot_cols address{font-style:normal;font-size:.9375rem;line-height:1.75;
+  color:rgba(250,248,245,.7)}
+.foot_end{border-top:1px solid rgba(250,248,245,.16);padding:1.5rem 0;
+  display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;
+  font-size:.8125rem;color:rgba(250,248,245,.5)}
+
+/* ============================================================
+   MOBILE BAR
+   ============================================================ */
+.mbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:70;
+  background:var(--bg);border-top:1px solid var(--border)}
+.mbar_in{display:grid;grid-template-columns:repeat(3,1fr)}
+.mbar a{padding:.875rem .5rem;text-align:center;font-size:.75rem;font-weight:500;
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
+  border-right:1px solid var(--border)}
+.mbar a:last-child{border-right:none;background:var(--brand);color:#fff}
+.mbar svg{width:17px;height:17px}
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+[data-anim]{opacity:0;will-change:opacity,transform;
+  transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);
+  transition-delay:var(--d,0ms)}
+[data-anim="up"]{transform:translateY(30px)}
+[data-anim="fade"]{transform:none}
+[data-anim="right"]{transform:translateX(28px)}
+[data-anim="scale"]{transform:scale(.97)}
+[data-anim].is-in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  [data-anim],[data-anim].is-in{opacity:1!important;transform:none!important;transition:none!important}
+  .rmask img,.hero_bg img{transform:none!important;transition:none!important}
+  .hero_scroll i,.hero_scroll s,.hero_video_frame img{animation:none!important}
+  .spot{transition:none!important}
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1180px){
+  :root{--gutter:2.5rem;--section:6rem}
+  .plates{grid-template-columns:repeat(2,1fr);gap:2rem}
+  .plate:nth-child(even){margin-top:0}
+  .plate:nth-child(2n){margin-top:2.5rem}
+  .spot{grid-template-columns:1fr 1fr}
+  .spot_mood{grid-column:1/-1;padding-top:0;max-width:26rem}
+  .spot_copy{padding-top:0}
+  .foot_cols{grid-template-columns:1fr 1fr}
+  .tsplit{grid-template-columns:1fr;gap:3rem}
+  .tctl{margin-top:2rem}
+}
+@media (max-width:900px){
+  .nav_menu{display:none}
+  .nav_in{grid-template-columns:auto 1fr}
+  .nav_logo{height:62px}
+  .story,.promise_in,.foot_top{grid-template-columns:1fr;gap:3rem}
+  .story_body{margin-top:0}
+  .story_imgs{max-width:30rem}
+  .pkgs{grid-template-columns:1fr}
+  .pkg--hero{margin-top:0}
+  .pcard:nth-child(2),.pcard:nth-child(4){margin-top:0}
+  .hero_center{padding:7rem var(--gutter) 2rem}
+  .hero_bottom{grid-template-columns:1fr;gap:2rem}
+  .hero_video{justify-self:start;text-align:left;flex-direction:row-reverse}
+  .hero_scroll{display:none}
+  .spot_foot{flex-direction:column;align-items:flex-start;gap:1.5rem}
+}
+@media (max-width:640px){
+  :root{--gutter:1.5rem;--section:4.5rem}
+  .plates{grid-template-columns:1fr}
+  .plate:nth-child(2n){margin-top:0}
+  .spot{grid-template-columns:1fr}
+  .pcards{grid-template-columns:1fr}
+  .foot_cols{grid-template-columns:1fr}
+  .mbar{display:block}
+  body{padding-bottom:64px}
+  .sc{font-size:1.4em}
+  .hero_video{flex-direction:column;align-items:flex-start;gap:.75rem}
+  .hero_video_frame{width:100%;max-width:22rem}
+  .nav_logo{height:56px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════ NAV ═════════════════════════ -->
+<div class="nav">
+  <div class="nav_in">
+    <a href="#top"><img src="img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"></a>
+    <nav class="nav_menu">
+      <a href="#ranges" class="nav_link is-active">Booklets</a>
+      <a href="#prices" class="nav_link">Prices</a>
+      <a href="#promise" class="nav_link">How It Works</a>
+      <a href="#story" class="nav_link">About</a>
+      <a href="#voices" class="nav_link">Reviews</a>
+      <a href="#order" class="nav_link">Contact</a>
+    </nav>
+    <div class="nav_actions">
+      <a href="tel:08000236263" class="iconbtn" aria-label="Call 0800 023 6263">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="iconbtn_tip">0800 023 6263</span>
+      </a>
+      <a href="#order" class="iconbtn iconbtn--primary" aria-label="Start your booklet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.6C10.4 5.1 7.9 4.3 4.4 4.3v13.1c3.5 0 6 .8 7.6 2.3 1.6-1.5 4.1-2.3 7.6-2.3V4.3C16.1 4.3 13.6 5.1 12 6.6z"/><path d="M12 6.6v13.1"/></svg>
+        <span class="iconbtn_tip">Start your booklet</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════════ HERO ═════════════════════════ -->
+<header class="hero" id="top">
+  <div class="hero_bg">
+    <img src="img/hero.jpeg" alt="">
+  </div>
+
+  <div class="hero_center">
+    <h1 class="h-display" data-anim="up">Funeral Booklets<br>with a Touch of <span class="sc">Class</span></h1>
+  </div>
+
+  <div class="hero_bottom">
+    <div class="hero_lead" data-anim="up" style="--d:180ms">
+      <p>Order of service booklets designed by hand for UK families — ready in
+      24&ndash;48 hours, with your proof approved before we print.</p>
+      <div class="hero_trust">
+        <span><i></i>Free proof</span>
+        <span><i></i>Next-day UK delivery</span>
+        <span><i></i>WhatsApp your photos</span>
+      </div>
+    </div>
+
+    <div class="hero_scroll"><i></i><s></s></div>
+
+    <a class="hero_video" href="https://vimeo.com/448057229" target="_blank" rel="noopener"
+       data-anim="fade" style="--d:340ms">
+      <span class="hero_video_cap">Motion Gallery<em>See a 60-second example</em></span>
+      <span class="hero_video_frame">
+        <img src="img/hero-candles.jpeg" alt="Motion Gallery preview">
+        <span class="hero_video_play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<!-- ═════════════════════════ STORY ═════════════════════════ -->
+<section class="section section--flushBot" id="story">
+  <div class="wrap">
+    <div class="story">
+      <div>
+        <p class="label" data-anim="up">Our Story</p>
+        <div class="story_body stack-lg">
+          <h2 class="h1" data-anim="up">A Tribute <span class="sc">Worthy</span> of Them</h2>
+          <p class="body" data-anim="up" style="--d:100ms">Ashley lost his mother at seven months
+          old. What stayed with him was watching families pull out all the bells and whistles for
+          a wedding, then send their loved ones off with cheap black and white photocopied paper.</p>
+          <p class="body" data-anim="up" style="--d:180ms">Memories exists because of her — so that
+          every family can give someone a send-off with a little class, without it costing the earth.</p>
+          <div data-anim="up" style="--d:260ms"><a href="#" class="dlink">More About Us</a></div>
+        </div>
+      </div>
+
+      <div class="story_imgs">
+        <figure class="a">
+          <span class="rmask" data-anim="scale"><img src="img/sharon.jpg" alt="A gold-framed photograph of Sharon Delrose Patricia Whittick with her children"></span>
+          <figcaption>Sharon Delrose Patricia Whittick — mother of Jason, Charmaine and Ashley.</figcaption>
+        </figure>
+        <figure class="b">
+          <span class="rmask" data-anim="scale" style="--d:160ms"><img src="img/booklet-ribbon.jpeg" alt="A memorial order of service booklet tied with a black ribbon"></span>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ RANGES ═════════════════════════ -->
+<section class="section" id="ranges">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:4.5rem">
+      <p class="label label--muted" data-anim="up">Our Ranges</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.4rem,4.6vw,4rem)">
+        A Booklet That Looks Like <span class="sc">Them</span></h2>
+      <p class="body measure" data-anim="up" style="--d:160ms">Heritage, faith, a football club,
+      a favourite colour — the booklet should say something true about the person it is for.</p>
+    </div>
+
+    <div class="plates" data-stagger="110">
+      <a href="#" class="plate" data-anim="up">
+        <div class="plate_img"><img src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover"></div>
+        <div class="plate_row">
+          <div><h3>Caribbean &amp; African</h3><p class="plate_meta">9 designs</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate" data-anim="up">
+        <div class="plate_img"><img src="img/single-classic.jpg" alt="Classic funeral order of service booklet cover"></div>
+        <div class="plate_row">
+          <div><h3>Classic</h3><p class="plate_meta">3 designs</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate" data-anim="up">
+        <div class="plate_img"><img src="img/single-football.jpg" alt="Arsenal themed funeral order of service booklet cover"></div>
+        <div class="plate_row">
+          <div><h3>Football</h3><p class="plate_meta">6 designs</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate" data-anim="up">
+        <div class="plate_img"><img src="img/single-standard.jpg" alt="White Lilies funeral order of service booklet cover"></div>
+        <div class="plate_row">
+          <div><h3>Standard</h3><p class="plate_meta">22 designs</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="plates_foot" data-anim="fade"><a href="#" class="dlink">View All 40 Designs</a></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ SPOTLIGHT SLIDER ═════════════════════════ -->
+<section class="section--tight" id="spotlight">
+  <div class="wrap">
+    <div class="spot_top">
+      <p class="label label--muted" data-anim="up">The Ranges, Up Close</p>
+      <p class="spot_num" id="spNum" data-anim="fade">01<small>/04</small></p>
+    </div>
+
+    <div class="spot" id="spot">
+      <span class="rmask spot_hero" data-anim="scale">
+        <img id="spHero" src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover">
+      </span>
+
+      <div class="spot_copy stack">
+        <h2 class="h1" data-anim="up" id="spTitle">Caribbean <span class="sc">&amp;</span> African</h2>
+        <p class="body" data-anim="up" style="--d:100ms" id="spBody1">Nine designs built around the
+        flags and colours of home — Jamaica, Trinidad, Grenada, Barbados, St Lucia, Antigua,
+        Dominica, Nigeria and Ghana, with a Rasta theme alongside them.</p>
+        <p class="body" data-anim="up" style="--d:180ms" id="spBody2">Each one is made for a
+        send-off where heritage matters, and where the booklet is kept for years afterwards.</p>
+        <div data-anim="up" style="--d:260ms"><a href="#" class="dlink" id="spCta">Explore This Range</a></div>
+      </div>
+
+      <div class="spot_mood" data-anim="right" style="--d:200ms">
+        <div class="spot_mood_img"><img id="spMood" src="img/jamaica.png" alt="The full Jamaica package"></div>
+        <p><b>The Mood:</b> <span id="spMoodText">Flag colours, gold detailing, generous photo
+        galleries and space for a full life story.</span></p>
+      </div>
+    </div>
+
+    <div class="spot_foot">
+      <div class="spot_tabs" id="spTabs" data-anim="fade">
+        <button class="spot_tab is-on" type="button">Caribbean &amp; African</button>
+        <button class="spot_tab" type="button">Classic</button>
+        <button class="spot_tab" type="button">Football</button>
+        <button class="spot_tab" type="button">Standard</button>
+      </div>
+      <div class="spot_arrows" data-anim="fade">
+        <button class="arrow" id="spPrev" type="button" aria-label="Previous range"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <button class="arrow" id="spNext" type="button" aria-label="Next range"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ PROMISE (dark) ═════════════════════════ -->
+<section class="promise section" id="promise">
+  <div class="promise_bg"><img src="img/hero-candles.jpeg" alt=""></div>
+  <div class="wrap">
+    <div class="promise_in">
+      <div class="stack-lg">
+        <p class="label label--onDark" data-anim="up">How It Works</p>
+        <h2 class="h1" data-anim="up" style="--d:80ms">Our Promise of <span class="sc">Care</span></h2>
+        <p class="body body--onDark" data-anim="up" style="--d:160ms">You will never be left
+        wondering what happens next. Every family gets a named person to speak to, from the
+        first call through to delivery — and nothing is printed until you have seen it and said yes.</p>
+        <div data-anim="up" style="--d:240ms"><a href="#order" class="dlink dlink--onDark">Start Your Booklet</a></div>
+      </div>
+
+      <div class="pcards" data-stagger="120">
+        <div class="pcard" data-anim="up">
+          <div class="pcard_top"><span class="pcard_n">01</span>
+            <div class="pcard_img"><img src="img/white-lilies.png" alt="Choosing a booklet design"></div></div>
+          <h3 class="h3">Choose</h3>
+          <p class="body--sm">Forty designs, or tell us what you have in mind.</p>
+        </div>
+        <div class="pcard" data-anim="up">
+          <div class="pcard_top"><span class="pcard_n">02</span>
+            <div class="pcard_img"><img src="img/angel-wings.png" alt="Sending photos and details"></div></div>
+          <h3 class="h3">Send</h3>
+          <p class="body--sm">Photos, hymns and the order of service — by form or WhatsApp.</p>
+        </div>
+        <div class="pcard" data-anim="up">
+          <div class="pcard_top"><span class="pcard_n">03</span>
+            <div class="pcard_img"><img src="img/godfather.png" alt="Approving the proof"></div></div>
+          <h3 class="h3">Approve</h3>
+          <p class="body--sm">Your proof in 24–48 hours. Revisions until it is right.</p>
+        </div>
+        <div class="pcard" data-anim="up">
+          <div class="pcard_top"><span class="pcard_n">04</span>
+            <div class="pcard_img"><img src="img/domino-effect.png" alt="Delivered to your door"></div></div>
+          <h3 class="h3">Delivered</h3>
+          <p class="body--sm">Next-day UK, or same-day locally — home, church or director.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ PACKAGES ═════════════════════════ -->
+<section class="section" id="prices">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:4.5rem">
+      <p class="label label--muted" data-anim="up">Packages</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.4rem,4.6vw,4rem)">
+        Everything for the Day, <span class="sc">in</span> One Price</h2>
+      <p class="body measure" data-anim="up" style="--d:160ms">Booklets, a Motion Obituary to
+      share on WhatsApp, a Motion Gallery for the reception, and a pull-up banner for the service.</p>
+    </div>
+
+    <div class="pkgs" data-stagger="130">
+      <div class="pkg" data-anim="up">
+        <div class="pkg_img"><img src="img/black-beauty.png" alt="Essential package — booklets, banner and motion gallery"></div>
+        <div class="pkg_body">
+          <div class="pkg_nm">Essential</div>
+          <p class="pkg_for">A smaller, intimate service</p>
+          <div class="pkg_pr">£310<small>including design and delivery</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>50 × 4-page booklets</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 Motion Obituary</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Motion Gallery — 20 photos</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 banner with carry case</li>
+          </ul>
+          <div class="pkg_cta"><a href="#order" class="dlink dlink--card">Choose Essential</a></div>
+        </div>
+      </div>
+
+      <div class="pkg pkg--hero" data-anim="up">
+        <span class="pkg_flag">Most chosen</span>
+        <div class="pkg_img"><img src="img/barbados.png" alt="Signature package — booklets, two banners and motion gallery"></div>
+        <div class="pkg_body">
+          <div class="pkg_nm">Signature</div>
+          <p class="pkg_for">Our most chosen package</p>
+          <div class="pkg_pr">£515<small>including design and delivery</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>150 × 8-page booklets</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 Motion Obituary</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Motion Gallery — 40 photos</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>2 banners with carry cases</li>
+          </ul>
+          <div class="pkg_cta"><a href="#order" class="btn btn--onDark">Choose Signature</a></div>
+        </div>
+      </div>
+
+      <div class="pkg" data-anim="up">
+        <div class="pkg_img"><img src="img/godfather.png" alt="Full Tribute package — booklets, banners and motion gallery"></div>
+        <div class="pkg_body">
+          <div class="pkg_nm">Full Tribute</div>
+          <p class="pkg_for">A large celebration of life</p>
+          <div class="pkg_pr">£898<small>including design and delivery</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>250 × 20-page booklets</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 Motion Obituary</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Motion Gallery — 60 photos</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>2 banners with carry cases</li>
+          </ul>
+          <div class="pkg_cta"><a href="#order" class="dlink dlink--card">Choose Full Tribute</a></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="pkg_note" data-anim="fade">Booklets on their own from <b>£122</b> for 50 × 4-page.
+    Bookmarkers from £85, extra copies £5.50 each.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════ VOICES ═════════════════════════ -->
+<section class="section band" id="voices">
+  <div class="wrap">
+    <div class="tsplit">
+      <div>
+        <p class="label label--muted" data-anim="up">Families We Have Helped</p>
+        <h2 class="h1" data-anim="up" style="--d:80ms;margin-top:1.25rem">
+          It Was Exactly What She <span class="sc">Deserved</span></h2>
+        <div class="tctl" data-anim="fade" style="--d:200ms">
+          <p class="spot_num" id="tnum">01<small>/03</small></p>
+          <div class="spot_arrows">
+            <button class="arrow" id="tprev" type="button" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+            <button class="arrow" id="tnext" type="button" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="tdots" data-anim="fade" style="--d:280ms" id="tdots">
+          <button class="tdot is-on" type="button" aria-label="Review 1"></button>
+          <button class="tdot" type="button" aria-label="Review 2"></button>
+          <button class="tdot" type="button" aria-label="Review 3"></button>
+        </div>
+      </div>
+
+      <figure class="tquote" data-anim="up" style="--d:140ms">
+        <span class="tmark">&ldquo;</span>
+        <blockquote class="tq" id="tq">We sent the photos over on WhatsApp on the Sunday and had
+        the proof back Monday evening. I could not believe how quickly it came together — and it
+        was exactly what she deserved.</blockquote>
+        <figcaption class="tcap">
+          <span class="tstars">★★★★★</span>
+          <span class="tcap_who"><b id="tname">Placeholder — client to supply</b><span id="tplace">Family, North London</span></span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ FOOTER ═════════════════════════ -->
+<footer class="foot" id="order">
+  <div class="wrap">
+    <div class="foot_top">
+      <h2 class="h-display" data-anim="up" style="font-size:clamp(2.4rem,4.6vw,4rem)">
+        Start with a <span class="sc">Conversation</span></h2>
+      <div class="foot_cta">
+        <p class="body body--onDark" data-anim="up" style="--d:100ms">Whichever way is easiest
+        for you. If you would rather speak to someone first, please call — we would much
+        rather you did.</p>
+        <div class="foot_lines" data-stagger="110">
+          <a href="tel:08000236263" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            0800 023 6263 <span>Freephone</span>
+          </a>
+          <a href="https://wa.me/447552916060" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.82L2 22l5.4-1.42c1.37.75 2.95 1.18 4.64 1.18 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>
+            07552 91 6060 <span>WhatsApp your photos</span>
+          </a>
+          <a href="#" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Start your booklet <span>The order form</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot_cols">
+      <div>
+        <img src="img/logo.png" alt="Memories Funeral Booklets" class="foot_logo">
+        <address>
+          Stanmore Place, Stanmore Innovation Centre<br>
+          Howard Rd, London HA7 1BT<br>
+          info@memoriesbydd.com
+        </address>
+      </div>
+      <div>
+        <h4>Booklets</h4>
+        <ul>
+          <li><a href="#">Caribbean &amp; African</a></li>
+          <li><a href="#">Classic</a></li>
+          <li><a href="#">Football</a></li>
+          <li><a href="#">Standard</a></li>
+          <li><a href="#">All 40 designs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Funeral hymns</a></li>
+          <li><a href="#">Poems &amp; prayers</a></li>
+          <li><a href="#">What to write</a></li>
+          <li><a href="#">Bereavement benefits</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Memories</h4>
+        <ul>
+          <li><a href="#">How it works</a></li>
+          <li><a href="#">Prices</a></li>
+          <li><a href="#">Our story</a></li>
+          <li><a href="#">For funeral directors</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot_end">
+      <span>© 2026 Memories Funeral Booklets — with a touch of class</span>
+      <span>Privacy Policy · Nationwide UK delivery</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═════════════════════════ MOBILE BAR ═════════════════════════ -->
+<div class="mbar">
+  <div class="mbar_in">
+    <a href="tel:08000236263"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a>
+    <a href="https://wa.me/447552916060"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.82L2 22l5.4-1.42c1.37.75 2.95 1.18 4.64 1.18 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>WhatsApp</a>
+    <a href="#order"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Start</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero   = document.querySelector('.hero');
+  var anims  = document.querySelectorAll('[data-anim]');
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-stagger]'), function(group){
+    var step = parseFloat(group.getAttribute('data-stagger')) || 100;
+    Array.prototype.forEach.call(group.children, function(child, i){
+      var t = child.hasAttribute('data-anim') ? child : child.querySelector('[data-anim]');
+      if (t && !t.style.getPropertyValue('--d')) t.style.setProperty('--d', (i * step) + 'ms');
+    });
+  });
+
+  if (reduce) {
+    Array.prototype.forEach.call(anims, function(el){ el.classList.add('is-in'); });
+    if (hero) hero.classList.add('is-in');
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(anims, function(el){ io.observe(el); });
+    requestAnimationFrame(function(){
+      if (!hero) return;
+      hero.classList.add('is-in');
+      Array.prototype.forEach.call(hero.querySelectorAll('[data-anim]'), function(el){
+        el.classList.add('is-in');
+      });
+    });
+  }
+
+  var nav = document.querySelector('.nav');
+  var onScroll = function(){ nav.classList.toggle('is-stuck', window.scrollY > 12); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  var links   = Array.prototype.slice.call(document.querySelectorAll('.nav_link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (!en.isIntersecting) return;
+      var i = targets.indexOf(en.target);
+      if (i < 0) return;
+      links.forEach(function(l){ l.classList.remove('is-active'); });
+      links[i].classList.add('is-active');
+    });
+  }, { threshold: 0.2, rootMargin: '-15% 0px -65% 0px' });
+  targets.forEach(function(t){ if (t) spy.observe(t); });
+
+  /* ---------- range spotlight slider ---------- */
+  var RANGES = [
+    { title:'Caribbean <span class="sc">&amp;</span> African',
+      hero:'img/single-caribbean.jpg', heroAlt:'Jamaica funeral order of service booklet cover',
+      mood:'img/jamaica.png', moodAlt:'The full Jamaica package',
+      b1:'Nine designs built around the flags and colours of home — Jamaica, Trinidad, Grenada, Barbados, St Lucia, Antigua, Dominica, Nigeria and Ghana, with a Rasta theme alongside them.',
+      b2:'Each one is made for a send-off where heritage matters, and where the booklet is kept for years afterwards.',
+      moodText:'Flag colours, gold detailing, generous photo galleries and space for a full life story.' },
+    { title:'Classic',
+      hero:'img/single-classic.jpg', heroAlt:'Classic funeral order of service booklet cover',
+      mood:'img/classic-one.png', moodAlt:'The full Classic package',
+      b1:'Three understated designs for a traditional service — clean type, generous white space and nothing competing with the photograph.',
+      b2:'Chosen most often for formal church services, and by families who want the words to carry the day.',
+      moodText:'Black, white and soft grey. Formal type, a single portrait, no distractions.' },
+    { title:'Football',
+      hero:'img/single-football.jpg', heroAlt:'Arsenal themed funeral order of service booklet cover',
+      mood:'img/arsenal.png', moodAlt:'The full Arsenal package',
+      b1:'Arsenal, Chelsea, Tottenham, Liverpool, Manchester United and Manchester City — club colours and crest, done with restraint.',
+      b2:'For the person whose Saturdays were spoken for. It says something true about them without turning the day into a matchday.',
+      moodText:'Club colours, crest as the focal point, and room for the order of service and photographs.' },
+    { title:'Standard',
+      hero:'img/single-standard.jpg', heroAlt:'White Lilies funeral order of service booklet cover',
+      mood:'img/white-lilies.png', moodAlt:'The full White Lilies package',
+      b1:'Twenty-two designs — florals, feathers, dominoes, satins and skies. Our widest choice of colours and moods.',
+      b2:'If nothing else feels quite right, this is where most families find the one. We stock every theme in several colourways.',
+      moodText:'Soft florals through to bold, masculine tones — up to 23 photographs on the larger layouts.' }
+  ];
+
+  var spot = document.getElementById('spot');
+  if (spot) {
+    var spHero = document.getElementById('spHero'), spMood = document.getElementById('spMood'),
+        spTitle = document.getElementById('spTitle'), spB1 = document.getElementById('spBody1'),
+        spB2 = document.getElementById('spBody2'), spNum = document.getElementById('spNum'),
+        spMoodText = document.getElementById('spMoodText'),
+        spTabs = Array.prototype.slice.call(document.querySelectorAll('#spTabs .spot_tab'));
+    var si = 0;
+
+    function showRange(i){
+      si = (i + RANGES.length) % RANGES.length;
+      var r = RANGES[si];
+      if (!reduce) spot.classList.add('is-swap');
+      setTimeout(function(){
+        spHero.src = r.hero; spHero.alt = r.heroAlt;
+        spMood.src = r.mood; spMood.alt = r.moodAlt;
+        spTitle.innerHTML = r.title;
+        spB1.textContent = r.b1; spB2.textContent = r.b2;
+        spMoodText.textContent = r.moodText;
+        spNum.innerHTML = '0' + (si + 1) + '<small>/0' + RANGES.length + '</small>';
+        spTabs.forEach(function(t, k){ t.classList.toggle('is-on', k === si); });
+        if (!reduce) spot.classList.remove('is-swap');
+      }, reduce ? 0 : 320);
+    }
+
+    document.getElementById('spPrev').addEventListener('click', function(){ showRange(si - 1); });
+    document.getElementById('spNext').addEventListener('click', function(){ showRange(si + 1); });
+    spTabs.forEach(function(t, k){ t.addEventListener('click', function(){ showRange(k); }); });
+  }
+
+  /* ---------- reviews rotator ---------- */
+  var REVIEWS = [
+    { q:'We sent the photos over on WhatsApp on the Sunday and had the proof back Monday evening. I could not believe how quickly it came together — and it was exactly what she deserved.',
+      n:'Placeholder — client to supply', p:'Family, North London' },
+    { q:'Everyone at the service asked where we had them made. The banner at the reception was the thing my dad would have loved most.',
+      n:'Placeholder — client to supply', p:'Family, Birmingham' },
+    { q:'Ashley talked me through everything. I had no idea where to start and he made it feel manageable from the first phone call.',
+      n:'Placeholder — client to supply', p:'Family, Harrow' }
+  ];
+  var tq = document.getElementById('tq'), tname = document.getElementById('tname'),
+      tplace = document.getElementById('tplace'), tnum = document.getElementById('tnum'),
+      quote = document.querySelector('.tquote'),
+      dots = Array.prototype.slice.call(document.querySelectorAll('#tdots .tdot'));
+  var ti = 0;
+
+  function showReview(i){
+    ti = (i + REVIEWS.length) % REVIEWS.length;
+    var r = REVIEWS[ti];
+    if (!reduce) { quote.style.opacity = '0'; quote.style.transform = 'translateY(10px)'; }
+    setTimeout(function(){
+      tq.textContent = r.q; tname.textContent = r.n; tplace.textContent = r.p;
+      tnum.innerHTML = '0' + (ti + 1) + '<small>/0' + REVIEWS.length + '</small>';
+      dots.forEach(function(d, k){ d.classList.toggle('is-on', k === ti); });
+      if (!reduce) { quote.style.opacity = '1'; quote.style.transform = 'none'; }
+    }, reduce ? 0 : 220);
+  }
+  if (quote) {
+    quote.style.transition = 'opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1)';
+    document.getElementById('tprev').addEventListener('click', function(){ showReview(ti - 1); });
+    document.getElementById('tnext').addEventListener('click', function(){ showReview(ti + 1); });
+    dots.forEach(function(d, k){ d.addEventListener('click', function(){ showReview(k); }); });
+  }
+})();
+</script>
+
+</body>
+</html>

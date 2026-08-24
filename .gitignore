@@ -1,0 +1,22 @@
+# Deliberately minimal.
+#
+# The whole project is ~6 MB across ~64 files, so EVERYTHING else is tracked
+# on purpose. Do not add project folders here. An over-broad ignore file is the
+# likeliest reason for content going missing between machines — if a file
+# belongs to the project, it belongs in the repo.
+
+# OS cruft
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor / IDE local state
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local scratch only
+*.log

@@ -1,0 +1,14 @@
+# Normalise line endings in the repo so the two machines never produce
+# whole-file diffs just from checkout differences.
+* text=auto
+
+# Treat assets as binary — never line-ending-converted, never diffed as text.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.mp4  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
