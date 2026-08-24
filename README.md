@@ -31,6 +31,16 @@ Design and the Webflow build follow.
 | **[_strategy/04-SEO.md](_strategy/04-SEO.md)** | Keyword strategy in three tiers + technical checklist |
 | **[_strategy/05-CLIENT-ACTIONS.md](_strategy/05-CLIENT-ACTIONS.md)** | **What we need from Ashley** — blocking items |
 
+**Phase 2 — structure, SEO and the remaining page designs:**
+
+| Read | For |
+|---|---|
+| **[_strategy/06-HOMEPAGE-AUDIT.md](_strategy/06-HOMEPAGE-AUDIT.md)** | The approved homepage vs the brief — 4 commercial gaps, 1 launch blocker |
+| **[_strategy/07-SEO-AND-KEYWORDS.md](_strategy/07-SEO-AND-KEYWORDS.md)** | Keyword ownership per URL, cannibalisation rules, content depth, E-E-A-T |
+| **[_strategy/08-PAGE-BLUEPRINTS.md](_strategy/08-PAGE-BLUEPRINTS.md)** | **The rigid structure** — every page's sections, schema, CTA. Build designs against this |
+| **[_strategy/09-AEO-GEO.md](_strategy/09-AEO-GEO.md)** | Answer engines, generative engines, full schema inventory, AI-crawler policy |
+| **[_strategy/10-PERFORMANCE.md](_strategy/10-PERFORMANCE.md)** | Core Web Vitals — measured, with the image fixes that matter most |
+
 ---
 
 ## The three headline findings
