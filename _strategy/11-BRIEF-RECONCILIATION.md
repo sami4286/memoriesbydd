@@ -74,7 +74,24 @@ strongest brand asset on the site. The approved homepage's *"More About Us"* lin
 
 ---
 
-## 🔴 C2 — Turnaround: the approved homepage may be making a false promise
+## ⚖️ C2 — Turnaround: DECIDED BY CLIENT-SIDE DIRECTION, 24 Aug 2026
+
+> **Decision: use 24–48 hours across the site.** Directed by the project owner on 24 Aug 2026 after
+> this conflict was raised twice.
+>
+> **This remains unreconciled with the brief and needs Ashley's written confirmation before
+> launch.** The brief says 5 working days standard / 7–10 premium; the live design pages say 4–5 days.
+> Recorded here as a directed decision, not a resolved fact.
+>
+> **How it is being written, to keep it defensible:** 24–48 hours is used as the **design and proof**
+> turnaround — *"designed in 24–48 hours"*, *"your proof in 24–48 hours"* — not as a delivery
+> promise. That is already what the approved homepage's process step 03 says, and it is the only
+> reading that does not contradict the brief's 5-working-day production figure.
+>
+> **Still to disclose separately:** delivery timescale and the 50% express surcharge (C3). A proof
+> time is not a delivery date, and families are buying against a funeral date.
+
+### The underlying conflict, for the record
 
 | Source | Claim |
 |---|---|

@@ -140,6 +140,11 @@ Every brief page is reachable; none is in the nav twice. `Resources` is the nav 
 Sections in order, so layout follows content. Copy is written against this.
 **⛔ = wording blocked on a client answer** (see `11-BRIEF-RECONCILIATION.md`).
 
+> **Turnaround is now decided: 24–48 hours**, directed 24 Aug 2026. Written as the **design and
+> proof** turnaround, never as a delivery promise — see `11-BRIEF-RECONCILIATION.md` C2. Still needs
+> Ashley's written sign-off before launch, and delivery timescale plus the express surcharge must be
+> disclosed separately. The ⛔ turnaround markers below are cleared; ⛔ express remains.
+
 ### `/` Home — *approved and built*
 Existing order stands: Hero → Story → Ranges → Spotlight → Featured designs → How It Works →
 Packages → Add-ons → Reviews → Trade band → Footer CTA.
