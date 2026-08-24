@@ -8,6 +8,110 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Funeral Order of Service Booklets | Designed by Hand in 24–48 Hours">
+<meta property="og:description" content="Personalised funeral order of service booklets for UK families. Caribbean, African, Classic and football ranges. Free proof before we print.">
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     STRUCTURED DATA
+     There was none at all before this. See 09-AEO-GEO.md for the full
+     per-template inventory.
+
+     Two deliberate omissions, both load-bearing:
+       • NO AggregateRating / Review. The testimonials in this page are
+         placeholders (invented quotes, invented 5-star ratings). Emitting
+         review markup for them would be fake-review markup — a Google
+         penalty and, once live, a DMCCA 2024 breach. Add only when the
+         reviews are real.
+       • NO openingHours. Not stated anywhere on the current site. An invented
+         value here would propagate straight into Google Business Profile and
+         send bereaved families to a closed line. Blocked on Ashley.
+
+     Prices below match _archive/pages/markdown/price-list.md exactly. If the
+     price list changes, change these too or the Offer contradicts the page.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://memoriesbydd.com/#organization",
+      "name": "Memories Funeral Booklets",
+      "alternateName": ["Memories by DD", "Memories Tributes"],
+      "url": "https://memoriesbydd.com/",
+      "logo": "https://memoriesbydd.com/img/logo.png",
+      "sameAs": ["https://www.instagram.com/memoriestributes/"]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://memoriesbydd.com/#business",
+      "name": "Memories Funeral Booklets",
+      "description": "Personalised funeral order of service booklets, designed by hand and printed for UK families. Specialists in Caribbean and African heritage designs.",
+      "url": "https://memoriesbydd.com/",
+      "telephone": "+448000236263",
+      "email": "info@memoriesbydd.com",
+      "image": "https://memoriesbydd.com/img/logo.png",
+      "parentOrganization": { "@id": "https://memoriesbydd.com/#organization" },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Stanmore Place, Stanmore Innovation Centre, Howard Rd",
+        "addressLocality": "London",
+        "postalCode": "HA7 1BT",
+        "addressCountry": "GB"
+      },
+      "areaServed": { "@type": "Country", "name": "United Kingdom" },
+      "priceRange": "££"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://memoriesbydd.com/#website",
+      "url": "https://memoriesbydd.com/",
+      "name": "Memories Funeral Booklets",
+      "inLanguage": "en-GB",
+      "publisher": { "@id": "https://memoriesbydd.com/#organization" }
+    },
+    {
+      "@type": "Service",
+      "name": "Funeral order of service booklet design and printing",
+      "serviceType": "Funeral stationery design and printing",
+      "provider": { "@id": "https://memoriesbydd.com/#business" },
+      "areaServed": { "@type": "Country", "name": "United Kingdom" },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Essential package",
+          "description": "50 × 4-page booklets, 1 Motion Obituary, Motion Gallery (20 photos), 1 banner with carry case",
+          "price": "310",
+          "priceCurrency": "GBP"
+        },
+        {
+          "@type": "Offer",
+          "name": "Signature package",
+          "description": "150 × 8-page booklets, 1 Motion Obituary, Motion Gallery (40 photos), 2 banners with carry cases",
+          "price": "515",
+          "priceCurrency": "GBP"
+        },
+        {
+          "@type": "Offer",
+          "name": "Full Tribute package",
+          "description": "250 × 20-page booklets, 1 Motion Obituary, Motion Gallery (60 photos), 2 banners with carry cases",
+          "price": "898",
+          "priceCurrency": "GBP"
+        },
+        {
+          "@type": "Offer",
+          "name": "Booklets only",
+          "description": "50 × 4-page funeral order of service booklets, including design and delivery",
+          "price": "122",
+          "priceCurrency": "GBP"
+        }
+      ]
+    }
+  ]
+}
+</script>
 <style>
 /* ============================================================
    MEMORIES — Landing concept 02
@@ -340,6 +444,54 @@ p{margin:0}
 .pkg_note b{font-family:var(--serif);color:var(--text);font-weight:500}
 
 /* ============================================================
+   FEATURED DESIGNS — .plate in a product variant
+   Reuses .plate / .plate_row / .plate_ico / stagger / hover wholesale.
+   Only the image box changes: these assets are wide package composites on a
+   white ground, not the portrait covers the range cards use, so they sit on
+   the same tinted plate + multiply treatment as .pkg_img and .pcard_img.
+   ============================================================ */
+.plate--product .plate_img{
+  aspect-ratio:16/11;background:var(--bg-plate);
+  border:1px solid rgba(42,42,42,.09);
+  display:flex;align-items:center;justify-content:center}
+.plate--product .plate_img img{
+  width:86%;height:86%;object-fit:contain;mix-blend-mode:multiply}
+.plate--product .plate_img::after{display:none}
+
+/* ============================================================
+   ADD-ONS
+   Text-led on purpose: there is no photography for these four products yet
+   (requested in 05-CLIENT-ACTIONS.md item 9). Cards carry the price, because
+   "what is a Motion Obituary and what does it cost" is the actual question.
+   ============================================================ */
+.addons{display:grid;grid-template-columns:repeat(4,1fr);gap:1.75rem;align-items:start}
+.addon{background:var(--cream);border:1px solid var(--border);padding:1.875rem 1.625rem 2rem;
+  display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.addon:nth-child(even){margin-top:2.5rem}
+.addon:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(42,42,42,.09)}
+.addon_nm{font-family:var(--serif);font-size:1.25rem;line-height:1.25}
+.addon_pr{font-family:var(--serif);font-size:1.75rem;line-height:1;color:var(--brand-deep);
+  margin-top:.875rem;padding-bottom:1.125rem;border-bottom:1px solid var(--border)}
+.addon_pr small{font-family:var(--sans);font-size:.75rem;color:var(--text-muted);
+  letter-spacing:.02em;display:block;margin-top:.4375rem}
+.addon p{font-size:.9375rem;line-height:1.7;color:var(--text-muted);margin-top:1.125rem}
+.addon_cta{margin-top:auto;padding-top:1.75rem;align-self:flex-start}
+
+/* ============================================================
+   TRADE BAND — funeral directors
+   Deliberately NOT dark: the footer directly below is --ink, and two dark
+   bands in a row read as one. Uses --brand-tint, which was defined in the
+   token set but never used.
+   ============================================================ */
+.trade{background:var(--brand-tint);padding:3.25rem 0}
+.trade_in{display:flex;align-items:center;justify-content:space-between;gap:2.5rem;flex-wrap:wrap}
+.trade_txt{max-width:44rem}
+.trade_txt h2{font-family:var(--serif);font-size:1.625rem;line-height:1.3;font-weight:400}
+.trade_txt p{font-size:.9375rem;line-height:1.7;color:var(--text-muted);margin-top:.625rem}
+/* the dot sits on the band, not the page ground */
+.trade .dlink{--dot-bg:var(--brand-tint)}
+
+/* ============================================================
    VOICES
    ============================================================ */
 .tsplit{display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gutter);align-items:start}
@@ -439,6 +591,7 @@ p{margin:0}
   .foot_cols{grid-template-columns:1fr 1fr}
   .tsplit{grid-template-columns:1fr;gap:3rem}
   .tctl{margin-top:2rem}
+  .addons{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
 @media (max-width:900px){
   .nav_menu{display:none}
@@ -455,6 +608,7 @@ p{margin:0}
   .hero_video{justify-self:start;text-align:left;flex-direction:row-reverse}
   .hero_scroll{display:none}
   .spot_foot{flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .trade_in{flex-direction:column;align-items:flex-start;gap:1.5rem}
 }
 @media (max-width:640px){
   :root{--gutter:1.5rem;--section:4.5rem}
@@ -462,6 +616,8 @@ p{margin:0}
   .plate:nth-child(2n){margin-top:0}
   .spot{grid-template-columns:1fr}
   .pcards{grid-template-columns:1fr}
+  .addons{grid-template-columns:1fr}
+  .addon:nth-child(even){margin-top:0}
   .foot_cols{grid-template-columns:1fr}
   .mbar{display:block}
   body{padding-bottom:64px}
@@ -477,7 +633,8 @@ p{margin:0}
 <!-- ═════════════════════════ NAV ═════════════════════════ -->
 <div class="nav">
   <div class="nav_in">
-    <a href="#top"><img src="img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"></a>
+    <a href="#top"><img src="img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"
+       width="246" height="246" fetchpriority="high"></a>
     <nav class="nav_menu">
       <a href="#ranges" class="nav_link is-active">Booklets</a>
       <a href="#prices" class="nav_link">Prices</a>
@@ -502,7 +659,9 @@ p{margin:0}
 <!-- ═════════════════════════ HERO ═════════════════════════ -->
 <header class="hero" id="top">
   <div class="hero_bg">
-    <img src="img/hero.jpeg" alt="">
+    <!-- LCP element: eager and prioritised. Never lazy-load this one. -->
+    <img src="img/hero.jpeg" alt="" width="2400" height="1321"
+         fetchpriority="high" decoding="async">
   </div>
 
   <div class="hero_center">
@@ -514,8 +673,10 @@ p{margin:0}
       <p>Order of service booklets designed by hand for UK families — ready in
       24&ndash;48 hours, with your proof approved before we print.</p>
       <div class="hero_trust">
-        <span><i></i>Free proof</span>
+        <span><i></i>24&ndash;48 hour design</span>
+        <span><i></i>Free proof before we print</span>
         <span><i></i>Next-day UK delivery</span>
+        <span><i></i>Same-day local delivery</span>
         <span><i></i>WhatsApp your photos</span>
       </div>
     </div>
@@ -526,7 +687,8 @@ p{margin:0}
        data-anim="fade" style="--d:340ms">
       <span class="hero_video_cap">Motion Gallery<em>See a 60-second example</em></span>
       <span class="hero_video_frame">
-        <img src="img/hero-candles.jpeg" alt="Motion Gallery preview">
+        <img src="img/hero-candles.jpeg" alt="Motion Gallery preview"
+             width="2600" height="1418" decoding="async">
         <span class="hero_video_play">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         </span>
@@ -554,11 +716,11 @@ p{margin:0}
 
       <div class="story_imgs">
         <figure class="a">
-          <span class="rmask" data-anim="scale"><img src="img/sharon.jpg" alt="A gold-framed photograph of Sharon Delrose Patricia Whittick with her children"></span>
+          <span class="rmask" data-anim="scale"><img src="img/sharon.jpg" alt="A gold-framed photograph of Sharon Delrose Patricia Whittick with her children" width="600" height="600" loading="lazy" decoding="async"></span>
           <figcaption>Sharon Delrose Patricia Whittick — mother of Jason, Charmaine and Ashley.</figcaption>
         </figure>
         <figure class="b">
-          <span class="rmask" data-anim="scale" style="--d:160ms"><img src="img/booklet-ribbon.jpeg" alt="A memorial order of service booklet tied with a black ribbon"></span>
+          <span class="rmask" data-anim="scale" style="--d:160ms"><img src="img/booklet-ribbon.jpeg" alt="A memorial order of service booklet tied with a black ribbon" width="1080" height="589" loading="lazy" decoding="async"></span>
         </figure>
       </div>
     </div>
@@ -578,28 +740,28 @@ p{margin:0}
 
     <div class="plates" data-stagger="110">
       <a href="#" class="plate" data-anim="up">
-        <div class="plate_img"><img src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover"></div>
+        <div class="plate_img"><img src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover" width="800" height="800" loading="lazy" decoding="async"></div>
         <div class="plate_row">
           <div><h3>Caribbean &amp; African</h3><p class="plate_meta">9 designs</p></div>
           <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
       </a>
       <a href="#" class="plate" data-anim="up">
-        <div class="plate_img"><img src="img/single-classic.jpg" alt="Classic funeral order of service booklet cover"></div>
+        <div class="plate_img"><img src="img/single-classic.jpg" alt="Classic funeral order of service booklet cover" width="800" height="800" loading="lazy" decoding="async"></div>
         <div class="plate_row">
           <div><h3>Classic</h3><p class="plate_meta">3 designs</p></div>
           <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
       </a>
       <a href="#" class="plate" data-anim="up">
-        <div class="plate_img"><img src="img/single-football.jpg" alt="Arsenal themed funeral order of service booklet cover"></div>
+        <div class="plate_img"><img src="img/single-football.jpg" alt="Arsenal themed funeral order of service booklet cover" width="800" height="800" loading="lazy" decoding="async"></div>
         <div class="plate_row">
           <div><h3>Football</h3><p class="plate_meta">6 designs</p></div>
           <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
       </a>
       <a href="#" class="plate" data-anim="up">
-        <div class="plate_img"><img src="img/single-standard.jpg" alt="White Lilies funeral order of service booklet cover"></div>
+        <div class="plate_img"><img src="img/single-standard.jpg" alt="White Lilies funeral order of service booklet cover" width="800" height="800" loading="lazy" decoding="async"></div>
         <div class="plate_row">
           <div><h3>Standard</h3><p class="plate_meta">22 designs</p></div>
           <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -621,7 +783,7 @@ p{margin:0}
 
     <div class="spot" id="spot">
       <span class="rmask spot_hero" data-anim="scale">
-        <img id="spHero" src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover">
+        <img id="spHero" src="img/single-caribbean.jpg" alt="Jamaica funeral order of service booklet cover" width="800" height="800" loading="lazy" decoding="async">
       </span>
 
       <div class="spot_copy stack">
@@ -635,7 +797,7 @@ p{margin:0}
       </div>
 
       <div class="spot_mood" data-anim="right" style="--d:200ms">
-        <div class="spot_mood_img"><img id="spMood" src="img/jamaica.png" alt="The full Jamaica package"></div>
+        <div class="spot_mood_img"><img id="spMood" src="img/jamaica.png" alt="The full Jamaica package" width="600" height="494" loading="lazy" decoding="async"></div>
         <p><b>The Mood:</b> <span id="spMoodText">Flag colours, gold detailing, generous photo
         galleries and space for a full life story.</span></p>
       </div>
@@ -656,9 +818,94 @@ p{margin:0}
   </div>
 </section>
 
+<!-- ═════════════════════════ FEATURED DESIGNS ═════════════════════════
+     Closes the gap in 06-HOMEPAGE-AUDIT.md: nothing on this page reached an
+     individual design page, so the 40 highest-intent pages got no traffic and
+     no internal link equity from the homepage.
+
+     Links go to /booklets/{slug}/ per 08-PAGE-BLUEPRINTS.md — held at "#"
+     until those pages exist.
+
+     Selection excludes Nigeria, Dominica, Snow Flake and Rasta Theme: all four
+     have dead hero images on the live site (audit B2 / 05-CLIENT-ACTIONS.md
+     item 1). Do not feature them until the artwork is replaced.
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="section band" id="featured">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:4.5rem">
+      <p class="label label--muted" data-anim="up">Featured Designs</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.4rem,4.6vw,4rem)">
+        Where Families Often <span class="sc">Begin</span></h2>
+      <p class="body measure" data-anim="up" style="--d:160ms">A few of our most-chosen designs.
+      Every one is finished by hand, proofed for your approval, and ready in 24&ndash;48 hours.</p>
+    </div>
+
+    <div class="plates" data-stagger="90">
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/jamaica.png" alt="Jamaica funeral order of service booklet, in the green, gold and black of the Jamaican flag" width="600" height="494" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Jamaica</h3><p class="plate_meta">Caribbean &amp; African</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/barbados.png" alt="Barbados funeral order of service booklet in the blue and gold of the Barbadian flag" width="600" height="494" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Barbados</h3><p class="plate_meta">Caribbean &amp; African</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/arsenal.png" alt="Arsenal themed funeral order of service booklet in club red and white" width="600" height="449" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Arsenal</h3><p class="plate_meta">Football</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/classic-one.png" alt="Classic One funeral order of service booklet, understated with generous white space" width="600" height="524" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Classic One</h3><p class="plate_meta">Classic</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/white-lilies.png" alt="White Lilies funeral order of service booklet with a soft floral cover" width="600" height="494" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>White Lilies</h3><p class="plate_meta">Standard</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/angel-wings.png" alt="Angel Wings funeral order of service booklet with a feathered wing motif" width="600" height="494" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Angel Wings</h3><p class="plate_meta">Standard</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/domino-effect.png" alt="Domino Effect funeral order of service booklet with a bold graphic cover" width="600" height="494" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Domino Effect</h3><p class="plate_meta">Standard</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+      <a href="#" class="plate plate--product" data-anim="up">
+        <div class="plate_img"><img src="img/godfather.png" alt="Godfather funeral order of service booklet in deep masculine tones" width="600" height="480" loading="lazy" decoding="async"></div>
+        <div class="plate_row">
+          <div><h3>Godfather</h3><p class="plate_meta">Standard</p></div>
+          <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="plates_foot" data-anim="fade"><a href="#" class="dlink dlink--plate">Browse the Full Catalogue</a></div>
+  </div>
+</section>
+
 <!-- ═════════════════════════ PROMISE (dark) ═════════════════════════ -->
 <section class="promise section" id="promise">
-  <div class="promise_bg"><img src="img/hero-candles.jpeg" alt=""></div>
+  <div class="promise_bg"><img src="img/hero-candles.jpeg" alt="" width="2600" height="1418" loading="lazy" decoding="async"></div>
   <div class="wrap">
     <div class="promise_in">
       <div class="stack-lg">
@@ -673,25 +920,25 @@ p{margin:0}
       <div class="pcards" data-stagger="120">
         <div class="pcard" data-anim="up">
           <div class="pcard_top"><span class="pcard_n">01</span>
-            <div class="pcard_img"><img src="img/white-lilies.png" alt="Choosing a booklet design"></div></div>
+            <div class="pcard_img"><img src="img/white-lilies.png" alt="Choosing a booklet design" width="600" height="494" loading="lazy" decoding="async"></div></div>
           <h3 class="h3">Choose</h3>
           <p class="body--sm">Forty designs, or tell us what you have in mind.</p>
         </div>
         <div class="pcard" data-anim="up">
           <div class="pcard_top"><span class="pcard_n">02</span>
-            <div class="pcard_img"><img src="img/angel-wings.png" alt="Sending photos and details"></div></div>
+            <div class="pcard_img"><img src="img/angel-wings.png" alt="Sending photos and details" width="600" height="494" loading="lazy" decoding="async"></div></div>
           <h3 class="h3">Send</h3>
           <p class="body--sm">Photos, hymns and the order of service — by form or WhatsApp.</p>
         </div>
         <div class="pcard" data-anim="up">
           <div class="pcard_top"><span class="pcard_n">03</span>
-            <div class="pcard_img"><img src="img/godfather.png" alt="Approving the proof"></div></div>
+            <div class="pcard_img"><img src="img/godfather.png" alt="Approving the proof" width="600" height="480" loading="lazy" decoding="async"></div></div>
           <h3 class="h3">Approve</h3>
           <p class="body--sm">Your proof in 24–48 hours. Revisions until it is right.</p>
         </div>
         <div class="pcard" data-anim="up">
           <div class="pcard_top"><span class="pcard_n">04</span>
-            <div class="pcard_img"><img src="img/domino-effect.png" alt="Delivered to your door"></div></div>
+            <div class="pcard_img"><img src="img/domino-effect.png" alt="Delivered to your door" width="600" height="494" loading="lazy" decoding="async"></div></div>
           <h3 class="h3">Delivered</h3>
           <p class="body--sm">Next-day UK, or same-day locally — home, church or director.</p>
         </div>
@@ -713,7 +960,7 @@ p{margin:0}
 
     <div class="pkgs" data-stagger="130">
       <div class="pkg" data-anim="up">
-        <div class="pkg_img"><img src="img/black-beauty.png" alt="Essential package — booklets, banner and motion gallery"></div>
+        <div class="pkg_img"><img src="img/black-beauty.png" alt="Essential package — booklets, banner and motion gallery" width="600" height="494" loading="lazy" decoding="async"></div>
         <div class="pkg_body">
           <div class="pkg_nm">Essential</div>
           <p class="pkg_for">A smaller, intimate service</p>
@@ -730,7 +977,7 @@ p{margin:0}
 
       <div class="pkg pkg--hero" data-anim="up">
         <span class="pkg_flag">Most chosen</span>
-        <div class="pkg_img"><img src="img/barbados.png" alt="Signature package — booklets, two banners and motion gallery"></div>
+        <div class="pkg_img"><img src="img/barbados.png" alt="Signature package — booklets, two banners and motion gallery" width="600" height="494" loading="lazy" decoding="async"></div>
         <div class="pkg_body">
           <div class="pkg_nm">Signature</div>
           <p class="pkg_for">Our most chosen package</p>
@@ -746,7 +993,7 @@ p{margin:0}
       </div>
 
       <div class="pkg" data-anim="up">
-        <div class="pkg_img"><img src="img/godfather.png" alt="Full Tribute package — booklets, banners and motion gallery"></div>
+        <div class="pkg_img"><img src="img/godfather.png" alt="Full Tribute package — booklets, banners and motion gallery" width="600" height="480" loading="lazy" decoding="async"></div>
         <div class="pkg_body">
           <div class="pkg_nm">Full Tribute</div>
           <p class="pkg_for">A large celebration of life</p>
@@ -764,6 +1011,57 @@ p{margin:0}
 
     <p class="pkg_note" data-anim="fade">Booklets on their own from <b>£122</b> for 50 × 4-page.
     Bookmarkers from £85, extra copies £5.50 each.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════ ADD-ONS ═════════════════════════
+     Audit finding D5 was that these four products existed "only as rows inside
+     the price table". They were about to repeat that as bullets inside the
+     package lists, so they get their own section.
+
+     Text-led because there is no photography for any of them yet — requested
+     in 05-CLIENT-ACTIONS.md item 9. Add images when they arrive.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="addons">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:4.5rem">
+      <p class="label label--muted" data-anim="up">Add-ons</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.4rem,4.6vw,4rem)">
+        More Ways to Remember <span class="sc">Them</span></h2>
+      <p class="body measure" data-anim="up" style="--d:160ms">Each one can be added to any booklet
+      order, or ordered on its own. All of them are included in our packages.</p>
+    </div>
+
+    <div class="addons" data-stagger="110">
+      <div class="addon" data-anim="up">
+        <div class="addon_nm">Motion Obituary</div>
+        <div class="addon_pr">£50<small>Standard £50 &middot; Motion £75</small></div>
+        <p>A short animated announcement, made to be shared on WhatsApp. The easiest way to tell
+        family and friends when and where the service will be.</p>
+        <div class="addon_cta"><a href="#order" class="dlink dlink--card">Add a Motion Obituary</a></div>
+      </div>
+      <div class="addon" data-anim="up">
+        <div class="addon_nm">Motion Gallery</div>
+        <div class="addon_pr">£50<small>20 photos &middot; 40 from £100 &middot; 60 from £130</small></div>
+        <p>Their photographs set to music, for the reception or the wake. Send us the pictures and
+        we will put them in order with you.</p>
+        <div class="addon_cta"><a href="#order" class="dlink dlink--card">Add a Motion Gallery</a></div>
+      </div>
+      <div class="addon" data-anim="up">
+        <div class="addon_nm">Pull-up Banners</div>
+        <div class="addon_pr">£125<small>One £125 &middot; two £170, with carry cases</small></div>
+        <p>A full-height portrait to stand at the service or the reception. Matched to your booklet
+        design, and it lasts for years rather than one afternoon.</p>
+        <div class="addon_cta"><a href="#order" class="dlink dlink--card">Add a Banner</a></div>
+      </div>
+      <div class="addon" data-anim="up">
+        <div class="addon_nm">Bookmarkers</div>
+        <div class="addon_pr">£85<small>50 from £85 &middot; 100 from £105 &middot; 250 from £150</small></div>
+        <p>Something to keep and to give away. A photograph with your own wording, a prayer or a
+        hymn &mdash; or choose from our designs.</p>
+        <div class="addon_cta"><a href="#order" class="dlink dlink--card">Add Bookmarkers</a></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -803,6 +1101,26 @@ p{margin:0}
   </div>
 </section>
 
+<!-- ═════════════════════════ TRADE BAND ═════════════════════════
+     03-FUNNEL.md calls /funeral-directors/ "his growth engine" — three referral
+     partners today and the page does no selling. It had one footer link.
+
+     Deliberately light, not dark: the footer immediately below is --ink, and
+     two dark bands in a row read as a single block.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="trade" id="trade">
+  <div class="wrap">
+    <div class="trade_in">
+      <div class="trade_txt" data-anim="up">
+        <h2>Are you a funeral director?</h2>
+        <p>Trade pricing, white-label proofs, a dedicated line and the same 24&ndash;48 hour
+        turnaround. We already work with funeral directors and churches across London.</p>
+      </div>
+      <div data-anim="up" style="--d:120ms"><a href="#" class="dlink">See Our Trade Terms</a></div>
+    </div>
+  </div>
+</section>
+
 <!-- ═════════════════════════ FOOTER ═════════════════════════ -->
 <footer class="foot" id="order">
   <div class="wrap">
@@ -832,11 +1150,14 @@ p{margin:0}
 
     <div class="foot_cols">
       <div>
-        <img src="img/logo.png" alt="Memories Funeral Booklets" class="foot_logo">
+        <img src="img/logo.png" alt="Memories Funeral Booklets" class="foot_logo" width="246" height="246" loading="lazy" decoding="async">
         <address>
           Stanmore Place, Stanmore Innovation Centre<br>
           Howard Rd, London HA7 1BT<br>
-          info@memoriesbydd.com
+          <a href="tel:08000236263">0800 023 6263</a><br>
+          <a href="mailto:info@memoriesbydd.com">info@memoriesbydd.com</a>
+          <!-- TODO opening hours — not stated anywhere on the current site.
+               Needed here and for LocalBusiness.openingHours. Ask Ashley. -->
         </address>
       </div>
       <div>

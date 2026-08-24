@@ -10,6 +10,43 @@ existing design language.
 
 ---
 
+---
+
+## Status — what has since been applied
+
+The content and technical gaps below have been **fixed in `_deploy/index.html`** (24 Aug 2026), using
+only components that already existed in the approved design. No new design decisions were taken and
+nothing needs re-approving.
+
+| Fixed | Detail |
+|---|---|
+| **Featured designs section** | New `#featured` — 8 designs, `.plate--product` variant. Excludes the four with dead heroes |
+| **Add-ons section** | New `#addons` — Motion Obituary, Motion Gallery, banners, bookmarkers, with prices |
+| **Funeral-director band** | New `#trade` — light band on the previously-unused `--brand-tint` token |
+| **Trust strip** | 3 → 5 signals, as specified |
+| **Image dimensions** | `width`/`height` on **all 28** images — CLS fixed |
+| **Lazy loading** | 25 of 28 lazy; hero, nav logo and video poster stay eager |
+| **LCP priority** | `fetchpriority="high"` on the hero |
+| **Structured data** | `Organization` + `LocalBusiness` + `WebSite` + `Service` with 4 `Offer`s. Validated |
+| **Open Graph** | `og:locale` = `en_GB` added, plus title/description/type |
+| **Footer NAP** | Phone and mailto added to the address block |
+
+**Measured result:** initial payload **377 KB, down from ~2,420 KB** — inside the < 1 MB target.
+Deferred: 2,120 KB across 25 lazy images.
+
+### Deliberately still open
+
+| Item | Why |
+|---|---|
+| **Fabricated reviews** | Still present. Needs real quotes or removal — see the blocker below |
+| **No `Review`/`AggregateRating` schema** | Correctly omitted while the testimonials are placeholders |
+| **`openingHours`** | Not stated anywhere on the current site. Inventing it would send bereaved families to a closed line. Blocked on Ashley |
+| **WebP/AVIF conversion** | 1.8 MB of PNG → ~500 KB. Worth doing, but it is a build step, not a markup fix |
+| **23 placeholder links** | Wired when the target pages exist |
+| **Add-on photography** | The add-ons section is text-led because no images exist for these four products |
+
+---
+
 ## Verdict
 
 The design delivers **8 of the 12 specified sections**, and it is strong on the things the old site
