@@ -34,24 +34,41 @@ Script words (the `Italianno` word in each heading) are marked *italic* — one 
 - **En dashes** for ranges (24–48), em dashes for asides (—). Non-breaking `&pound;` before prices.
 - **No fabricated anything.** No invented reviews, no guessed opening hours, no invented turnaround.
 
-## Status
+## Working assumptions
 
-| # | Page | Doc | Copy status |
+Copy is **written through** rather than left blank where an answer is outstanding. These four
+assumptions were applied throughout so the decks are proofreadable now. Each is marked at the point
+of use and listed at the foot of every document.
+
+| Assumption | Applied as | If wrong |
+|---|---|---|
+| **Turnaround** | 24–48 hours, **for the proof only** — never delivery | Every page changes |
+| **Production time** | 5 working days standard, 7–10 premium *(from the brief)* | Timeline tables change |
+| **Pricing** | Tiers are **"from"** anchors above a calculated quote | Price List + Home change |
+| **Positioning** | Lead with Caribbean & African | Gallery, design items, Home emphasis change |
+
+## Status — all 14 written
+
+| # | Page | Doc | Blockers |
 |---|---|---|---|
-| 1 | Home | [01-home.md](01-home.md) | ✅ Written · built · ⚠️ 3 flags |
-| 2 | Order Now | [02-order-now.md](02-order-now.md) | ✅ Written · built · ⚠️ 2 flags |
-| 3 | How It Works | [03-how-it-works.md](03-how-it-works.md) | ✅ Written · not yet built |
-| 4 | Hymns & Resources | — | Next. Unblocked — restructures ~45,000 existing words |
-| 5 | Our Products | — | ⛔ premium wire-bound specs and pricing |
-| 6 | Gallery / Catalogue | — | ⛔ positioning (is the filter heritage-led or colour-led?) |
-| 7 | Price List | — | ⛔ fixed prices or "from" anchors above a quote |
-| 8 | Design items ×40 | — | ⛔ positioning (which tier each design gets) |
-| 9 | Tributes | — | ⛔ confirm Sharon's full name · needs real tributes |
-| 10 | Blog | — | Outlines writable now; articles follow |
-| 11 | Reception Halls | — | ⛔ venue seed data |
-| 12 | Partners | — | ⛔ trade terms |
-| 13 | Contact Us | — | ⛔ opening hours |
-| 14 | Privacy Policy | — | Legal review, not copywriting |
+| 1 | Home | [01-home.md](01-home.md) | 🔴 fabricated reviews · pricing · express |
+| 2 | Order Now | [02-order-now.md](02-order-now.md) | 🔴 payment terms · express wording |
+| 3 | How It Works | [03-how-it-works.md](03-how-it-works.md) | 🔴 production time |
+| 4 | Hymns & Resources | [04-hymns-and-resources.md](04-hymns-and-resources.md) | 🔴 benefit figures out of date |
+| 5 | Our Products | [05-our-products.md](05-our-products.md) | 🔴 premium + ninth night specs/prices |
+| 6 | Gallery / Catalogue | [06-gallery.md](06-gallery.md) | ⛔ positioning · 4 dead heroes |
+| 7 | Price List | [07-price-list.md](07-price-list.md) | 🔴 payment terms · surcharge contradiction |
+| 8 | Design items ×40 | [08-design-items.md](08-design-items.md) | 🔴 football trademark · cultural review |
+| 9 | Tributes | [09-tributes.md](09-tributes.md) | 🔴 real tributes · Sharon's name · story gap |
+| 10 | Blog | [10-blog.md](10-blog.md) | 🔴 Nine Night needs cultural review |
+| 11 | Reception Halls | [11-reception-halls.md](11-reception-halls.md) | 🔴 no venue data · no listing fee |
+| 12 | Partners | [12-partners.md](12-partners.md) | 🔴 trade terms · partner consent |
+| 13 | Contact Us | [13-contact.md](13-contact.md) | 🔴 opening hours |
+| 14 | Privacy Policy | [14-privacy-policy.md](14-privacy-policy.md) | 🔴 legal review — deliberately a brief, not copy |
+
+**Two documents are deliberately not finished copy.** `08` holds back the six football designs
+pending a trademark view, and `14` is a compliance brief rather than a policy — writing either on my
+own authority would be the wrong call.
 
 ## The three things blocking the most pages
 
