@@ -27,22 +27,33 @@ foreach ($r in $manifest) { $byStem[$r.stem] = $r }
 # old asset path  ->  new stem + the sizes attribute for where it appears
 # sizes values come from the actual layout: 4-up plate grid, 3-up package grid,
 # 2-up promise cards, half-width product rows.
+# Stems corrected 27 Aug 2026. The first pass used sq4/sq5 files as covers,
+# which in THIS asset set are pull-up BANNER mockups carrying a "Funeral Banner"
+# overlay label - the card crop then sliced that label in half. Every stem below
+# is now a verified-clean image; see the note in optimise-assets.ps1.
+#
+# Arsenal has no clean cover in the drop (only banner mockups and a bare crest),
+# so the football range card and featured card use Liverpool instead.
 $map = @(
-  # --- homepage: range cards (4-up portrait plates) ---
+  # --- homepage: range cards (4-up portrait plates, object-fit:cover) ---
   @{ old='img/single-caribbean.jpg'; stem='jamaica-cover';        sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
   @{ old='img/single-classic.jpg';   stem='classic-one-cover';    sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
-  @{ old='img/single-football.jpg';  stem='arsenal-f-c-cover';    sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
+  @{ old='img/single-football.jpg';  stem='liverpool-f-c-cover';  sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
   @{ old='img/single-standard.jpg';  stem='white-lilies-cover';   sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
-  # --- homepage: spotlight mood + package tiers + promise cards ---
+  # --- homepage: spotlight mood, package tiers, promise cards (contain) ---
   @{ old='img/jamaica.png';          stem='jamaica-package';      sizes='(max-width:1180px) 60vw, 26vw' }
   @{ old='img/classic-one.png';      stem='classic-one-package';  sizes='(max-width:1180px) 60vw, 26vw' }
-  @{ old='img/arsenal.png';          stem='arsenal-f-c-cover2';   sizes='(max-width:1180px) 60vw, 26vw' }
-  @{ old='img/white-lilies.png';     stem='white-lilies-cover2';  sizes='(max-width:900px) 80vw, 30vw' }
+  @{ old='img/arsenal.png';          stem='liverpool-f-c-package';sizes='(max-width:1180px) 60vw, 26vw' }
+  @{ old='img/white-lilies.png';     stem='white-lilies-stack';   sizes='(max-width:900px) 80vw, 30vw' }
   @{ old='img/black-beauty.png';     stem='black-beauty-package'; sizes='(max-width:900px) 90vw, 30vw' }
   @{ old='img/barbados.png';         stem='barbados-package';     sizes='(max-width:900px) 90vw, 30vw' }
   @{ old='img/godfather.png';        stem='godfather-cover';      sizes='(max-width:900px) 90vw, 30vw' }
   @{ old='img/angel-wings.png';      stem='angel-wings-package';  sizes='(max-width:900px) 80vw, 30vw' }
   @{ old='img/domino-effect.png';    stem='domino-effect-package';sizes='(max-width:900px) 80vw, 30vw' }
+  # --- re-point the stems the FIRST pass got wrong ---
+  @{ old='img/designs/arsenal-f-c-cover.webp';  stem='liverpool-f-c-cover'; sizes='(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw' }
+  @{ old='img/designs/arsenal-f-c-cover2.webp'; stem='liverpool-f-c-package'; sizes='(max-width:1180px) 60vw, 26vw' }
+  @{ old='img/designs/white-lilies-cover2.webp';stem='white-lilies-stack';  sizes='(max-width:900px) 80vw, 30vw' }
 )
 
 $targets = @('_deploy\index.html','_deploy\order.html') +

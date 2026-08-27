@@ -93,25 +93,46 @@ if (-not (Test-Path $srcRoot)) {
 }
 New-Item -ItemType Directory -Force -Path $outRoot | Out-Null
 
-# Two naming conventions arrived in the drop and both have to be handled:
-#   Caribbean + Football: the sqN / square-N convention, worked out by pixel
-#     scanning in DESIGN-NOTES.md (sq1-3 = two-page spread, sq4-6 = upright cover)
-#   Standard + Classic: plain English - "Rose Petals front.png", "Acrylic
-#     Inside.png", "Clear Satin Banner.png"
-# Order matters: banner/bookmark are checked first because "Rose Petals
-# Bookmarker.png" would otherwise fall through to gallery.
+# Role detection, corrected 27 Aug 2026 after inspecting the images rather than
+# trusting the filenames.
+#
+# DESIGN-NOTES.md documented the sqN convention from the OLD 600px library, where
+# sq4-6 were single upright covers. THIS drop reuses the same numbering for
+# something else entirely, and the earlier mapping put pull-up banner mockups
+# into the range cards - complete with a "Funeral Banner" website overlay label
+# baked into the corner, which the card crop then sliced in half.
+#
+# Verified by montaging every file for jamaica and classic-one:
+#   sq1 / square1        stack of booklets, clean
+#   sq2 / square2        open two-page spread, clean
+#   sq3 / square3        bookmark mockup   - HAS a "Funeral Bookmark" label
+#   sq4 / sq5 / square5  pull-up banner    - HAS a "Funeral Banner" label
+#   s7 / t7 / d7 ...     flag or club crest only, no product at all
+#   *-package, *-comp    package composite (booklet + phone + laptop)
+#   bare number, Feature single upright cover, clean  <- what cards should use
+#
+# Anything carrying a baked-in overlay label is tagged in the manifest so pages
+# can avoid cropping through it. See $labelled below.
 function Get-Role([string]$name) {
   $n = [System.IO.Path]::GetFileNameWithoutExtension($name).ToLower()
-  if ($n -match 'bookmark')                            { return 'bookmark' }
-  if ($n -match 'banner')                              { return 'banner'   }
+  # flag / crest only - no product in frame
+  if ($n -match '^[a-z]{1,3}7[-.]|^[a-z]{1,3}7$')       { return 'emblem'   }
   if ($n -match 'package|pckage|paackage|comp|booklets|website-header') { return 'package' }
-  if ($n -match '\bback\b')                            { return 'back'     }
-  if ($n -match 'inside')                              { return 'spread'   }
-  if ($n -match 'front|square5|square6|sq4|sq5|sq6')   { return 'cover'    }
-  if ($n -match 'square1|square2|square3|sq1|sq2|sq3') { return 'spread'   }
+  if ($n -match 'bookmark|square3|\bsq3\b')             { return 'bookmark' }
+  if ($n -match 'banner|square4|square5|square6|\bsq4\b|\bsq5\b|\bsq6\b') { return 'banner' }
+  if ($n -match 'inside|square2|\bsq2\b')               { return 'spread'   }
+  if ($n -match 'square1|\bsq1\b')                      { return 'stack'    }
+  if ($n -match '\bback\b')                             { return 'back'     }
+  if ($n -match 'feature|front')                        { return 'cover'    }
+  if ($n -match '^\d+([-\s]|$)')                        { return 'cover'    }  # 11-1, 35-copy, 40-1
   if ($n -match 'variation|colour|purple|black|grey|gray|green|teal|blue') { return 'colourway' }
   return 'gallery'
 }
+
+# Which roles carry a baked-in website overlay label ("Funeral Banner",
+# "Funeral Bookmark", "Drag Slider") in the bottom-left corner. Cropping through
+# these is what produced the sliced text; pages must letterbox them instead.
+$labelledRoles = @('banner','bookmark')
 
 # Filenames alone left 19 designs with no cover, because the Caribbean and
 # Football folders use a short form ("t5-1.jpg", not "tsquare5"). So anything the
@@ -148,11 +169,13 @@ foreach ($dir in $dirs) {
   $kept = 0
   foreach ($f in $files | Sort-Object Name) {
     $role = Get-Role $f.Name
-    # fall back to measuring the subject shape when the filename says nothing
-    if ($role -eq 'gallery') {
-      $byShape = Get-RoleByShape $f.FullName $magick
-      if ($byShape -eq 'cover') { $role = 'cover' }
-    }
+    # NO shape fallback. It used to promote anything tall to 'cover', which is
+    # how pull-up banner mockups ended up in the range cards with a "Funeral
+    # Banner" overlay label sliced in half by the crop.
+    # It cannot work on these assets anyway: -trim cannot isolate a subject on
+    # the grey gradient backdrop, so every known-good cover measures ~1.25 and
+    # the ratio carries no signal. Filename rules only, and an honest gap where
+    # they cannot tell - see the cover fallback in wire-images.ps1.
     if (-not $counters.ContainsKey($role)) { $counters[$role] = 0 }
     $counters[$role]++
     $i = $counters[$role]
@@ -172,11 +195,21 @@ foreach ($dir in $dirs) {
     $dim = (& $magick identify -format '%wx%h' "$($f.FullName)[0]" 2>$null)
     $bytesIn += $f.Length
 
+    # Banner and bookmark mockups carry a website overlay label ("Funeral
+    # Banner" / "Funeral Bookmark") baked into the bottom-left corner. Shaving
+    # 22% off the left removes it entirely while leaving the product, its stand
+    # and the backdrop intact - verified visually at 78/74/70%; 85% still left
+    # fragments, and cropping the bottom instead cuts the product's base.
+    $preCrop = @()
+    if ($labelledRoles -contains $role) {
+      $preCrop = @('-gravity','East','-crop','78%x100%+0+0','+repage')
+    }
+
     foreach ($w in $Widths) {
       $suffix = if ($w -eq $Widths[0]) { '' } else { "-$w" }
 
       $webp = Join-Path $outRoot "$stem$suffix.webp"
-      & $magick $f.FullName -auto-orient -resize "${w}x>" -strip `
+      & $magick $f.FullName -auto-orient @preCrop -resize "${w}x>" -strip `
                 -define webp:method=6 -quality $Quality $webp
 
       $outs = @($webp)
@@ -184,11 +217,11 @@ foreach ($dir in $dirs) {
         $jpg = Join-Path $outRoot "$stem$suffix.jpg"
         if ($hasAlpha) {
           # flatten onto the plate colour, not white - see header note
-          & $magick $f.FullName -auto-orient -resize "${w}x>" -strip `
+          & $magick $f.FullName -auto-orient @preCrop -resize "${w}x>" -strip `
                     -background $PlateColour -alpha remove -alpha off `
                     -interlace Plane -quality $Quality $jpg
         } else {
-          & $magick $f.FullName -auto-orient -resize "${w}x>" -strip `
+          & $magick $f.FullName -auto-orient @preCrop -resize "${w}x>" -strip `
                     -interlace Plane -quality $Quality $jpg
         }
         $outs += $jpg
@@ -200,6 +233,9 @@ foreach ($dir in $dirs) {
     $outDim = (& $magick identify -format '%wx%h' (Join-Path $outRoot "$stem.webp") 2>$null)
     $rows += [PSCustomObject]@{
       slug = $slug; range = $range; role = $role; transparent = $hasAlpha
+      # true = a website overlay label is baked into the corner, so this image
+      # must never be object-fit:cover cropped. See $labelledRoles.
+      labelled = ($labelledRoles -contains $role)
       stem = $stem; source = $f.Name; sourceSize = $dim; webSize = $outDim
     }
   }
