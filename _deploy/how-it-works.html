@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How It Works | Funeral Booklets, Step by Step | Memories</title>
+<meta name="description" content="How we design and print your order of service booklet — what we need, when you see your proof, and what happens if the funeral is only days away.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="css/site.css">
+<style>
+/* ---------- page-local: numbered steps + timeline ---------- */
+.steps{display:grid;gap:0}
+.step{display:grid;grid-template-columns:7rem 1fr;gap:var(--gutter);
+  padding:3rem 0;border-top:1px solid var(--border)}
+.step:last-child{border-bottom:1px solid var(--border)}
+.step_n{font-family:var(--serif);font-size:3.25rem;line-height:1;color:var(--rule)}
+.step_b h3{font-size:1.625rem;line-height:1.25;margin-bottom:1rem}
+.step_b .body+.body{margin-top:1rem}
+
+.tline{border-left:1px solid var(--rule);padding-left:2rem;display:grid;gap:2rem}
+.tline_i{position:relative}
+.tline_i::before{content:'';position:absolute;left:calc(-2rem - 5px);top:.5rem;
+  width:9px;height:9px;border-radius:50%;background:var(--brand);
+  box-shadow:0 0 0 4px var(--bg)}
+.tline_i.is-tbc::before{background:var(--rule)}
+.tline_w{font-family:var(--serif);font-size:1.125rem;color:var(--text)}
+.tline_l{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--brand-deep);margin-bottom:.25rem}
+.tline_i.is-tbc .tline_l{color:var(--text-muted)}
+
+.needs{display:grid;gap:0}
+.need{display:grid;grid-template-columns:1.1fr .7fr 1.2fr;gap:2rem;
+  padding:1.5rem 0;border-bottom:1px solid var(--border);align-items:baseline}
+.need:first-child{border-top:1px solid var(--ink)}
+.need_h{font-family:var(--serif);font-size:1.0625rem}
+.need_w{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-deep)}
+.need_f{font-size:.9375rem;line-height:1.6;color:var(--text-muted)}
+.need_lbl{display:none;font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:.25rem}
+
+@media (max-width:900px){
+  .step{grid-template-columns:1fr;gap:1rem;padding:2.25rem 0}
+  .step_n{font-size:2.25rem}
+  .need{grid-template-columns:1fr;gap:.5rem}
+  .need_lbl{display:block}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "name": "How to order a funeral order of service booklet",
+      "description": "The four steps from first contact to delivered booklets, with the timescales at each stage.",
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Choose a design", "text": "Browse the forty designs and pick one, or tell us what you have in mind and we will draw something for you." },
+        { "@type": "HowToStep", "position": 2, "name": "Send us the details", "text": "Names, dates, the order of service, hymns, tributes and photographs. Use the form or send everything by WhatsApp." },
+        { "@type": "HowToStep", "position": 3, "name": "Approve your proof", "text": "We design the booklet and send your proof back within 24 to 48 hours. Nothing is printed until you approve it." },
+        { "@type": "HowToStep", "position": 4, "name": "Printed and delivered", "text": "Booklets go out for next-day UK delivery, or same-day locally, to your home, church or funeral director." }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many pages should an order of service be?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Most funeral order of service booklets are 4 or 8 pages. A 4-page booklet holds the order of service and one or two photographs. An 8-page booklet adds hymns, a tribute and a small photo gallery. Larger services often use 12 to 20 pages." }
+        },
+        {
+          "@type": "Question",
+          "name": "What size is a funeral order of service?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Ours are A5, 148 by 210mm, which is the standard size for UK funeral booklets. It sits comfortably in one hand and fits a coat pocket to take home." }
+        },
+        {
+          "@type": "Question",
+          "name": "How many booklets should we order?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Order slightly more than you expect to need. Families almost always underestimate, and a reprint is slower and costs more than the extra copies would have. If you expect 80 people, order 100." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you use a photograph from a phone?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Usually yes. A photograph taken on any recent phone is normally good enough for print. Older scanned or printed photographs can also be used, and we can retouch, repair and remove backgrounds." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a Motion Obituary?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A short animated announcement of the service, made to be shared on WhatsApp and social media. It carries their photograph, the date, time and place. Ours start at £50 and are produced within 24 hours." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="nav">
+  <div class="nav_in">
+    <a href="/"><img src="img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"
+       width="246" height="246" fetchpriority="high"></a>
+    <nav class="nav_menu">
+      <a href="/our-products" class="nav_link" data-nav="our-products">Our Products</a>
+      <a href="/gallery" class="nav_link" data-nav="gallery">Gallery</a>
+      <a href="/how-it-works" class="nav_link is-active" data-nav="how-it-works">How It Works</a>
+      <a href="/price-list" class="nav_link" data-nav="price-list">Price List</a>
+      <a href="/hymns-and-resources" class="nav_link" data-nav="hymns-and-resources">Resources</a>
+      <a href="/contact" class="nav_link" data-nav="contact">Contact</a>
+    </nav>
+    <div class="nav_actions">
+      <a href="tel:08000236263" class="iconbtn" aria-label="Call 0800 023 6263">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="iconbtn_tip">0800 023 6263</span>
+      </a>
+      <a href="/order" class="iconbtn iconbtn--primary" aria-label="Start your booklet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.6C10.4 5.1 7.9 4.3 4.4 4.3v13.1c3.5 0 6 .8 7.6 2.3 1.6-1.5 4.1-2.3 7.6-2.3V4.3C16.1 4.3 13.6 5.1 12 6.6z"/><path d="M12 6.6v13.1"/></svg>
+        <span class="iconbtn_tip">Start your booklet</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════ PAGE HEAD ═════════════════════ -->
+<header class="phead">
+  <div class="wrap">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><span aria-current="page">How It Works</span>
+    </nav>
+    <p class="label label--muted" data-anim="up">How It Works</p>
+    <h1 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.6rem,5vw,4.4rem)">
+      From First Call to <span class="sc">Delivered</span></h1>
+    <p class="body measure" data-anim="up" style="--d:160ms">Most families come to us having never
+    arranged a funeral before, often with only a few days to do it. This page explains exactly what
+    happens, in what order, and what we need from you &mdash; so there are no surprises at a time when
+    you have had enough of those.</p>
+    <div class="phead_cta" data-anim="up" style="--d:240ms">
+      <a href="/order" class="btn">Start Your Booklet</a>
+      <a href="tel:08000236263" class="dlink">Call 0800 023 6263</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═════════════════════ FOUR STEPS ═════════════════════ -->
+<section class="section" id="steps">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:3.5rem">
+      <p class="label label--muted" data-anim="up">The Process</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.2rem,4.2vw,3.4rem)">
+        Four Steps, and We Do <span class="sc">Most</span> of Them</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step" data-anim="up">
+        <div class="step_n">01</div>
+        <div class="step_b">
+          <h3>Choose a design</h3>
+          <p class="body">Browse the forty designs and pick the one that feels right &mdash; a
+          heritage flag, a football crest, a favourite colour, or something quiet and classic.</p>
+          <p class="body">If nothing fits, tell us what you have in mind and we will draw something
+          for you. That costs no more. If you are not sure, call and we will talk it through &mdash;
+          we can usually narrow forty down to three in about five minutes.</p>
+          <div style="margin-top:1.5rem"><a href="/gallery" class="dlink">Browse the designs</a></div>
+        </div>
+      </div>
+
+      <div class="step" data-anim="up">
+        <div class="step_n">02</div>
+        <div class="step_b">
+          <h3>Send us the details</h3>
+          <p class="body">Names, dates, the order of service, hymns, tributes, and the photographs you
+          would like included. Use the form, or simply WhatsApp everything to us &mdash; most families
+          do.</p>
+          <p class="body">You do not need it all at once, and you do not need to have decided
+          everything. Start with a name and the date of the service and we can begin.</p>
+          <div style="margin-top:1.5rem"><a href="https://wa.me/447552916060" class="dlink">WhatsApp your photos</a></div>
+        </div>
+      </div>
+
+      <div class="step" data-anim="up">
+        <div class="step_n">03</div>
+        <div class="step_b">
+          <h3>Approve your proof</h3>
+          <p class="body">We design the booklet and send your proof back in 24&ndash;48 hours, by
+          email or WhatsApp, whichever suits you.</p>
+          <p class="body">Read it carefully, check every name and date, and tell us what to change.
+          We will keep revising until it is right. <b>Nothing is printed until you say yes.</b></p>
+        </div>
+      </div>
+
+      <div class="step" data-anim="up">
+        <div class="step_n">04</div>
+        <div class="step_b">
+          <h3>Printed and delivered</h3>
+          <p class="body">Once you approve, we print. Booklets go out for next-day UK delivery, or
+          same-day if you are local &mdash; to your home, your church, or straight to your funeral
+          director.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════ TIMELINE ═════════════════════ -->
+<section class="section band" id="timeline">
+  <div class="wrap">
+    <div class="psplit">
+      <div class="stack-lg">
+        <p class="label label--muted" data-anim="up">Timescales</p>
+        <h2 class="h1" data-anim="up" style="--d:80ms">How Long It Actually <span class="sc">Takes</span></h2>
+        <p class="body" data-anim="up" style="--d:160ms">Two timescales matter, and they are different
+        things: how quickly you see a design, and how quickly finished booklets are in your hands.</p>
+        <p class="body" data-anim="up" style="--d:220ms">The clock on your proof starts when we have
+        your photographs and details, not when you first make contact &mdash; so the sooner you send
+        what you have, the sooner you see something.</p>
+        <div data-anim="up" style="--d:280ms"><a href="/order" class="dlink dlink--plate">Start Your Booklet</a></div>
+      </div>
+
+      <div class="tline" data-anim="up" style="--d:120ms">
+        <div class="tline_i">
+          <p class="tline_l">Same day</p>
+          <p class="tline_w">We reply to your enquiry</p>
+        </div>
+        <div class="tline_i">
+          <p class="tline_l">24&ndash;48 hours</p>
+          <p class="tline_w">Your first proof</p>
+        </div>
+        <div class="tline_i">
+          <p class="tline_l">Usually within hours</p>
+          <p class="tline_w">Revisions</p>
+        </div>
+        <!-- Deliberately shown as "confirmed when you order" rather than a
+             number. The brief says 5 working days standard and 7-10 premium;
+             the live design pages say 4-5 days; the homepage says 24-48 hours.
+             Publishing a guess here means booklets that miss a funeral.
+             See _strategy/11-BRIEF-RECONCILIATION.md C2 -->
+        <div class="tline_i is-tbc">
+          <p class="tline_l">Confirmed when you order</p>
+          <p class="tline_w">Printing and finishing</p>
+        </div>
+        <div class="tline_i">
+          <p class="tline_l">Next day, or same day locally</p>
+          <p class="tline_w">Delivery</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════ WHAT WE NEED ═════════════════════ -->
+<section class="section" id="what-we-need">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:3.5rem">
+      <p class="label label--muted" data-anim="up">What We Need</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.2rem,4.2vw,3.4rem)">
+        What to Send, and What Can <span class="sc">Wait</span></h2>
+      <p class="body measure" data-anim="up" style="--d:160ms">You can start with very little. This is
+      what we eventually need, roughly in order of how much it holds things up.</p>
+    </div>
+
+    <div class="needs" data-anim="up">
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">Their full name, and the date of the service</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">To begin</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">Call us anyway &mdash; we can hold a slot.</p></div>
+      </div>
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">A photograph for the front cover</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">Early</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">Send the best you have. We can retouch, repair and crop.</p></div>
+      </div>
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">The order of service</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">Before the proof</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">We can send you a template to fill in.</p></div>
+      </div>
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">Hymns, readings, poems</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">Before the proof</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">Choose from <a href="/hymns-and-resources" class="ilink">our library</a>, or we will suggest some.</p></div>
+      </div>
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">Tributes, the eulogy, acknowledgements</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">Before printing</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">These often arrive last. That is normal.</p></div>
+      </div>
+      <div class="need">
+        <div><p class="need_lbl">We need</p><p class="need_h">Gallery photographs</p></div>
+        <div><p class="need_lbl">When</p><p class="need_w">Before printing</p></div>
+        <div><p class="need_lbl">If you do not have it</p><p class="need_f">Family can WhatsApp them to us directly.</p></div>
+      </div>
+    </div>
+
+    <p class="ptable_note" data-anim="fade">Photographs are the thing that most often delays an order,
+    because they have to be gathered from relatives. Start asking early, and send them to us as they
+    arrive rather than waiting to have them all.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════ THE PROOF ═════════════════════ -->
+<section class="promise section" id="proof">
+  <div class="promise_bg"><img src="img/hero-candles.jpeg" alt="" width="2600" height="1418" loading="lazy" decoding="async"></div>
+  <div class="wrap">
+    <div class="promise_in">
+      <div class="stack-lg">
+        <p class="label label--onDark" data-anim="up">The Proof</p>
+        <h2 class="h1" data-anim="up" style="--d:80ms">Nothing Is Printed Until You Say <span class="sc">Yes</span></h2>
+        <p class="body body--onDark" data-anim="up" style="--d:160ms">Your proof is a full preview of
+        the finished booklet, sent as a PDF by email or WhatsApp. It is free, and there is no limit on
+        how many changes you ask for.</p>
+        <p class="body body--onDark" data-anim="up" style="--d:220ms">Please check every name, every
+        date and every spelling &mdash; including middle names and nicknames.</p>
+      </div>
+      <div class="pincl" data-stagger="90">
+        <div class="pincl_i" data-anim="up"><b>Read it twice</b><span>Once printed, a booklet cannot be corrected, and these are kept for years.</span></div>
+        <div class="pincl_i" data-anim="up"><b>Ask someone else to read it</b><span>It is much easier to spot a wrong date when you have not been staring at it.</span></div>
+        <div class="pincl_i" data-anim="up"><b>Check the small things</b><span>Middle names, nicknames, the spelling of a hymn title, the year of birth.</span></div>
+        <div class="pincl_i" data-anim="up"><b>Changes are free</b><span>Tell us what is wrong and we will fix it and send it again.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════ EXPRESS ═════════════════════ -->
+<section class="section" id="express">
+  <div class="wrap">
+    <div class="pexpress" data-anim="up">
+      <div>
+        <p class="label">Express Orders</p>
+        <h2 class="h1" style="margin-top:.75rem">If You Only Have a Few <span class="sc">Days</span></h2>
+      </div>
+      <div class="stack">
+        <p class="body">Tell us the date of the service in your very first message. We will tell you
+        honestly whether we can do it, and we will not take an order we cannot deliver in time.</p>
+        <p class="body">Where the service falls inside our standard turnaround, we treat the order as
+        express and move it to the front of the queue. Express orders carry a <b>50% surcharge</b> on
+        the total. We will always tell you before anything is agreed, and the total will be confirmed
+        in writing.</p>
+        <p class="body">If we genuinely cannot make your date, we will say so and suggest what else
+        might work &mdash; fewer pages, a shorter run, or an obituary announcement to share while the
+        booklets follow.</p>
+        <div><a href="tel:08000236263" class="btn">Call us now on 0800 023 6263</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════ FAQ ═════════════════════ -->
+<section class="section band" id="faq">
+  <div class="wrap">
+    <div class="center stack" style="margin-bottom:3.5rem">
+      <p class="label label--muted" data-anim="up">Questions</p>
+      <h2 class="h-display" data-anim="up" style="--d:80ms;font-size:clamp(2.2rem,4.2vw,3.4rem)">
+        Questions Families Usually <span class="sc">Ask</span></h2>
+    </div>
+
+    <div class="faqs" data-anim="up">
+      <details class="faq">
+        <summary>How many pages should an order of service be?</summary>
+        <p>Most funeral order of service booklets are 4 or 8 pages. A 4-page booklet holds the order of
+        service and one or two photographs. An 8-page booklet adds hymns, a tribute and a small photo
+        gallery. Larger services often use 12 to 20 pages. We print 4, 8, 12, 16 and 20-page booklets
+        from &pound;122 for 50.</p>
+      </details>
+      <details class="faq">
+        <summary>What size is a funeral order of service?</summary>
+        <p>Ours are A5 &mdash; 148 &times; 210mm &mdash; which is the standard size for UK funeral
+        booklets. It sits comfortably in one hand, fits a coat pocket to take home, and is large
+        enough for photographs to be seen properly from a pew.</p>
+      </details>
+      <details class="faq">
+        <summary>How many booklets should we order?</summary>
+        <p>Order slightly more than you expect to need. Families almost always underestimate, and a
+        reprint is slower and costs more than the extra copies would have. If you expect 80 people,
+        order 100. Extra copies are &pound;5.50 each.</p>
+      </details>
+      <details class="faq">
+        <summary>Can you use a photograph from a phone?</summary>
+        <p>Usually, yes. A photograph taken on any recent phone is normally good enough for print.
+        Older scanned or printed photographs can also be used, and we can retouch, repair and remove
+        backgrounds. Send us what you have and we will tell you honestly if it will not work.</p>
+      </details>
+      <details class="faq">
+        <summary>What if we do not know the order of service yet?</summary>
+        <p>That is very common, and it does not stop us starting. Send us the name, the date and a
+        cover photograph and we will begin the design. We can send you a template for the running
+        order to fill in, and the minister or funeral director will usually help you complete it.</p>
+      </details>
+      <details class="faq">
+        <summary>Can we include hymns if we do not know which ones?</summary>
+        <p>Yes. We have a <a href="/hymns-and-resources" class="ilink">library of hymns, poems,
+        prayers and readings</a> you can choose from, and we can set the full words into the booklet
+        so guests can sing along. If you would rather, tell us something about your loved one and we
+        will suggest a few.</p>
+      </details>
+      <details class="faq">
+        <summary>Do you deliver to the church or the funeral director?</summary>
+        <p>Yes &mdash; wherever is most useful. We deliver to homes, churches, crematoria and funeral
+        directors across the UK, with same-day delivery available locally. Tell us where and when, and
+        we will arrange it.</p>
+      </details>
+      <details class="faq">
+        <summary>Do you offer trade prices for funeral directors?</summary>
+        <p>Yes. We work with funeral directors and churches on trade pricing, with white-label proofs
+        and a dedicated phone line. <a href="/partners" class="ilink">See our terms for funeral
+        directors</a> or call us to discuss.</p>
+      </details>
+      <details class="faq">
+        <summary>What is a Motion Obituary?</summary>
+        <p>A short animated announcement of the service, made to be shared on WhatsApp and social
+        media. It carries their photograph, the date, time and place, and it saves ringing round
+        everybody individually. Ours start at &pound;50 and are produced within 24 hours.
+        <a href="/our-products" class="ilink">See our products</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════ CLOSING ═════════════════════ -->
+<section class="section" id="begin">
+  <div class="wrap center stack">
+    <h2 class="h-display" data-anim="up" style="font-size:clamp(2.2rem,4.2vw,3.4rem)">
+      Shall We <span class="sc">Begin</span>?</h2>
+    <p class="body measure" data-anim="up" style="--d:120ms">Send us what you have, whenever you have
+    it. Or call and speak to someone &mdash; most families would rather do that first, and so would
+    we.</p>
+    <div class="phead_cta" style="justify-content:center;--d:200ms" data-anim="up">
+      <a href="/order" class="btn">Start Your Booklet</a>
+      <a href="tel:08000236263" class="dlink">0800 023 6263</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot_top">
+      <h2 class="h-display" data-anim="up" style="font-size:clamp(2.4rem,4.6vw,4rem)">
+        Start with a <span class="sc">Conversation</span></h2>
+      <div class="foot_cta">
+        <p class="body body--onDark" data-anim="up" style="--d:100ms">Whichever way is easiest
+        for you. If you would rather speak to someone first, please call &mdash; we would much
+        rather you did.</p>
+        <div class="foot_lines" data-stagger="110">
+          <a href="tel:08000236263" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            0800 023 6263 <span>Freephone</span>
+          </a>
+          <a href="https://wa.me/447552916060" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.82L2 22l5.4-1.42c1.37.75 2.95 1.18 4.64 1.18 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>
+            07552 91 6060 <span>WhatsApp your photos</span>
+          </a>
+          <a href="/order" class="foot_line" data-anim="up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Start your booklet <span>The order form</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot_cols">
+      <div>
+        <img src="img/logo.png" alt="Memories Funeral Booklets" class="foot_logo" width="246" height="246" loading="lazy" decoding="async">
+        <address>
+          Stanmore Place, Stanmore Innovation Centre<br>
+          Howard Rd, London HA7 1BT<br>
+          <a href="tel:08000236263">0800 023 6263</a><br>
+          <a href="mailto:info@memoriesbydd.com">info@memoriesbydd.com</a>
+          <!-- TODO opening hours - blocked on Ashley. Needed here and for
+               LocalBusiness.openingHours. See _copy/13-contact.md -->
+        </address>
+      </div>
+      <div>
+        <h4>Booklets</h4>
+        <ul>
+          <li><a href="/our-products">Our Products</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/price-list">Price List</a></li>
+          <li><a href="/order">Order Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/hymns-and-resources">Hymns &amp; Resources</a></li>
+          <li><a href="/how-it-works">How It Works</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/reception-halls">Reception Halls</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Memories</h4>
+        <ul>
+          <li><a href="/tributes">In Loving Memory</a></li>
+          <li><a href="/partners">For Funeral Directors</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot_end">
+      <span>&copy; 2026 Memories Funeral Booklets &mdash; with a touch of class</span>
+      <span>Nationwide UK delivery</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mbar">
+  <div class="mbar_in">
+    <a href="tel:08000236263"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a>
+    <a href="https://wa.me/447552916060"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.82L2 22l5.4-1.42c1.37.75 2.95 1.18 4.64 1.18 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>WhatsApp</a>
+    <a href="/order"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Order</a>
+  </div>
+</div>
+<script src="js/site.js" defer></script>
+</body>
+</html>

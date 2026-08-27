@@ -511,3 +511,107 @@ p{margin:0}
   .hero_video_frame{width:100%;max-width:22rem}
   .nav_logo{height:56px}
 }
+/* ============================================================
+   SHARED PAGE FURNITURE
+   Added for the interior templates (price-list, how-it-works,
+   our-products, ...). Everything here is reusable - page-local
+   styles stay in the page's own <style> block.
+   ============================================================ */
+
+/* visually hidden, still read by screen readers - for table captions */
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- Page head ---------- */
+.phead{padding:4rem 0 5rem;border-bottom:1px solid var(--border)}
+.phead .measure{margin-top:1.5rem}
+.phead_cta{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-top:2.5rem}
+
+/* ---------- Breadcrumb ---------- */
+.crumb{display:flex;align-items:center;gap:.625rem;flex-wrap:wrap;
+  font-size:.8125rem;color:var(--text-muted);margin-bottom:2.5rem}
+.crumb a{color:var(--text-muted);border-bottom:1px solid transparent;transition:.25s var(--ease)}
+.crumb a:hover{color:var(--brand-deep);border-bottom-color:var(--brand)}
+.crumb span[aria-current]{color:var(--text)}
+
+/* ---------- Inline link ---------- */
+.ilink{color:var(--brand-deep);border-bottom:1px solid var(--rule);
+  transition:border-color .25s var(--ease),color .25s var(--ease)}
+.ilink:hover{color:var(--ink);border-bottom-color:var(--brand)}
+
+/* ---------- Tables ---------- */
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ptable{width:100%;border-collapse:collapse;font-size:.9375rem;min-width:34rem}
+.ptable caption{text-align:left}
+.ptable th,.ptable td{padding:.9375rem 1.125rem;text-align:left;
+  border-bottom:1px solid var(--border)}
+.ptable thead th{font-family:var(--sans);font-size:.75rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);
+  border-bottom:1px solid var(--ink)}
+.ptable tbody th{font-family:var(--serif);font-weight:400;font-size:1rem;color:var(--text);
+  white-space:nowrap}
+.ptable td{color:var(--text-muted);font-variant-numeric:tabular-nums}
+.ptable tbody tr:hover td,.ptable tbody tr:hover th{background:rgba(202,158,103,.07)}
+.ptable .is-low{color:var(--brand-deep);font-weight:500}
+.ptable tr.is-tbc th,.ptable tr.is-tbc td{color:var(--text-muted);font-style:italic}
+.ptable_note2{font-size:.8125rem;color:var(--text-muted)}
+.ptable--rules tbody th{width:58%;white-space:normal}
+.ptable--addons tbody th{width:46%;white-space:normal}
+.ptable_note{margin-top:2rem;font-size:.9375rem;color:var(--text-muted);max-width:44rem}
+
+/* ---------- Two-column split ---------- */
+.psplit{display:grid;grid-template-columns:1fr 1.05fr;gap:var(--gutter);align-items:start}
+
+/* ---------- Worked example ---------- */
+.pworked{background:var(--bg-plate);border:1px solid rgba(42,42,42,.09);padding:1.5rem 1.625rem}
+.pworked_lbl{font-family:var(--serif);font-style:italic;color:var(--brand-deep);
+  font-size:.9375rem;margin-bottom:.5rem}
+
+/* ---------- Express block ---------- */
+.pexpress{display:grid;grid-template-columns:1fr 1.4fr;gap:var(--gutter);align-items:start;
+  background:var(--brand-tint);padding:3.25rem}
+.pexpress .label{color:var(--brand-deep)}
+
+/* ---------- Included grid (on dark) ---------- */
+.pincl{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem}
+.pincl_i{border-top:1px solid rgba(250,248,245,.2);padding-top:1.125rem}
+.pincl_i b{display:block;font-family:var(--serif);font-weight:400;font-size:1.0625rem;
+  color:var(--cream);margin-bottom:.375rem}
+.pincl_i span{font-size:.875rem;line-height:1.6;color:rgba(250,248,245,.72)}
+
+/* ---------- FAQ accordion ---------- */
+.faqs{max-width:52rem;margin:0 auto}
+.faq{border-bottom:1px solid var(--border)}
+.faq summary{cursor:pointer;list-style:none;padding:1.375rem 2.5rem 1.375rem 0;
+  font-family:var(--serif);font-size:1.125rem;position:relative;
+  transition:color .25s var(--ease)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--brand-deep)}
+.faq summary::after{content:'';position:absolute;right:.375rem;top:50%;
+  width:11px;height:11px;margin-top:-8px;border-right:1px solid currentColor;
+  border-bottom:1px solid currentColor;transform:rotate(45deg);
+  transition:transform .35s var(--ease)}
+.faq[open] summary::after{transform:rotate(225deg);margin-top:-3px}
+.faq[open] summary{color:var(--brand-deep)}
+.faq p{padding:0 2.5rem 1.625rem 0;font-size:.9375rem;line-height:1.75;color:var(--text-muted)}
+.faq.is-tbc summary{color:var(--text-muted)}
+
+/* ---------- "from" prefix on a price ---------- */
+.pkg_from{display:block!important;font-family:var(--sans)!important;font-size:.75rem!important;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)!important;
+  margin-bottom:.25rem}
+.pkg--hero .pkg_from{color:rgba(250,248,245,.66)!important}
+
+@media (max-width:1180px){
+  .psplit,.pexpress{grid-template-columns:1fr;gap:2.5rem}
+  .pexpress{padding:2.25rem}
+}
+@media (max-width:900px){
+  .phead{padding:3rem 0 3.5rem}
+  .pincl{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .phead_cta{flex-direction:column;align-items:flex-start;gap:1.25rem}
+  .pexpress{padding:1.75rem}
+  .faq summary{font-size:1.0625rem}
+}
