@@ -1,9 +1,30 @@
-# Deliberately minimal.
+# Near-minimal. One deliberate exception, below.
 #
-# The whole project is ~6 MB across ~64 files, so EVERYTHING else is tracked
-# on purpose. Do not add project folders here. An over-broad ignore file is the
-# likeliest reason for content going missing between machines — if a file
-# belongs to the project, it belongs in the repo.
+# Everything else in this project is tracked on purpose. An over-broad ignore
+# file is the likeliest reason for content going missing between machines — if a
+# file belongs to the project, it belongs in the repo.
+
+# ============================================================================
+# RAW CLIENT ASSETS — NOT IN THE REPO. READ THIS BEFORE CLONING.
+# ============================================================================
+# _assets/ holds ~247 files / ~147 MB of the client's original high-resolution
+# booklet photography, organised as _assets/{range}/{slug}/.
+#
+# Excluded to keep the repo light — a decision taken 27 Aug 2026.
+#
+# ⚠️ CONSEQUENCE: a fresh clone does NOT get these files, and the derived
+# web-sized images in _deploy/img/ cannot be regenerated without them. This is
+# the same failure mode that lost _archive/data and _tools between machines
+# earlier in this project.
+#
+# So the raw assets MUST live somewhere backed up that is not this repo —
+# shared drive, the client's original zips, or Git LFS. Whoever clones this
+# needs them copied across separately before running _tools/optimise-assets.ps1.
+#
+# What IS tracked: the derived, web-sized images in _deploy/img/. The site
+# builds and deploys correctly from a clone without _assets/ — only
+# re-optimising requires the originals.
+_assets/
 
 # OS cruft
 Thumbs.db
@@ -20,3 +41,7 @@ $RECYCLE.BIN/
 
 # Local scratch only
 *.log
+
+# Mac zip junk (the client's asset drops arrive with these)
+__MACOSX/
+._*
