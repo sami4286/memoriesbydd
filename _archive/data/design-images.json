@@ -32,6 +32,56 @@
     {
         "slug":  "barbados",
         "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "barbados-g1",
+        "source":  "37-2.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "barbados",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "barbados-g2",
+        "source":  "b1-copy-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "barbados",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "barbados-g3",
+        "source":  "b3-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "barbados",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "barbados-g4",
+        "source":  "b4-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "barbados",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "barbados-g5",
+        "source":  "b7-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "barbados",
+        "range":  "caribbean-african",
         "role":  "package",
         "transparent":  true,
         "stem":  "barbados-package",
@@ -92,12 +142,62 @@
     {
         "slug":  "jamaica",
         "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "jamaica-g1",
+        "source":  "11-1.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "jamaica",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "jamaica-g2",
+        "source":  "s7-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "jamaica",
+        "range":  "caribbean-african",
         "role":  "package",
         "transparent":  true,
         "stem":  "jamaica-package",
         "source":  "jamaica-package-1.png",
         "sourceSize":  "1158x953",
         "webSize":  "1158x953"
+    },
+    {
+        "slug":  "jamaica",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "jamaica-spread",
+        "source":  "ssquare1-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "jamaica",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "jamaica-spread2",
+        "source":  "ssquare2-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "jamaica",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "jamaica-spread3",
+        "source":  "ssquare3-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
     },
     {
         "slug":  "nigeria",
@@ -152,12 +252,62 @@
     {
         "slug":  "trinidad",
         "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "trinidad-g1",
+        "source":  "23-1.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "trinidad",
+        "range":  "caribbean-african",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "trinidad-g2",
+        "source":  "td7-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "trinidad",
+        "range":  "caribbean-african",
         "role":  "package",
         "transparent":  true,
         "stem":  "trinidad-package",
         "source":  "trinidad-package-3.png",
         "sourceSize":  "1158x953",
         "webSize":  "1158x953"
+    },
+    {
+        "slug":  "trinidad",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "trinidad-spread",
+        "source":  "tsquare1-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "trinidad",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "trinidad-spread2",
+        "source":  "tsquare2-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "trinidad",
+        "range":  "caribbean-african",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "trinidad-spread3",
+        "source":  "tsquare3-copy-3.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
     },
     {
         "slug":  "classic-one",
@@ -172,12 +322,52 @@
     {
         "slug":  "classic-one",
         "range":  "classic",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "classic-one-g1",
+        "source":  "Classic 1 Feature.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "classic-one",
+        "range":  "classic",
         "role":  "package",
         "transparent":  true,
         "stem":  "classic-one-package",
         "source":  "design-1-comp-1.png",
         "sourceSize":  "1158x1012",
         "webSize":  "1158x1012"
+    },
+    {
+        "slug":  "classic-one",
+        "range":  "classic",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "classic-one-spread",
+        "source":  "Classic 1 sq1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "classic-one",
+        "range":  "classic",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "classic-one-spread2",
+        "source":  "Classic 1 sq2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "classic-one",
+        "range":  "classic",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "classic-one-spread3",
+        "source":  "Classic 1 sq3.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
     },
     {
         "slug":  "classic-three",
@@ -236,6 +426,56 @@
         "transparent":  false,
         "stem":  "arsenal-f-c-cover2",
         "source":  "Arsenal-Square6-copy-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "arsenal-f-c",
+        "range":  "football",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "arsenal-f-c-g1",
+        "source":  "a-1.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "arsenal-f-c",
+        "range":  "football",
+        "role":  "gallery",
+        "transparent":  true,
+        "stem":  "arsenal-f-c-g2",
+        "source":  "arsenal-1.png",
+        "sourceSize":  "2734x2047",
+        "webSize":  "1200x898"
+    },
+    {
+        "slug":  "arsenal-f-c",
+        "range":  "football",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "arsenal-f-c-spread",
+        "source":  "Arsenal-Square1-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "arsenal-f-c",
+        "range":  "football",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "arsenal-f-c-spread2",
+        "source":  "Arsenal-Square2-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "arsenal-f-c",
+        "range":  "football",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "arsenal-f-c-spread3",
+        "source":  "Arsenal-Square3-2.jpg",
         "sourceSize":  "1750x1750",
         "webSize":  "1200x1200"
     },
@@ -402,6 +642,26 @@
     {
         "slug":  "angel-wings",
         "range":  "standard",
+        "role":  "colourway",
+        "transparent":  false,
+        "stem":  "angel-wings-colourway",
+        "source":  "blue-wings-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
+        "role":  "colourway",
+        "transparent":  false,
+        "stem":  "angel-wings-colourway2",
+        "source":  "purple-wings-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
         "role":  "cover",
         "transparent":  false,
         "stem":  "angel-wings-cover",
@@ -452,6 +712,56 @@
     {
         "slug":  "angel-wings",
         "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "angel-wings-g1",
+        "source":  "33-copy.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "angel-wings-g2",
+        "source":  "ww1.1-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "angel-wings-g3",
+        "source":  "ww1-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "angel-wings-g4",
+        "source":  "ww2-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "angel-wings-g5",
+        "source":  "ww3-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "angel-wings",
+        "range":  "standard",
         "role":  "package",
         "transparent":  false,
         "stem":  "angel-wings-package",
@@ -482,12 +792,62 @@
     {
         "slug":  "black-beauty",
         "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "black-beauty-g1",
+        "source":  "31-copy-2.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "black-beauty",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "black-beauty-g2",
+        "source":  "bbb1-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "black-beauty",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "black-beauty-g3",
+        "source":  "bbb2-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "black-beauty",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "black-beauty-g4",
+        "source":  "bbb3-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "black-beauty",
+        "range":  "standard",
         "role":  "package",
         "transparent":  true,
         "stem":  "black-beauty-package",
         "source":  "Landscape-compilation-copy-1.png",
         "sourceSize":  "1158x953",
         "webSize":  "1158x953"
+    },
+    {
+        "slug":  "black-beauty",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "black-beauty-spread",
+        "source":  "bbbsquare1-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
     },
     {
         "slug":  "clear-satin",
@@ -538,6 +898,56 @@
         "source":  "dominoes1-1.jpg",
         "sourceSize":  "901x901",
         "webSize":  "901x901"
+    },
+    {
+        "slug":  "domino-effect",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "domino-effect-g1",
+        "source":  "Dominoe 1.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "domino-effect",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "domino-effect-g2",
+        "source":  "Dominoe 2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "domino-effect",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "domino-effect-g3",
+        "source":  "Dominoe 3.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "domino-effect",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "domino-effect-g4",
+        "source":  "Dominoe 4.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "domino-effect",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "domino-effect-g5",
+        "source":  "Dominoe 5.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
     },
     {
         "slug":  "domino-effect",
@@ -596,6 +1006,56 @@
         "transparent":  false,
         "stem":  "godfather-cover4",
         "source":  "Godfather-Sq63-1.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "godfather",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  true,
+        "stem":  "godfather-g1",
+        "source":  "godfather.png",
+        "sourceSize":  "2455x1964",
+        "webSize":  "1200x960"
+    },
+    {
+        "slug":  "godfather",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "godfather-g2",
+        "source":  "Godfather-feature.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "godfather",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "godfather-spread",
+        "source":  "Godfather-Sq11-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "godfather",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "godfather-spread2",
+        "source":  "Godfather-Sq1-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "godfather",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "godfather-spread3",
+        "source":  "God-father-Sq3-2.jpg",
         "sourceSize":  "1750x1750",
         "webSize":  "1200x1200"
     },
@@ -866,6 +1326,46 @@
         "transparent":  false,
         "stem":  "white-lilies-cover2",
         "source":  "White-Lillies-sq62-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "white-lilies",
+        "range":  "standard",
+        "role":  "gallery",
+        "transparent":  false,
+        "stem":  "white-lilies-g1",
+        "source":  "26.jpg",
+        "sourceSize":  "1500x1500",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "white-lilies",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "white-lilies-spread",
+        "source":  "White-Lillies-sq1-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "white-lilies",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "white-lilies-spread2",
+        "source":  "White-Lillies-sq2-2.jpg",
+        "sourceSize":  "1750x1750",
+        "webSize":  "1200x1200"
+    },
+    {
+        "slug":  "white-lilies",
+        "range":  "standard",
+        "role":  "spread",
+        "transparent":  false,
+        "stem":  "white-lilies-spread3",
+        "source":  "White-Lillies-sq3-2.jpg",
         "sourceSize":  "1750x1750",
         "webSize":  "1200x1200"
     }

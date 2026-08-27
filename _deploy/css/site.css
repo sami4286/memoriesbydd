@@ -615,3 +615,22 @@ p{margin:0}
   .pexpress{padding:1.75rem}
   .faq summary{font-size:1.0625rem}
 }
+
+/* ============================================================
+   CUT-OUT PRODUCT ART
+   The new photography includes 25 true cut-outs (transparent WebP).
+   mix-blend-mode:multiply must NOT be applied to those: the blend only ever
+   existed to sit WHITE-background mockups on the tinted plate, and multiplying
+   a cut-out against #ece5d9 tints the product's own whites cream.
+   DESIGN-NOTES.md anticipated this: "if any product art gets a true transparent
+   background, drop the blend."
+   Applied per-image because opaque and cut-out sources sit side by side.
+   ============================================================ */
+img.cutout{mix-blend-mode:normal}
+
+/* Cut-outs need a little breathing room - without a white card edge to sit in
+   they otherwise touch the plate border. */
+.pkg_img img.cutout,
+.pcard_img img.cutout,
+.spot_mood_img img.cutout,
+.prow_media img.cutout{width:80%;height:80%}

@@ -221,7 +221,23 @@ Write-Host ("  transparent   : {0} cut-outs (WebP keeps alpha, JPEG flattens to 
             @($rows | Where-Object { $_.transparent }).Count, $PlateColour)
 Write-Host ("  opaque        : {0}" -f @($rows | Where-Object { -not $_.transparent }).Count)
 
-$rows | Sort-Object range, slug, role, stem | ConvertTo-Json -Depth 4 |
-  Set-Content (Join-Path $root '_archive\data\design-images.json') -Encoding UTF8
+# MERGE with any existing manifest rather than replacing it. Incremental runs
+# (-Only, or a narrower -Roles) would otherwise wipe every design they did not
+# touch, which is exactly what happened the first time.
+$manifestPath = Join-Path $root '_archive\data\design-images.json'
+$merged = @{}
+if (Test-Path $manifestPath) {
+  foreach ($old in (Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json)) {
+    if ($old.stem) { $merged[$old.stem] = $old }
+  }
+}
+foreach ($new in $rows) { $merged[$new.stem] = $new }   # this run wins
+
+# drop entries whose file no longer exists, so the manifest cannot drift
+$final = $merged.Values | Where-Object { Test-Path (Join-Path $outRoot "$($_.stem).webp") }
+
+$final | Sort-Object range, slug, role, stem | ConvertTo-Json -Depth 4 |
+  Set-Content $manifestPath -Encoding UTF8
+Write-Host ("  manifest rows : {0} ({1} from this run)" -f @($final).Count, @($rows).Count)
 Write-Host ""
 Write-Host "  manifest -> _archive/data/design-images.json" -ForegroundColor Cyan
