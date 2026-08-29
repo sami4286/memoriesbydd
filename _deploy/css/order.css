@@ -174,3 +174,29 @@
   .order-step-list li{padding:.8rem .2rem}.order-step-list li>span{width:31px;height:31px}.order-step-list li b{font-size:.52rem;letter-spacing:.015em}
   .order-page .tribute-form{padding:1.8rem .8rem}.order-page .form-step legend{font-size:2.4rem}.order-concierge{padding:1.2rem}
 }
+
+/* Dark ceremonial intake — visually continuous with the site, calm under stress. */
+.order-page{background:#11110e;color:#f4eee4}
+.order-page .site-header.is-scrolled{color:#f4eee4}
+.order-page .order-flow{background:radial-gradient(circle at 92% 15%,rgba(180,135,82,.11),transparent 24%),radial-gradient(circle at 8% 88%,rgba(111,73,42,.1),transparent 28%),linear-gradient(135deg,#181713,#10100d)}
+.order-flow-intro h2{color:#f4eee4}.order-flow-intro h2 em{color:#d2aa75}.order-flow-intro>p:last-child{color:rgba(244,238,228,.64)}
+.order-page .order-grid{border-color:rgba(244,238,228,.12);box-shadow:0 44px 130px rgba(0,0,0,.38)}
+.order-page .tribute-form{background:linear-gradient(145deg,#211f1a,#191814);color:#f4eee4}
+.order-page .form-step legend{color:#f4eee4}.order-page .form-step legend>small{color:rgba(244,238,228,.6)}
+.order-page .field label,.order-page .field-label{color:rgba(244,238,228,.78)}
+.order-page .field input,.order-page .field select,.order-page .field textarea{border-color:rgba(244,238,228,.16);background:rgba(255,253,248,.035);color:#f4eee4;color-scheme:dark}
+.order-page .field input::placeholder,.order-page .field textarea::placeholder{color:rgba(244,238,228,.36)}
+.order-page .field select option{background:#1d1b17;color:#f4eee4}
+.order-page .field input:focus,.order-page .field select:focus,.order-page .field textarea:focus{border-color:#c49a63;background:rgba(255,253,248,.065);box-shadow:0 0 0 3px rgba(196,154,99,.1)}
+.order-page .field>small{color:rgba(244,238,228,.5)}
+.order-page .choice-grid span,.order-page .check-grid span{border-color:rgba(244,238,228,.14);background:rgba(255,253,248,.025)}
+.order-page .choice-grid span::after,.order-page .check-grid span::after{border-color:rgba(244,238,228,.34)}
+.order-page .choice-grid span b,.order-page .check-grid span b{color:#f4eee4}.order-page .choice-grid span small,.order-page .check-grid span small{color:rgba(244,238,228,.54)}
+.order-page .choice-grid input:checked+span,.order-page .check-grid input:checked+span{background:linear-gradient(135deg,#795234,#5a3a22);border-color:#c49a63;color:#fff8ed}
+.order-page .choice-grid input:checked+span b,.order-page .check-grid input:checked+span b{color:#fff8ed}
+.order-page .choice-grid input:checked+span::after,.order-page .check-grid input:checked+span::after{border-color:#dfbd89;background:#11110e}
+.order-page .consent{border-color:rgba(244,238,228,.13);background:rgba(255,253,248,.025);color:rgba(244,238,228,.64)}
+.order-page .form-actions{border-color:rgba(244,238,228,.14)}.order-page .form-actions>p{color:rgba(244,238,228,.5)}
+.order-page .form-back{color:#f4eee4}.order-page .form-status{color:#d8b782}
+.order-page .form-success-mark{color:#d8b782}.order-page .form-success p{color:rgba(244,238,228,.64)}.order-page .form-success-actions a{border-color:rgba(244,238,228,.22)}
+.order-trust{border-color:rgba(244,238,228,.13);background:rgba(255,253,248,.02)}.order-trust>div{border-color:rgba(244,238,228,.13)}.order-trust span{color:#d2aa75}.order-trust p{color:rgba(244,238,228,.6)}.order-trust b{color:#f4eee4}

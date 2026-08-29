@@ -52,3 +52,22 @@
 }
 @media(max-width:360px){.page-hero h1{font-size:2.95rem}.page-lead h2,.contact-grid h2{font-size:2.75rem}.editorial-card{padding:1.3rem}.design-card{min-height:400px}.referral-phone{font-size:1.6rem}}
 @media(prefers-reduced-motion:reduce){.content-page .soft-reveal{opacity:1;transform:none;transition:none}}
+
+/* Supporting pages share the warm mourning editorial system. */
+.content-page{background:#11110e;color:#f4eee4}
+.content-page .site-header.is-scrolled{color:#f4eee4}
+.page-hero{background:radial-gradient(circle at 78% 16%,rgba(180,135,82,.1),transparent 25%),linear-gradient(135deg,#0d0d0b,#171612)}
+.page-section{background:#141410;color:#f4eee4}.page-section--white{background:#1a1915;color:#f4eee4}.page-section--dark{background:#0f0f0c;color:#f4eee4}
+.page-lead h2,.prose h2,.prose h3,.side-note h3,.editorial-card h3,.faq summary,.contact-grid h2,.contact-list strong{color:#f4eee4}
+.page-lead h2 em,.contact-grid h2 em{color:#d2aa75}
+.page-lead>p:last-child,.page-section--dark .page-lead>p:last-child,.prose p,.prose li,.side-note p,.editorial-card p,.faq details p,.resource-grid ul{color:rgba(244,238,228,.64)}
+.editorial-card{border-color:rgba(244,238,228,.12);background:rgba(255,253,248,.018)}
+.editorial-card:hover{background:linear-gradient(145deg,rgba(112,77,44,.2),rgba(255,253,248,.035));box-shadow:0 28px 80px rgba(0,0,0,.28);border-color:rgba(228,201,159,.3)}
+.editorial-card>span,.contact-list span{color:#d2aa75}.editorial-card a{border-color:rgba(244,238,228,.14);color:#f4eee4}
+.side-note,.contact-list,.contact-list>a,.contact-list address{border-color:rgba(244,238,228,.13)}
+.price-scroll{border-color:rgba(244,238,228,.13);scrollbar-color:#b48752 rgba(255,255,255,.06)}
+.price-table th,.price-table td{border-color:rgba(244,238,228,.13)}.price-table th{color:rgba(244,238,228,.56)}.price-table td{color:#f4eee4}.table-hint{color:rgba(244,238,228,.56)}
+.faq details{border-color:rgba(244,238,228,.13)}.faq summary::after{color:#d2aa75}
+.design-card,.catalogue-piece{box-shadow:0 25px 75px rgba(0,0,0,.24);border:1px solid rgba(244,238,228,.08)}
+.page-cta{background:linear-gradient(110deg,#6d492c,#b78952 68%,#caa16d);color:#fff8ed}.page-cta .button{background:#11110e;color:#fff8ed;border:1px solid rgba(255,248,237,.18)}
+.referral-section{background:radial-gradient(circle at 86% 8%,rgba(180,135,82,.1),transparent 24%),#0f0f0c}
