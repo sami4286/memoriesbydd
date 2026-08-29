@@ -1,35 +1,27 @@
-# Netlify builds from the repo root but publishes ONLY _deploy/.
-#
-# WHY THIS MATTERS — do not change `publish` back to "." or to the repo root.
-# When the whole repo was published, these were live and readable by anyone:
-#   /_archive/audit/AUDIT.md              -> 200
-#   /_strategy/05-CLIENT-ACTIONS.md       -> 200
-# That is confidential client material: commercial assessment of Ashley's
-# business, competitor pricing, partner funeral directors by name, and family
-# names. The X-Robots-Tag below keeps it out of search results but does nothing
-# to stop a person — or a crawler that ignores the header — reading it directly.
-# Confirmed exposed and closed 24 Aug 2026.
-#
-# Working documents (_archive, _strategy, _design) must never be deployed.
-# Anything that should be public goes in _deploy/.
+# Build only the public website bundle. Strategy, archive and client documents
+# remain outside dist/ and can never be served by Netlify.
 
 [build]
-  publish = "_deploy"
+  command = "npm run build"
+  publish = "dist"
 
-# Private client preview — keep it out of search engines and AI crawlers.
+[build.environment]
+  NODE_VERSION = "22"
+
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 [[headers]]
-  for = "/img/*"
+  for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/index.html"
+  for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"

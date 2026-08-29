@@ -194,12 +194,13 @@
       return;
     }
     const rect = memoryFinale.getBoundingClientRect();
-    const distance = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, -rect.top / distance));
+    const entryLead = window.innerHeight * .72;
+    const distance = Math.max(1, rect.height - window.innerHeight + entryLead);
+    const progress = Math.max(0, Math.min(1, (entryLead - rect.top) / distance));
     memoryFinale.style.setProperty('--memory-progress', progress.toFixed(3));
     memoryFinale.style.setProperty('--memory-scale', (1.08 - progress * .045).toFixed(4));
-    memoryLines.forEach((line, index) => line.classList.toggle('is-active', progress >= .08 + index * .17));
-    memoryFinale.classList.toggle('is-resolved', progress >= .62);
+    memoryLines.forEach((line, index) => line.classList.toggle('is-active', progress >= index * .2));
+    memoryFinale.classList.toggle('is-resolved', progress >= .7);
   };
   if (memoryFinale) {
     updateMemoryFinale();
