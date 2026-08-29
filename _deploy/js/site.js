@@ -58,28 +58,6 @@
     motionSections.forEach(section => motionObserver.observe(section));
   }
 
-  const standardSection = document.querySelector('.manifesto');
-  let standardRaf = 0;
-  const updateStandardMotion = () => {
-    standardRaf = 0;
-    if (!standardSection || reduced) return;
-    const rect = standardSection.getBoundingClientRect();
-    const start = window.innerHeight * .94;
-    const finish = window.innerHeight * .2;
-    const raw = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
-    const progress = raw * raw * (3 - 2 * raw);
-    standardSection.style.setProperty('--standard-progress', progress.toFixed(4));
-  };
-  if (standardSection) {
-    if (reduced) standardSection.style.setProperty('--standard-progress', '1');
-    else {
-      updateStandardMotion();
-      const requestStandardMotion = () => { if (!standardRaf) standardRaf = requestAnimationFrame(updateStandardMotion); };
-      window.addEventListener('scroll', requestStandardMotion, { passive: true });
-      window.addEventListener('resize', requestStandardMotion, { passive: true });
-    }
-  }
-
   const collectionCards = [...document.querySelectorAll('.collections .collection-card')];
   if (reduced || !('IntersectionObserver' in window)) collectionCards.forEach(card => card.classList.add('is-asset-visible'));
   else {
@@ -147,6 +125,16 @@
   }
 
   document.querySelectorAll('.story-image--portrait').forEach(portrait => portrait.classList.add('memory-portrait-motion'));
+  const memoryPortraits = [...document.querySelectorAll('.story-image--portrait.memory-portrait-motion')];
+  if (reduced || !('IntersectionObserver' in window)) memoryPortraits.forEach(portrait => portrait.classList.add('is-memory-visible'));
+  else {
+    const memoryObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-memory-visible');
+      memoryObserver.unobserve(entry.target);
+    }), { threshold: .34, rootMargin: '0px 0px -5% 0px' });
+    memoryPortraits.forEach(portrait => memoryObserver.observe(portrait));
+  }
 
   const lookbookSection = document.querySelector('.lookbook');
   const lookbookItems = [...document.querySelectorAll('.lookbook-grid > .lookbook-item')];
