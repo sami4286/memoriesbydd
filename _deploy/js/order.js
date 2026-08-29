@@ -2,6 +2,7 @@
   const form = document.querySelector('#tribute-form');
   if (!form) return;
   const steps = [...form.querySelectorAll('.form-step')];
+  const indicators = [...document.querySelectorAll('[data-step-indicator]')];
   const label = document.querySelector('[data-step-label]');
   const bar = document.querySelector('[data-progress-bar]');
   let index = 0;
@@ -18,12 +19,18 @@
   const requestedCollection = query.get('collection');
   set('collection', collectionNames[requestedCollection] || requestedCollection);
 
-  const show = next => {
+  const show = (next, shouldScroll = true) => {
     index = Math.max(0, Math.min(steps.length - 1, next));
     steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+    indicators.forEach((indicator, i) => {
+      indicator.classList.toggle('is-current', i === index);
+      if (i === index) indicator.setAttribute('aria-current', 'step');
+      else indicator.removeAttribute('aria-current');
+    });
+    form.dataset.currentStep = String(index + 1);
     if (label) label.textContent = `Step ${index + 1}`;
     if (bar) bar.style.width = `${((index + 1) / steps.length) * 100}%`;
-    form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    if (shouldScroll) form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   };
   const validate = () => {
     const required = [...steps[index].querySelectorAll('[required]')];
@@ -48,11 +55,11 @@
       const response = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || 'Request failed');
-      form.innerHTML = '<div class="form-success"><span>Thank you</span><h2>Your enquiry is safely with us.</h2><p>A member of the Memories team will contact you personally. If the service is very soon, please call <a href="tel:08000236263">0800 023 6263</a>.</p></div>';
+      form.innerHTML = '<div class="form-success"><div class="form-success-mark" aria-hidden="true">✓</div><span>Enquiry received</span><h2>It is safely with us.</h2><p>A member of the Memories studio will read what you shared and contact you personally. If the service is very soon, you can call us now.</p><div class="form-success-actions"><a href="tel:08000236263">Call 0800 023 6263</a><a href="index.html">Return home</a></div></div>';
     } catch {
       status.textContent = 'We could not send that online. Please call 0800 023 6263 or use WhatsApp and we will help immediately.';
       if (submit) { submit.disabled = false; submit.removeAttribute('aria-busy'); }
     }
   });
-  show(0);
+  show(0, false);
 })();

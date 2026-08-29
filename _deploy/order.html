@@ -7,58 +7,71 @@
   <link rel="canonical" href="https://memoriesbydd.com/order.html">
   <meta name="robots" content="noindex,follow"><meta name="theme-color" content="#171713">
   <link rel="icon" href="img/logo.png" type="image/png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/refinements.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/refinements.css"><link rel="stylesheet" href="css/order.css">
 </head>
 <body class="order-page">
   <a class="skip-link" href="#order-form">Skip to the form</a>
   <header class="site-header" data-header><div class="nav-shell"><a class="brand brand--gold" href="index.html" aria-label="Memories by DD, home"><span class="brand-mark">M</span><span class="brand-name"><b>Memories</b><small>by DD · Funeral Booklets</small></span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle><span></span><span></span><span></span><i>Menu</i></button><nav class="site-nav" id="site-nav" data-nav><a href="index.html#collections">Designs</a><a href="index.html#process">How it works</a><a href="index.html#packages">Packages</a><a href="index.html#story">Our story</a><a href="tel:08000236263" class="nav-phone">0800 023 6263</a><a href="#order-form" class="nav-cta">Begin here <span>↓</span></a></nav></div></header>
 
   <main>
-    <section class="order-hero">
-      <div class="order-hero-art" aria-hidden="true"><img src="img/black-beauty.png" alt="" width="600" height="494"></div>
+    <section class="order-hero" aria-labelledby="order-title">
+      <div class="order-hero-botanical" aria-hidden="true"></div>
       <div class="wrap order-hero-grid">
-        <div><p class="eyebrow reveal">Begin when you are ready <i></i> Save as little or as much as you know</p><h1 class="reveal" style="--delay:70ms">You do not have to work it all out <em>alone.</em></h1><p class="reveal" style="--delay:140ms">Start with the essentials. A real person will read your request and help with everything that is still uncertain.</p></div>
-        <div class="order-contact reveal" style="--delay:210ms"><p>Prefer to speak first?</p><a href="tel:08000236263"><span>Freephone</span>0800 023 6263</a><a href="https://wa.me/447552916060"><span>WhatsApp</span>07552 91 6060</a></div>
+        <div class="order-hero-copy">
+          <p class="eyebrow reveal">A calm place to begin <i></i> About three minutes</p>
+          <h1 id="order-title" class="reveal" style="--delay:70ms">Begin with what you know. <em>We will help with the rest.</em></h1>
+          <p class="order-lead reveal" style="--delay:140ms">There is no payment and nothing is sent to print. Share only the essentials today; a real designer will contact you personally and guide every decision.</p>
+          <a class="order-scroll reveal" style="--delay:190ms" href="#order-form"><span>Begin the enquiry</span><i>↓</i></a>
+        </div>
+        <aside class="order-concierge reveal" style="--delay:210ms" aria-label="What happens next">
+          <div class="order-concierge-top"><span>Private studio enquiry</span><b>03 calm steps</b></div>
+          <h2>Start here.<br>We will take it from there.</h2>
+          <ol><li><b>01</b><span><strong>Tell us about them</strong><small>Only what you know today.</small></span></li><li><b>02</b><span><strong>Choose a direction</strong><small>“Not sure” is always welcome.</small></span></li><li><b>03</b><span><strong>Hear from a person</strong><small>No automated sales call.</small></span></li></ol>
+          <div class="order-contact"><p>Would speaking feel easier?</p><a href="tel:08000236263"><span>Freephone</span>0800 023 6263</a><a href="https://wa.me/447552916060"><span>WhatsApp</span>07552 916 060</a></div>
+        </aside>
       </div>
     </section>
 
-    <section class="order-flow section" id="order-form">
+    <section class="order-flow section" id="order-form" aria-labelledby="enquiry-title">
+      <div class="wrap order-flow-intro"><p class="section-index">Your enquiry</p><h2 id="enquiry-title">A few details.<br><em>Then a real conversation.</em></h2><p>Complete what you can and leave the uncertain parts to us. Required fields are marked with an asterisk.</p></div>
       <div class="wrap order-grid">
         <aside class="order-aside">
-          <p class="section-index">Your enquiry</p><h2>Just the details we need to begin.</h2><p>Nothing is printed or charged from this form. We will confirm the design, timing and total with you personally.</p>
-          <div class="order-progress" aria-label="Form progress"><span data-progress-bar></span></div><p class="order-progress-label"><b data-step-label>Step 1</b> of 3</p>
-          <ul><li>First proof in 24–48 hours</li><li>Revisions before print</li><li>Nationwide UK delivery</li><li>Accepted express work: +50%, confirmed first</li></ul>
+          <p class="order-aside-label">Your progress</p>
+          <div class="order-progress" aria-label="Form progress"><span data-progress-bar></span></div><p class="order-progress-label" aria-live="polite"><b data-step-label>Step 1</b><span>of 3</span></p>
+          <ol class="order-step-list" aria-label="Enquiry steps"><li class="is-current" data-step-indicator><span>01</span><div><b>About them</b><small>The service and timing</small></div></li><li data-step-indicator><span>02</span><div><b>The tribute</b><small>Style and format</small></div></li><li data-step-indicator><span>03</span><div><b>Your details</b><small>How we should respond</small></div></li></ol>
+          <div class="order-safety"><span aria-hidden="true">◇</span><p><b>Your details stay private.</b> Nothing is charged or printed from this enquiry.</p></div>
         </aside>
 
         <form class="tribute-form" id="tribute-form" data-airtable-ready novalidate>
           <input type="hidden" name="source_url"><input type="hidden" name="referral_code"><input type="hidden" name="utm_source"><input type="hidden" name="utm_campaign"><input type="hidden" name="requested_design"><input type="hidden" name="requested_package"><input class="form-trap" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <fieldset class="form-step is-active" data-step="1">
-            <legend><span>01</span>Tell us about the service</legend>
+            <legend><span>Step 01 · About them</span>Who are we remembering?<small>Begin with their name. Dates and arrangements can remain uncertain.</small></legend>
             <div class="field"><label for="memorial-name">Name of the person being remembered <b>*</b></label><input id="memorial-name" name="memorial_name" autocomplete="off" required placeholder="Their full name"><small>Use the name exactly as you would like it printed.</small></div>
             <div class="field-grid"><div class="field"><label for="service-date">Date of the service</label><input id="service-date" name="service_date" type="date"></div><div class="field"><label for="needed-date">When do you need the order?</label><input id="needed-date" name="needed_by" type="date"></div></div>
-            <div class="field"><span class="field-label">Type of service</span><div class="choice-grid"><label><input type="radio" name="service_type" value="Burial"><span>Burial</span></label><label><input type="radio" name="service_type" value="Cremation"><span>Cremation</span></label><label><input type="radio" name="service_type" value="Memorial"><span>Memorial</span></label><label><input type="radio" name="service_type" value="Not sure"><span>Not sure yet</span></label></div></div>
-            <div class="form-actions"><span></span><button type="button" class="form-next" data-next>Continue <i>→</i></button></div>
+            <div class="field"><span class="field-label">What kind of service is being planned?</span><div class="choice-grid"><label><input type="radio" name="service_type" value="Burial"><span><b>Burial</b><small>Church or graveside</small></span></label><label><input type="radio" name="service_type" value="Cremation"><span><b>Cremation</b><small>Crematorium service</small></span></label><label><input type="radio" name="service_type" value="Memorial"><span><b>Memorial</b><small>A celebration of life</small></span></label><label><input type="radio" name="service_type" value="Not sure"><span><b>Not sure yet</b><small>We can guide you</small></span></label></div></div>
+            <div class="form-actions"><p>Step 1 of 3</p><button type="button" class="form-next" data-next>Continue to the tribute <i>→</i></button></div>
           </fieldset>
 
           <fieldset class="form-step" data-step="2">
-            <legend><span>02</span>Choose a starting point</legend>
-            <div class="field"><label for="collection">Preferred design collection</label><select id="collection" name="collection"><option value="">Choose a collection</option><option>Caribbean &amp; African</option><option>Classic</option><option>Football</option><option>Signature Florals</option><option>Bespoke / not sure</option></select></div>
-            <div class="field-grid"><div class="field"><label for="quantity">Approximate quantity</label><select id="quantity" name="quantity"><option>50</option><option>100</option><option>150</option><option>250</option><option>500</option><option>Not sure</option></select></div><div class="field"><label for="pages">Booklet length</label><select id="pages" name="pages"><option>4 pages</option><option>8 pages</option><option>12 pages</option><option>16 pages</option><option>20 pages</option><option>Not sure</option></select></div></div>
-            <div class="field"><span class="field-label">Would you like anything else?</span><div class="check-grid"><label><input type="checkbox" name="addons" value="Pull-up banner"><span>Pull-up banner</span></label><label><input type="checkbox" name="addons" value="Motion obituary"><span>Motion obituary</span></label><label><input type="checkbox" name="addons" value="Motion gallery"><span>Motion gallery</span></label><label><input type="checkbox" name="addons" value="Bookmarks"><span>Bookmarks</span></label></div></div>
+            <legend><span>Step 02 · The tribute</span>What would feel right?<small>Choose a direction if one speaks to you. We will personalise every detail.</small></legend>
+            <div class="field"><label for="collection">A design direction</label><select id="collection" name="collection"><option value="">I’m not sure — please guide me</option><option>Caribbean &amp; African</option><option>Classic</option><option>Football</option><option>Signature Florals</option><option>Bespoke</option></select></div>
+            <div class="field-grid"><div class="field"><label for="quantity">Approximate quantity</label><select id="quantity" name="quantity"><option value="">Choose later</option><option>50</option><option>100</option><option>150</option><option>250</option><option>500</option></select></div><div class="field"><label for="pages">Booklet length</label><select id="pages" name="pages"><option value="">Choose later</option><option>4 pages</option><option>8 pages</option><option>12 pages</option><option>16 pages</option><option>20 pages</option></select></div></div>
+            <div class="field"><span class="field-label">Anything else for the day?</span><div class="check-grid"><label><input type="checkbox" name="addons" value="Pull-up banner"><span><b>Pull-up banner</b><small>A welcome tribute</small></span></label><label><input type="checkbox" name="addons" value="Motion obituary"><span><b>Motion obituary</b><small>For sharing online</small></span></label><label><input type="checkbox" name="addons" value="Motion gallery"><span><b>Motion gallery</b><small>Photographs in motion</small></span></label><label><input type="checkbox" name="addons" value="Bookmarks"><span><b>Bookmarks</b><small>A small keepsake</small></span></label></div></div>
             <div class="form-actions"><button type="button" class="form-back" data-back>← Back</button><button type="button" class="form-next" data-next>Continue <i>→</i></button></div>
           </fieldset>
 
           <fieldset class="form-step" data-step="3">
-            <legend><span>03</span>How should we reach you?</legend>
+            <legend><span>Step 03 · Your details</span>How should we reach you?<small>A member of the studio will respond personally—never an automated sales call.</small></legend>
             <div class="field-grid"><div class="field"><label for="contact-name">Your name <b>*</b></label><input id="contact-name" name="contact_name" autocomplete="name" required></div><div class="field"><label for="phone">Phone number <b>*</b></label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div></div>
             <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email"></div>
             <div class="field"><label for="notes">Anything you want us to know?</label><textarea id="notes" name="notes" rows="5" placeholder="A design you like, timing concerns, cultural details, or anything else"></textarea></div>
             <label class="consent"><input type="checkbox" name="privacy_consent" required><span>I agree that Memories may use these details to respond to this enquiry. <a href="privacy-policy/">Privacy policy</a>.</span></label>
-            <div class="form-actions"><button type="button" class="form-back" data-back>← Back</button><button type="submit" class="form-submit">Send my enquiry <i>↗</i></button></div>
+            <div class="form-actions"><button type="button" class="form-back" data-back>← Back</button><button type="submit" class="form-submit">Send securely <i>↗</i></button></div>
             <p class="form-status" role="status" aria-live="polite" data-form-status></p>
           </fieldset>
         </form>
       </div>
+      <div class="wrap order-trust" aria-label="What happens after submission"><div><span>01</span><p><b>A person reads it</b>No automated quotation or pressure.</p></div><div><span>02</span><p><b>We confirm everything</b>Timing, price and design before work starts.</p></div><div><span>03</span><p><b>You approve every page</b>Nothing is printed until it feels right.</p></div></div>
     </section>
   </main>
 
