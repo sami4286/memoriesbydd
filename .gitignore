@@ -1,9 +1,13 @@
 # Deliberately minimal.
 #
-# The whole project is ~6 MB across ~64 files, so EVERYTHING else is tracked
-# on purpose. Do not add project folders here. An over-broad ignore file is the
-# likeliest reason for content going missing between machines — if a file
-# belongs to the project, it belongs in the repo.
+# The project content is tracked on purpose. Only generated output, dependencies
+# and local machine/editor state belong here.
+
+# Dependencies and generated builds
+node_modules/
+dist/
+_deploy/dist/
+.vite/
 
 # OS cruft
 Thumbs.db

@@ -1,8 +1,0 @@
-# Private client preview. Nothing here is ready to be crawled or indexed.
-# The X-Robots-Tag header in /netlify.toml is the real enforcement; this is
-# belt-and-braces for crawlers that read robots.txt but ignore headers.
-#
-# AT LAUNCH: replace all of this with real directives and a Sitemap: line.
-
-User-agent: *
-Disallow: /
