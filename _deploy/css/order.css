@@ -200,3 +200,7 @@
 .order-page .form-back{color:#f4eee4}.order-page .form-status{color:#d8b782}
 .order-page .form-success-mark{color:#d8b782}.order-page .form-success p{color:rgba(244,238,228,.64)}.order-page .form-success-actions a{border-color:rgba(244,238,228,.22)}
 .order-trust{border-color:rgba(244,238,228,.13);background:rgba(255,253,248,.02)}.order-trust>div{border-color:rgba(244,238,228,.13)}.order-trust span{color:#d2aa75}.order-trust p{color:rgba(244,238,228,.6)}.order-trust b{color:#f4eee4}
+
+/* Hero and enquiry share the same black edge so the hand-off never reads as a box. */
+.order-page main{background:#11110e}.order-page .order-hero,.order-page .order-flow{margin-block:-1px}
+.order-page .order-flow{background:radial-gradient(ellipse 52% 45% at 92% 46%,rgba(180,135,82,.1),transparent 76%),radial-gradient(ellipse 46% 40% at 8% 60%,rgba(101,65,36,.08),transparent 78%),#11110e}

@@ -71,3 +71,10 @@
 .design-card,.catalogue-piece{box-shadow:0 25px 75px rgba(0,0,0,.24);border:1px solid rgba(244,238,228,.08)}
 .page-cta{background:linear-gradient(110deg,#6d492c,#b78952 68%,#caa16d);color:#fff8ed}.page-cta .button{background:#11110e;color:#fff8ed;border:1px solid rgba(255,248,237,.18)}
 .referral-section{background:radial-gradient(circle at 86% 8%,rgba(180,135,82,.1),transparent 24%),#0f0f0c}
+
+/* Supporting-page chapters also dissolve into one shared canvas. */
+.content-page main{background:#11110e}.page-hero,.page-section,.page-section--white,.page-section--dark,.referral-section,.page-cta{margin-block:-1px}
+.page-section{background:radial-gradient(ellipse 52% 44% at 88% 50%,rgba(104,67,36,.07),transparent 78%),#11110e}
+.page-section--white{background:radial-gradient(ellipse 50% 46% at 12% 50%,rgba(180,135,82,.085),transparent 78%),#11110e}
+.page-section--dark{background:radial-gradient(ellipse 46% 42% at 86% 52%,rgba(91,57,31,.065),transparent 80%),#11110e}
+.referral-section{background:radial-gradient(ellipse 52% 44% at 84% 50%,rgba(180,135,82,.08),transparent 78%),#11110e}
