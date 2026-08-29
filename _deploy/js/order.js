@@ -30,7 +30,12 @@
     form.dataset.currentStep = String(index + 1);
     if (label) label.textContent = `Step ${index + 1}`;
     if (bar) bar.style.width = `${((index + 1) / steps.length) * 100}%`;
-    if (shouldScroll) form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    if (shouldScroll) {
+      form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      const legend = steps[index].querySelector('legend');
+      legend?.setAttribute('tabindex', '-1');
+      legend?.focus({ preventScroll: true });
+    }
   };
   const validate = () => {
     const required = [...steps[index].querySelectorAll('[required]')];
@@ -47,15 +52,18 @@
     const status = form.querySelector('[data-form-status]');
     const data = Object.fromEntries(new FormData(form).entries());
     data.addons = [...form.querySelectorAll('input[name="addons"]:checked')].map(el => el.value).join(', ');
-    const endpoint = window.MEMORIES_AIRTABLE_ENDPOINT || '/.netlify/functions/enquiry';
+    const endpoint = '/api/enquiry';
     const submit = form.querySelector('.form-submit');
     status.textContent = 'Sending your enquiry securely…';
     if (submit) { submit.disabled = true; submit.setAttribute('aria-busy', 'true'); }
     try {
-      const response = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+      const response = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json','X-Memories-Form':'1'}, body:JSON.stringify(data), credentials:'same-origin' });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || 'Request failed');
       form.innerHTML = '<div class="form-success"><div class="form-success-mark" aria-hidden="true">✓</div><span>Enquiry received</span><h2>It is safely with us.</h2><p>A member of the Memories studio will read what you shared and contact you personally. If the service is very soon, you can call us now.</p><div class="form-success-actions"><a href="tel:08000236263">Call 0800 023 6263</a><a href="index.html">Return home</a></div></div>';
+      const success = form.querySelector('.form-success');
+      success?.setAttribute('tabindex', '-1');
+      success?.focus();
     } catch {
       status.textContent = 'We could not send that online. Please call 0800 023 6263 or use WhatsApp and we will help immediately.';
       if (submit) { submit.disabled = false; submit.removeAttribute('aria-busy'); }

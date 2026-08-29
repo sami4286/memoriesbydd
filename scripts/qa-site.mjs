@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const root = resolve('_deploy');
 const functionsRoot = resolve('netlify/functions');
@@ -47,6 +48,17 @@ for (const file of htmlFiles) {
   }
   if (page === 'prices/index.html' && !/class=["']price-scroll["']/i.test(source)) {
     errors.push(`${page}: price comparison needs its mobile scroll region`);
+  }
+
+  for (const match of source.matchAll(/<a\b[^>]*\bclass=["']brand(?:\s[^"']*)?["'][^>]*>([\s\S]*?)<\/a>/gi)) {
+    const tag = match[0].slice(0, match[0].indexOf('>') + 1);
+    if (/\baria-label=/i.test(tag)) errors.push(`${page}: brand link must derive its accessible name from its visible copy`);
+    if (!/class=["']brand-mark["'][^>]*aria-hidden=["']true["']/i.test(match[0])) errors.push(`${page}: decorative brand mark must be hidden from the accessible name`);
+  }
+  for (const match of source.matchAll(/<button\b[^>]*\bdata-nav-toggle\b[^>]*>/gi)) {
+    if (!/\baria-expanded=["']false["']/i.test(match[0]) || !/\baria-controls=["'][^"']+["']/i.test(match[0])) {
+      errors.push(`${page}: menu control must expose aria-expanded and aria-controls`);
+    }
   }
 
   const canonical = source.match(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']/i)?.[1];
@@ -104,6 +116,33 @@ for (const file of cssFiles) {
 for (const file of jsFiles) {
   const result = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });
   if (result.status !== 0) errors.push(`${label(file)}: ${result.stderr.trim()}`);
+}
+
+const publicSource = files.filter(file => ['.html', '.css', '.js'].includes(extname(file)))
+  .map(file => readFileSync(file, 'utf8')).join('\n');
+if (/\b(?:AIRTABLE_PAT|AIRTABLE_BASE_ID|AIRTABLE_TABLE_ID|MAKE_WEBHOOK_URL)\b/.test(publicSource)) {
+  errors.push('public bundle references a server-side environment variable');
+}
+if (!/:focus-visible\b/.test(publicSource)) errors.push('shared UI is missing a visible keyboard focus treatment');
+if (!/\.footer \.footer-bottom[\s\S]*?font-size:\.75rem/.test(publicSource)
+  || !/\.footer \.footer-bottom span[\s\S]*?color:#aaa79f/.test(publicSource)) {
+  errors.push('footer metadata must retain its 12px high-contrast accessibility treatment');
+}
+
+const netlifySource = readFileSync(resolve('netlify.toml'), 'utf8');
+for (const required of ['Strict-Transport-Security', 'X-Content-Type-Options', 'Cross-Origin-Opener-Policy', 'Content-Security-Policy']) {
+  if (!netlifySource.includes(required)) errors.push(`netlify.toml: missing ${required} security header`);
+}
+if (/script-src[^;\n]*'unsafe-inline'/.test(netlifySource)) errors.push('netlify.toml: executable inline scripts must not be allowed by CSP');
+if (!/frame-ancestors 'none'/.test(netlifySource) || !/X-Frame-Options = "DENY"/.test(netlifySource)) {
+  errors.push('netlify.toml: pages must reject framing');
+}
+for (const file of htmlFiles) {
+  const source = readFileSync(file, 'utf8');
+  for (const match of source.matchAll(/<script type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)) {
+    const hash = `sha256-${createHash('sha256').update(match[1]).digest('base64')}`;
+    if (!netlifySource.includes(`'${hash}'`)) errors.push(`${label(file)}: JSON-LD hash is missing from the Content Security Policy`);
+  }
 }
 
 for (const warning of warnings) console.warn(`WARN ${warning}`);

@@ -46,6 +46,16 @@
   });
   window.addEventListener('resize', () => { if (window.innerWidth > 820) closeNav(); });
 
+  // Derive section names from visible headings so landmark names never drift
+  // away from the copy speech-recognition and screen-reader users can see.
+  document.querySelectorAll('section').forEach((section, index) => {
+    if (section.hasAttribute('aria-label') || section.hasAttribute('aria-labelledby')) return;
+    const heading = section.querySelector('h1, h2');
+    if (!heading) return;
+    if (!heading.id) heading.id = `section-heading-${index + 1}`;
+    section.setAttribute('aria-labelledby', heading.id);
+  });
+
   const reveals = [...document.querySelectorAll('.reveal, .reveal-image')];
   if (reduced || !('IntersectionObserver' in window)) reveals.forEach(el => el.classList.add('is-visible'));
   else {

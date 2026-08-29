@@ -217,16 +217,31 @@ that is how the live site previously ended up serving files older than the repos
 
 ### Airtable enquiry setup
 
-The custom form posts to the Netlify function at `/.netlify/functions/enquiry`; Airtable credentials
+The custom form posts to the Netlify function at `/api/enquiry`; Airtable credentials
 never appear in browser code. Configure these encrypted Netlify environment variables before the
 form goes live:
 
-- `AIRTABLE_PAT` — a scoped Personal Access Token with record-write access.
+- `AIRTABLE_PAT` — a Personal Access Token scoped only to `data.records:write` on this base.
 - `AIRTABLE_BASE_ID` — the destination base ID.
 - `AIRTABLE_TABLE_ID` — the destination table ID or exact table name.
 
 The Airtable table must contain the field names mapped in `netlify/functions/enquiry.mjs`. Referral,
 design, package and UTM values are carried through automatically.
+
+The endpoint accepts only same-origin JSON requests carrying the site’s custom form header, rejects
+payloads over 24 KB, validates controlled values, and is limited by Netlify to six requests per IP
+and domain per minute. Airtable uses a deterministic, non-identifying reference as an atomic upsert
+key, so retries update the same case rather than creating a duplicate. Check the post-processing
+section of the Netlify deploy log to confirm the rate-limit rule was accepted.
+
+### Production security
+
+`netlify.toml` enforces HTTPS transport, clickjacking protection, a restrictive permissions policy,
+same-origin isolation and a Content Security Policy. Executable inline JavaScript is disabled; the
+three JSON-LD blocks are allowed only by their exact SHA-256 hashes. `pnpm qa` checks those hashes,
+the public bundle for server-only variable names, menu state, accessible brand names, footer
+legibility and the form’s security contract. `pnpm audit --audit-level=moderate` should also remain
+clean before release. Never commit `.env` files, private keys, the Airtable PAT or the Make webhook.
 
 ### Optional Make automation handoff
 

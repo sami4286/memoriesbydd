@@ -264,6 +264,9 @@ body{background:#11110e;color:#f4eee4}
 .process .section-index{color:rgba(244,238,228,.48)}.process-intro .display{color:#f4eee4}.process-intro .display em{color:#d8b782}.process-intro .body-copy{color:rgba(244,238,228,.64)}
 .process-list li.reveal{border-color:rgba(244,238,228,.11)!important;background:rgba(255,253,248,.025)!important;color:#f4eee4;box-shadow:0 16px 50px rgba(0,0,0,.14)!important}
 .process-list li.reveal.is-current{background:linear-gradient(135deg,rgba(112,77,44,.32),rgba(255,253,248,.045))!important;border-color:rgba(228,201,159,.34)!important;box-shadow:0 34px 100px rgba(0,0,0,.32)!important}
+.process-list li{border:1px solid rgba(244,238,228,.1);background:rgba(255,253,248,.025);color:#f4eee4;box-shadow:0 16px 50px rgba(0,0,0,.14)}
+.process-list li:hover{background:rgba(255,253,248,.045);box-shadow:0 25px 75px rgba(0,0,0,.24)}
+.process-list li.is-current{background:linear-gradient(135deg,rgba(112,77,44,.32),rgba(255,253,248,.045));border-color:rgba(228,201,159,.34);box-shadow:0 34px 100px rgba(0,0,0,.3)}
 .process-list h3{color:#f4eee4}.process-list p{color:rgba(244,238,228,.6)}.process-list small{color:#d1aa77}
 .process-list li>i{border-color:rgba(244,238,228,.16);color:rgba(244,238,228,.55)}
 .process-list li.is-current>i{background:#c49a63;border-color:#c49a63;color:#11110e}
@@ -311,3 +314,33 @@ main{background:#11110e}
 .packages{background:radial-gradient(ellipse 52% 45% at 82% 46%,rgba(127,83,44,.12),transparent 76%),#11110e}
 .assurance{background:radial-gradient(ellipse 50% 46% at 14% 45%,rgba(180,135,82,.11),transparent 76%),radial-gradient(ellipse 44% 42% at 88% 56%,rgba(95,62,35,.08),transparent 78%),#11110e}
 .memory-finale{margin-top:-1px;background-color:#11110e}
+
+/* The promise dissolves into the closing memory, and the memory dissolves into the footer. */
+.story{border-top:0}
+.memory-finale{margin-block:-1px;background:#11110e}
+.memory-finale-media{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 13%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 13%,#000 84%,transparent 100%)}
+.memory-finale-sticky::after{background:linear-gradient(180deg,#11110e 0,rgba(17,17,14,0) 14%,rgba(17,17,14,0) 80%,#11110e 100%),linear-gradient(90deg,rgba(12,11,8,.94) 0%,rgba(12,11,8,.78) 38%,rgba(12,11,8,.22) 72%,rgba(12,11,8,.34) 100%),linear-gradient(0deg,rgba(12,11,8,.64),transparent 46%)}
+.footer{position:relative;z-index:2;margin-top:-1px;background:#11110e}
+@media(max-width:820px){.memory-finale-media{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%)}.memory-finale-sticky::after{background:linear-gradient(180deg,#11110e 0,rgba(17,17,14,0) 11%,rgba(17,17,14,0) 82%,#11110e 100%),linear-gradient(90deg,rgba(12,11,8,.91),rgba(12,11,8,.42)),linear-gradient(0deg,rgba(12,11,8,.78),transparent 55%)}}
+
+/* Global accessibility finish: visible keyboard focus and legible footer data. */
+:where(a,button,summary,input,select,textarea):focus-visible{
+  outline:3px solid #e7c28b;
+  outline-offset:3px;
+  box-shadow:0 0 0 5px rgba(8,8,6,.9);
+}
+.field :where(input,select,textarea):focus-visible{
+  outline:2px solid #d5a96f;
+  outline-offset:4px;
+}
+.footer .footer-bottom{
+  font-size:.75rem;
+  color:#aaa79f;
+}
+.footer .footer-bottom span,
+.footer .footer-bottom a{
+  color:#aaa79f;
+}
+.footer .footer-bottom a:hover{
+  color:#fffdf8;
+}
