@@ -11,6 +11,8 @@ const optional = value => {
   const cleaned = text(value);
   return cleaned || undefined;
 };
+const airtableFormulaValue = value => String(value).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+const line = (label, value) => optional(value) ? `${label}: ${text(value)}` : undefined;
 
 export default async request => {
   if (request.method !== 'POST') return json(405, { error: 'Method not allowed' });
@@ -40,31 +42,55 @@ export default async request => {
     return json(503, { error: 'Enquiry service is not configured' });
   }
 
+  const email = optional(data.email);
+  const reference = `WEB-${Date.now().toString(36).toUpperCase()}-${memorialName.replace(/[^a-z0-9]/gi, '').slice(0, 8).toUpperCase() || 'CASE'}`;
+  const notes = [
+    line('Service date', data.service_date),
+    line('Needed by', data.needed_by),
+    line('Service type', data.service_type),
+    line('Design collection', data.collection),
+    line('Requested design', data.requested_design),
+    line('Requested package', data.requested_package),
+    line('Quantity', data.quantity),
+    line('Pages', data.pages),
+    line('Add-ons', data.addons),
+    line('Family notes', data.notes),
+    line('Referral code', data.referral_code),
+    line('UTM source', data.utm_source),
+    line('UTM campaign', data.utm_campaign),
+    line('Source URL', data.source_url)
+  ].filter(Boolean).join('\n');
+
+  // These names match the production Cases table. Less structured enquiry
+  // details are retained in Notes until a studio member completes the case.
   const fields = {
-    'Person Remembered': memorialName,
-    'Service Date': optional(data.service_date),
-    'Needed By': optional(data.needed_by),
-    'Service Type': optional(data.service_type),
-    'Collection': optional(data.collection),
-    'Requested Design': optional(data.requested_design),
-    'Requested Package': optional(data.requested_package),
-    'Quantity': optional(data.quantity),
-    'Pages': optional(data.pages),
-    'Add-ons': optional(data.addons),
-    'Contact Name': contactName,
-    'Phone': phone,
-    'Email': optional(data.email),
-    'Notes': optional(data.notes),
-    'Referral Code': optional(data.referral_code),
-    'Source URL': optional(data.source_url),
-    'UTM Source': optional(data.utm_source),
-    'UTM Campaign': optional(data.utm_campaign),
-    'Privacy Consent': true,
-    'Status': 'New enquiry'
+    'Name': reference,
+    'Deceased Full Name': memorialName,
+    'Family Name': contactName,
+    'Family Phone': phone,
+    'Family Email': email,
+    'Consent Confirmed': true,
+    'Submitted By': 'Website enquiry',
+    'Notes': notes || 'Submitted through the website enquiry form.'
   };
   Object.keys(fields).forEach(key => fields[key] === undefined && delete fields[key]);
 
   try {
+    // Treat a repeated submission as success instead of creating a duplicate.
+    const identityField = email ? 'Family Email' : 'Family Phone';
+    const identityValue = email || phone;
+    const formula = `AND({Deceased Full Name}='${airtableFormulaValue(memorialName)}',{${identityField}}='${airtableFormulaValue(identityValue)}')`;
+    const duplicateCheck = await fetch(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(tableId)}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`, {
+      headers: { authorization: `Bearer ${token}` }
+    });
+    if (!duplicateCheck.ok) {
+      const detail = await duplicateCheck.text();
+      console.error(`Airtable duplicate check failed (${duplicateCheck.status}): ${detail.slice(0, 500)}`);
+      return json(502, { error: 'Enquiry could not be stored' });
+    }
+    const existing = await duplicateCheck.json();
+    if (existing.records?.length) return json(200, { ok: true, duplicate: true });
+
     const airtable = await fetch(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(tableId)}`, {
       method: 'POST',
       headers: {

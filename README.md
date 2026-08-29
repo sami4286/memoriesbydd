@@ -4,8 +4,10 @@ Working repository for the revamp of **[memoriesbydd.com](https://memoriesbydd.c
 Funeral Booklets, a UK business (Ashley Whittick) that designs and prints personalised funeral
 order-of-service booklets plus digital and physical add-ons.
 
-**Phase 1 (this repo): archive the existing site, audit it, and set the content strategy.**
-Design and the Webflow build follow.
+**Current state: a production-ready custom static site built with Vite and deployed on Netlify.**
+The premium branch includes the complete responsive site, enquiry journey, SEO files, redirects,
+security headers and a server-side Netlify function for Airtable. The earlier Webflow and discovery
+documents remain in the repository as project history; they no longer describe the active build.
 
 ---
 
@@ -13,10 +15,30 @@ Design and the Webflow build follow.
 
 | Decision | Choice |
 |---|---|
-| Platform | **Webflow** — clean rebuild |
-| Order model | **Enquiry-first** — Fillout brief + tap-to-call + WhatsApp. No checkout |
+| Platform | **Vite static site on Netlify** |
+| Order model | **Enquiry-first** — guided form + tap-to-call + WhatsApp. No checkout |
 | Positioning | **Lead with the cultural niche** — UK Caribbean & African families |
 | Pricing | **Keep public**, restructured around packages, with CTAs |
+
+---
+
+## Production build
+
+| Item | Location |
+|---|---|
+| Public source | `_deploy/` |
+| Enquiry API | `netlify/functions/enquiry.mjs` |
+| Netlify config | `netlify.toml` |
+| Vite entry points | `vite.config.js` |
+| Automated QA | `scripts/qa-site.mjs` |
+
+Use Node 22 and pnpm 11. Run `pnpm install`, then `pnpm qa`. Netlify builds with `npm run build`
+and publishes `dist/`. The live enquiry function requires `AIRTABLE_PAT`, `AIRTABLE_BASE_ID` and
+`AIRTABLE_TABLE_ID` in Netlify environment variables; never expose those values in browser code.
+
+The strategy and archive sections below document the research that led to this build. Treat any
+references to a future Webflow or Fillout implementation as historical rather than deployment
+instructions.
 
 ---
 

@@ -13,6 +13,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: page('index.html'),
+        '404': page('404.html'),
         order: page('order.html'),
         'booklets/index': page('funeral-order-of-service-booklets/index.html'),
         'gallery/index': page('gallery/index.html'),

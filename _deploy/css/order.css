@@ -149,4 +149,4 @@
   .order-page .form-success-actions{align-items:flex-start;flex-direction:column}
 }
 
-@media(prefers-reduced-motion:reduce){.order-step-list li,.order-scroll{transition:none}}
+@media(prefers-reduced-motion:reduce){.order-step-list li,.order-scroll{transition:none}.order-page .form-step.is-active{animation:none!important}}

@@ -35,6 +35,15 @@
     toggle.setAttribute('aria-expanded', String(open));
   });
   nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeNav));
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !nav?.classList.contains('is-open')) return;
+    closeNav();
+    toggle?.focus();
+  });
+  document.addEventListener('click', event => {
+    if (!nav?.classList.contains('is-open') || header?.contains(event.target)) return;
+    closeNav();
+  });
   window.addEventListener('resize', () => { if (window.innerWidth > 820) closeNav(); });
 
   const reveals = [...document.querySelectorAll('.reveal, .reveal-image')];

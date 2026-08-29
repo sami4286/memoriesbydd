@@ -19,6 +19,7 @@ const functionFiles = existsSync(functionsRoot) ? walk(functionsRoot).filter(fil
 const jsFiles = [...files.filter(file => extname(file) === '.js'), ...functionFiles];
 const label = file => relative(root, file).replaceAll('\\', '/');
 const attr = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'))?.[1];
+const regexEscape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const localTarget = (source, value) => {
   const clean = value.split('#')[0].split('?')[0];
   if (!clean || /^(?:[a-z]+:|\/\/)/i.test(clean)) return null;
@@ -39,9 +40,12 @@ for (const file of htmlFiles) {
   if (!/<meta\b[^>]*\bname=["']description["'][^>]*\bcontent=["'][^"']{40,}["']/i.test(source)) warnings.push(`${page}: description is missing or unusually short`);
   if ((source.match(/<title\b/gi) || []).length !== 1) errors.push(`${page}: expected exactly one title`);
   if ((source.match(/<h1\b/gi) || []).length !== 1) errors.push(`${page}: expected exactly one h1`);
+  if (!/<main\b/i.test(source)) errors.push(`${page}: missing main landmark`);
+  if (!/<a\b[^>]*\bclass=["'][^"']*skip-link/i.test(source)) errors.push(`${page}: missing keyboard skip link`);
 
   const canonical = source.match(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']/i)?.[1];
   if (!canonical) warnings.push(`${page}: missing canonical URL`);
+  else if (!canonical.startsWith('https://memoriesbydd.com/')) errors.push(`${page}: canonical must use the production HTTPS domain`);
   else if (canonicalOwners.has(canonical)) errors.push(`${page}: canonical duplicates ${canonicalOwners.get(canonical)}`);
   else canonicalOwners.set(canonical, page);
 
@@ -63,6 +67,17 @@ for (const file of htmlFiles) {
     if (!value.trim()) errors.push(`${page}: empty local URL`);
     const target = localTarget(file, value);
     if (target && !existsSync(target)) errors.push(`${page}: missing local target ${value}`);
+    if (/^<a/i.test(tag) && value.includes('#')) {
+      const hash = value.slice(value.indexOf('#') + 1);
+      const fragmentFile = target || file;
+      if (hash && existsSync(fragmentFile) && extname(fragmentFile) === '.html') {
+        const fragmentSource = readFileSync(fragmentFile, 'utf8');
+        const decoded = decodeURIComponent(hash);
+        if (!new RegExp(`\\bid=["']${regexEscape(decoded)}["']`, 'i').test(fragmentSource)) {
+          errors.push(`${page}: missing fragment target ${value}`);
+        }
+      }
+    }
     if (/\btarget=["']_blank["']/i.test(tag) && !/\brel=["'][^"']*noopener/i.test(tag)) warnings.push(`${page}: target=_blank link should use rel=noopener`);
   }
 }
