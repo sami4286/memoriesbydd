@@ -48,7 +48,7 @@
     reveals.forEach(el => observer.observe(el));
   }
 
-  const motionSections = [...document.querySelectorAll('.story, .collections, .lookbook, .packages, .assurance')];
+  const motionSections = [...document.querySelectorAll('.manifesto, .story, .story-page, .collections, .lookbook, .packages, .assurance')];
   motionSections.forEach(section => section.classList.add('motion-section'));
   if (reduced || !('IntersectionObserver' in window)) motionSections.forEach(section => section.classList.add('is-inview'));
   else {
@@ -56,6 +56,39 @@
       if (entry.isIntersecting) entry.target.classList.add('is-inview');
     }), { threshold: .08, rootMargin: '0px 0px -10% 0px' });
     motionSections.forEach(section => motionObserver.observe(section));
+  }
+
+  const standardSection = document.querySelector('.manifesto');
+  let standardRaf = 0;
+  const updateStandardMotion = () => {
+    standardRaf = 0;
+    if (!standardSection || reduced) return;
+    const rect = standardSection.getBoundingClientRect();
+    const start = window.innerHeight * .94;
+    const finish = window.innerHeight * .2;
+    const raw = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
+    const progress = raw * raw * (3 - 2 * raw);
+    standardSection.style.setProperty('--standard-progress', progress.toFixed(4));
+  };
+  if (standardSection) {
+    if (reduced) standardSection.style.setProperty('--standard-progress', '1');
+    else {
+      updateStandardMotion();
+      const requestStandardMotion = () => { if (!standardRaf) standardRaf = requestAnimationFrame(updateStandardMotion); };
+      window.addEventListener('scroll', requestStandardMotion, { passive: true });
+      window.addEventListener('resize', requestStandardMotion, { passive: true });
+    }
+  }
+
+  const collectionCards = [...document.querySelectorAll('.collections .collection-card')];
+  if (reduced || !('IntersectionObserver' in window)) collectionCards.forEach(card => card.classList.add('is-asset-visible'));
+  else {
+    const collectionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-asset-visible');
+      collectionObserver.unobserve(entry.target);
+    }), { threshold: .32, rootMargin: '0px 0px -4% 0px' });
+    collectionCards.forEach(card => collectionObserver.observe(card));
   }
 
   const heroMedia = document.querySelector('.hero-media');
@@ -93,8 +126,8 @@
         const rect = card.getBoundingClientRect();
         card.style.setProperty('--card-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
         card.style.setProperty('--card-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
-        card.style.setProperty('--pointer-x', `${((event.clientX - rect.left) / rect.width - .5) * 10}px`);
-        card.style.setProperty('--pointer-y', `${((event.clientY - rect.top) / rect.height - .5) * 10}px`);
+        card.style.setProperty('--pointer-x', `${((event.clientX - rect.left) / rect.width - .5) * 4}px`);
+        card.style.setProperty('--pointer-y', `${((event.clientY - rect.top) / rect.height - .5) * 4}px`);
       });
       card.addEventListener('pointerleave', () => {
         card.style.setProperty('--pointer-x', '0px');
@@ -110,6 +143,88 @@
     storyPortrait?.addEventListener('pointerleave', () => {
       storyPortrait.style.setProperty('--story-rx', '0deg');
       storyPortrait.style.setProperty('--story-ry', '0deg');
+    });
+  }
+
+  document.querySelectorAll('.story-image--portrait').forEach(portrait => portrait.classList.add('memory-portrait-motion'));
+
+  const lookbookSection = document.querySelector('.lookbook');
+  const lookbookItems = [...document.querySelectorAll('.lookbook-grid > .lookbook-item')];
+  let lookbookRaf = 0;
+  const updateLookbookFolio = () => {
+    lookbookRaf = 0;
+    if (!lookbookSection || !lookbookItems.length) return;
+    if (reduced) {
+      lookbookSection.classList.remove('folio-motion');
+      return;
+    }
+    lookbookSection.classList.add('folio-motion');
+    const compact = window.innerWidth <= 900 ? .55 : 1;
+    const directions = [-1, 1, -1, 1];
+    lookbookItems.forEach((item, index) => {
+      const rect = item.getBoundingClientRect();
+      const start = window.innerHeight * .99;
+      const finish = window.innerHeight * .32;
+      const raw = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
+      const staggered = Math.max(0, Math.min(1, (raw - index * .035) / (1 - index * .035)));
+      const progress = 1 - Math.pow(1 - staggered, 3);
+      const remaining = 1 - progress;
+      const direction = directions[index] || 1;
+      item.style.setProperty('--lookbook-card-y', `${(16 + index * 2) * remaining * compact}px`);
+      item.style.setProperty('--lookbook-card-r', `${direction * .35 * remaining * compact}deg`);
+      item.style.setProperty('--lookbook-art-y', `${(12 + index * 2) * remaining * compact}px`);
+      item.style.setProperty('--lookbook-art-r', `${direction * -.2 * remaining * compact}deg`);
+      item.style.setProperty('--lookbook-art-scale', (1.025 - progress * .025).toFixed(3));
+      item.style.setProperty('--lookbook-curtain', (1 - progress).toFixed(3));
+    });
+  };
+  if (lookbookSection && lookbookItems.length) {
+    updateLookbookFolio();
+    const requestLookbookUpdate = () => {
+      if (!lookbookRaf) lookbookRaf = requestAnimationFrame(updateLookbookFolio);
+    };
+    window.addEventListener('scroll', requestLookbookUpdate, { passive: true });
+    window.addEventListener('resize', requestLookbookUpdate, { passive: true });
+  }
+
+  const sharedAssetFrames = [...document.querySelectorAll('.design-card, .catalogue-piece')];
+  const orderHeroArt = document.querySelector('.order-hero-art');
+  let sharedAssetRaf = 0;
+  sharedAssetFrames.forEach(frame => frame.classList.add('asset-motion'));
+  orderHeroArt?.classList.add('asset-motion');
+  const updateSharedAssets = () => {
+    sharedAssetRaf = 0;
+    if (reduced) return;
+    sharedAssetFrames.forEach(frame => {
+      const rect = frame.getBoundingClientRect();
+      if (rect.bottom < -80 || rect.top > window.innerHeight + 80) return;
+      const centreDelta = rect.top + rect.height / 2 - window.innerHeight / 2;
+      const drift = Math.max(-18, Math.min(18, centreDelta * -.032));
+      frame.style.setProperty('--asset-scroll-y', `${drift}px`);
+    });
+    if (orderHeroArt) orderHeroArt.style.setProperty('--asset-scroll-y', `${Math.min(30, window.scrollY * .045)}px`);
+  };
+  if (sharedAssetFrames.length || orderHeroArt) {
+    updateSharedAssets();
+    const requestSharedAssetUpdate = () => {
+      if (!sharedAssetRaf) sharedAssetRaf = requestAnimationFrame(updateSharedAssets);
+    };
+    window.addEventListener('scroll', requestSharedAssetUpdate, { passive: true });
+    window.addEventListener('resize', requestSharedAssetUpdate, { passive: true });
+  }
+  if (!reduced && window.matchMedia('(pointer:fine)').matches) {
+    sharedAssetFrames.forEach(frame => {
+      frame.addEventListener('pointermove', event => {
+        const rect = frame.getBoundingClientRect();
+        frame.style.setProperty('--asset-x', `${((event.clientX - rect.left) / rect.width - .5) * 8}px`);
+        frame.style.setProperty('--asset-y', `${((event.clientY - rect.top) / rect.height - .5) * 8}px`);
+        frame.style.setProperty('--asset-spot-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+        frame.style.setProperty('--asset-spot-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+      });
+      frame.addEventListener('pointerleave', () => {
+        frame.style.setProperty('--asset-x', '0px');
+        frame.style.setProperty('--asset-y', '0px');
+      });
     });
   }
 
@@ -140,48 +255,6 @@
     window.addEventListener('scroll', () => {
       if (!processRaf) processRaf = requestAnimationFrame(updateProcess);
     }, { passive: true });
-  }
-
-  const collectionSection = document.querySelector('.collections');
-  const collectionGrid = document.querySelector('.collection-grid');
-  const collectionCards = [...document.querySelectorAll('.collection-grid > .collection-card')];
-  let collectionRaf = 0;
-  const updateCollectionFolio = () => {
-    collectionRaf = 0;
-    if (!collectionSection || !collectionGrid || !collectionCards.length) return;
-    if (reduced) {
-      collectionSection.classList.remove('folio-enabled');
-      return;
-    }
-    collectionSection.classList.add('folio-enabled');
-    const rect = collectionGrid.getBoundingClientRect();
-    const start = window.innerHeight * .82;
-    const finish = window.innerHeight * .12;
-    const rawProgress = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
-    const progress = 1 - Math.pow(1 - rawProgress, 3);
-    const remaining = 1 - progress;
-    const directions = [
-      { x: -7, y: 76, r: -3.2, art: 34 },
-      { x: 4, y: 118, r: 2.1, art: 48 },
-      { x: -4, y: 104, r: -1.8, art: 42 },
-      { x: 7, y: 68, r: 3, art: 30 }
-    ];
-    collectionCards.forEach((card, index) => {
-      const position = directions[index] || directions[0];
-      card.style.setProperty('--folio-x', `${position.x * remaining}%`);
-      card.style.setProperty('--folio-y', `${position.y * remaining}px`);
-      card.style.setProperty('--folio-r', `${position.r * remaining}deg`);
-      card.style.setProperty('--folio-art-y', `${position.art * remaining}px`);
-    });
-    collectionSection.style.setProperty('--folio-progress', `${progress * 100}%`);
-  };
-  if (collectionSection && collectionCards.length) {
-    updateCollectionFolio();
-    const requestCollectionUpdate = () => {
-      if (!collectionRaf) collectionRaf = requestAnimationFrame(updateCollectionFolio);
-    };
-    window.addEventListener('scroll', requestCollectionUpdate, { passive: true });
-    window.addEventListener('resize', requestCollectionUpdate, { passive: true });
   }
 
   const packageSection = document.querySelector('.packages');

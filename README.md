@@ -188,13 +188,22 @@ git pull        # before you start work
 git push        # when you stop
 ```
 
-**Deployment is git-connected.** Netlify builds from this repo with **base directory `_deploy`**, so
-pushing publishes. Do not drag-and-drop into Netlify any more — that is how the live site ended up
-serving an older hero (`hero-booklet.jpeg`) than the file in this repo.
+**Deployment is git-connected.** On the current `premium` branch, Netlify builds from the **repo
+root** with `npm run build` and publishes `dist`. `vite.config.js` already treats `_deploy` as the
+site source directory. Leave Netlify’s Base directory blank and do not use drag-and-drop deploys —
+that is how the live site previously ended up serving files older than the repository.
 
-## Not in Phase 1
+### Airtable enquiry setup
 
-Visual design and branding · the Webflow build · the Fillout form rebuild (Phase 2) · Google Business
-Profile setup · any change to the live site.
+The custom form posts to the Netlify function at `/.netlify/functions/enquiry`; Airtable credentials
+never appear in browser code. Configure these encrypted Netlify environment variables before the
+form goes live:
 
-> The live site has not been modified. This repository is read-only with respect to production.
+- `AIRTABLE_PAT` — a scoped Personal Access Token with record-write access.
+- `AIRTABLE_BASE_ID` — the destination base ID.
+- `AIRTABLE_TABLE_ID` — the destination table ID or exact table name.
+
+The Airtable table must contain the field names mapped in `netlify/functions/enquiry.mjs`. Referral,
+design, package and UTM values are carried through automatically.
+
+> Production remains unchanged until the Git-connected Netlify site is explicitly published.

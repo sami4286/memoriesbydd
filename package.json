@@ -1,1 +1,1 @@
-{"name":"memoriesbydd","private":true,"version":"1.0.0","type":"module","scripts":{"dev":"vite --host 127.0.0.1","build":"vite build","preview":"vite preview --host 127.0.0.1"},"devDependencies":{"@openai/sites-vite-plugin":"latest","vite":"latest"}}
+{"name":"memoriesbydd","private":true,"version":"1.0.0","type":"module","scripts":{"dev":"vite --host 127.0.0.1","build":"vite build","preview":"vite preview --host 127.0.0.1","qa":"node scripts/qa-site.mjs && vite build"},"devDependencies":{"@openai/sites-vite-plugin":"latest","vite":"latest"}}
