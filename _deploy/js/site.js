@@ -57,6 +57,25 @@
     reveals.forEach(el => observer.observe(el));
   }
 
+  // Supporting pages use the same restrained entrance language as the homepage.
+  // Content remains readable before JavaScript; motion only adds a short settling pass.
+  const softRevealTargets = [...document.querySelectorAll(
+    '.content-page .page-hero h1, .content-page .page-hero-copy, .content-page .page-lead > *, .content-page .editorial-card, .content-page .design-card, .content-page .catalogue-piece, .content-page .contact-list > *, .content-page .prose > *, .content-page .referral-grid article, .content-page .faq details, .content-page .page-cta-grid > *'
+  )].filter(el => !el.matches('.reveal, .reveal-image'));
+  softRevealTargets.forEach((el, index) => {
+    el.classList.add('soft-reveal');
+    el.style.setProperty('--soft-delay', `${(index % 3) * 55}ms`);
+  });
+  if (reduced || !('IntersectionObserver' in window)) softRevealTargets.forEach(el => el.classList.add('is-visible'));
+  else {
+    const softRevealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      softRevealObserver.unobserve(entry.target);
+    }), { threshold: .08, rootMargin: '0px 0px -5% 0px' });
+    softRevealTargets.forEach(el => softRevealObserver.observe(el));
+  }
+
   const motionSections = [...document.querySelectorAll('.manifesto, .story, .story-page, .collections, .lookbook, .packages, .assurance')];
   motionSections.forEach(section => section.classList.add('motion-section'));
   if (reduced || !('IntersectionObserver' in window)) motionSections.forEach(section => section.classList.add('is-inview'));
@@ -173,6 +192,7 @@
       item.style.setProperty('--lookbook-art-r', `${direction * -.2 * remaining * compact}deg`);
       item.style.setProperty('--lookbook-art-scale', (1.025 - progress * .025).toFixed(3));
       item.style.setProperty('--lookbook-curtain', (1 - progress).toFixed(3));
+      item.style.setProperty('--lookbook-progress', progress.toFixed(3));
     });
   };
   if (lookbookSection && lookbookItems.length) {

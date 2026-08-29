@@ -13,6 +13,26 @@ const optional = value => {
 };
 const airtableFormulaValue = value => String(value).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
 const line = (label, value) => optional(value) ? `${label}: ${text(value)}` : undefined;
+const notifyMake = async ({ recordId, reference }) => {
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL;
+  if (!webhookUrl) return;
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        event: 'website.enquiry.created',
+        source: 'memoriesbydd.com',
+        airtable_record_id: recordId,
+        reference
+      }),
+      signal: AbortSignal.timeout(3500)
+    });
+    if (!response.ok) console.error(`Make handoff failed (${response.status}). Airtable record ${recordId} remains safe.`);
+  } catch (error) {
+    console.error('Make handoff failed; Airtable record remains safe:', error instanceof Error ? error.message : error);
+  }
+};
 
 export default async request => {
   if (request.method !== 'POST') return json(405, { error: 'Method not allowed' });
@@ -104,6 +124,9 @@ export default async request => {
       console.error(`Airtable rejected enquiry (${airtable.status}): ${detail.slice(0, 500)}`);
       return json(502, { error: 'Enquiry could not be stored' });
     }
+    const stored = await airtable.json().catch(() => ({}));
+    const recordId = stored.records?.[0]?.id;
+    if (recordId) await notifyMake({ recordId, reference });
     return json(200, { ok: true });
   } catch (error) {
     console.error('Airtable request failed:', error instanceof Error ? error.message : error);

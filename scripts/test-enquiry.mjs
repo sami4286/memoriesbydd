@@ -65,4 +65,23 @@ globalThis.fetch = async (url, options = {}) => {
 assert.deepEqual(await status(await enquiry(request(submission))), { status: 200, body: { ok: true, duplicate: true } });
 assert.equal(calls.length, 1);
 
-console.log('Enquiry function: 10 assertions passed.');
+calls.length = 0;
+process.env.MAKE_WEBHOOK_URL = 'https://hook.example.test/memories';
+globalThis.fetch = async (url, options = {}) => {
+  calls.push({ url: String(url), options });
+  if (String(url) === process.env.MAKE_WEBHOOK_URL) return new Response('Accepted', { status: 200 });
+  return options.method === 'POST'
+    ? new Response(JSON.stringify({ records: [{ id: 'rec-make' }] }), { status: 200 })
+    : new Response(JSON.stringify({ records: [] }), { status: 200 });
+};
+assert.deepEqual(await status(await enquiry(request({ ...submission, memorial_name: 'Arthur James Cole' }))), { status: 200, body: { ok: true } });
+assert.equal(calls.length, 3);
+assert.equal(calls[2].url, process.env.MAKE_WEBHOOK_URL);
+assert.deepEqual(JSON.parse(calls[2].options.body), {
+  event: 'website.enquiry.created',
+  source: 'memoriesbydd.com',
+  airtable_record_id: 'rec-make',
+  reference: JSON.parse(calls[1].options.body).records[0].fields.Name
+});
+
+console.log('Enquiry function: 14 assertions passed.');

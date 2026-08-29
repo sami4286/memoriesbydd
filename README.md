@@ -228,4 +228,18 @@ form goes live:
 The Airtable table must contain the field names mapped in `netlify/functions/enquiry.mjs`. Referral,
 design, package and UTM values are carried through automatically.
 
+### Optional Make automation handoff
+
+Airtable is the system of record; Make is deliberately downstream so a Make outage can never lose a
+family's enquiry. Add `MAKE_WEBHOOK_URL` in Netlify only after creating a Make custom-webhook
+scenario. After Airtable confirms a new record, the function sends Make a minimal event containing
+the Airtable record ID and internal reference. Make can then fetch the full record with its own
+Airtable connection and run notifications or proof workflows. Duplicate submissions do not trigger
+the webhook, and a failed Make handoff is logged without turning a safely stored enquiry into a form
+error.
+
+Recommended Make scenario: **Custom webhook → Airtable/Get a record → Router**. Begin with a disabled
+test scenario, confirm one test record follows the intended route, then enable scheduling. Never put
+the Airtable personal access token or Make webhook URL in `_deploy` or other browser-delivered code.
+
 > Production remains unchanged until the Git-connected Netlify site is explicitly published.

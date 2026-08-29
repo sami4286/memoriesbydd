@@ -142,3 +142,56 @@ body .hero-media img{object-position:center center}body .hero-media::after{backg
 /* Final Section 01 balance — remove the hollow middle and centre the cover inscription. */
 .manifesto-grid{align-items:start}.manifesto-grid>.standard-aside{align-self:start}.manifesto-grid>div:first-of-type{padding-top:.2rem}.keepsake-cover>b,.keepsake-cover>small,.keepsake-cover>i{position:relative;z-index:5}.keepsake-cover small{width:88%;text-align:center;font-size:.76rem;line-height:1.18;color:#fff7e9;text-shadow:0 1px 12px rgba(0,0,0,.35)}.keepsake-cover i{margin-top:.15rem}
 @media(min-width:901px){.manifesto-grid>.standard-aside{margin-top:-1.2rem}.manifesto{padding-bottom:clamp(5.5rem,8vw,8rem)}}
+
+/* Section 04 v2 — a spacious, art-directed tribute archive worthy of the collection reveal above it. */
+.lookbook{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(circle at 88% 8%,rgba(180,135,82,.16),transparent 25%),radial-gradient(circle at 8% 86%,rgba(109,79,48,.09),transparent 29%),linear-gradient(145deg,#f2ece3 0%,#e6dccf 100%)}
+.lookbook::before{content:"Lives, remembered.";position:absolute;z-index:-1;right:-.035em;top:.2em;font-family:var(--serif);font-size:clamp(7rem,15vw,17rem);font-style:italic;line-height:.78;letter-spacing:-.065em;color:rgba(113,78,42,.055);pointer-events:none}
+.lookbook .lookbook-head{position:relative;padding-bottom:clamp(2rem,3.4vw,3.5rem);margin-bottom:clamp(2.2rem,4vw,4rem);border-bottom:1px solid rgba(23,23,19,.18)}
+.lookbook .lookbook-head::after{content:"04";position:absolute;right:0;bottom:-.38em;font-family:var(--serif);font-size:clamp(3.4rem,5vw,5.6rem);font-style:italic;color:rgba(155,113,63,.18)}
+.lookbook .lookbook-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(1rem,1.8vw,1.65rem);align-items:start}
+.lookbook .lookbook-item{position:relative;grid-column:span 6;min-width:0;margin:0!important;padding:clamp(.55rem,.9vw,.8rem);background:rgba(255,253,248,.4);border:1px solid rgba(23,23,19,.1);box-shadow:0 24px 70px rgba(69,49,28,.075);transition:box-shadow .7s var(--ease),border-color .55s var(--ease)}
+.lookbook .lookbook-item:nth-child(1),.lookbook .lookbook-item:nth-child(4){grid-column:span 7}
+.lookbook .lookbook-item:nth-child(2),.lookbook .lookbook-item:nth-child(3){grid-column:span 5}
+.lookbook .lookbook-item:hover{border-color:rgba(155,113,63,.35);box-shadow:0 36px 95px rgba(69,49,28,.13)}
+.lookbook .lookbook-item::before{position:absolute;z-index:5;right:1.1rem;top:1rem;font-family:var(--serif);font-size:clamp(1.5rem,2.1vw,2.25rem);font-style:italic;color:rgba(23,23,19,.34);pointer-events:none}
+.lookbook .lookbook-item:nth-child(1)::before{content:"01"}.lookbook .lookbook-item:nth-child(2)::before{content:"02"}.lookbook .lookbook-item:nth-child(3)::before{content:"03"}.lookbook .lookbook-item:nth-child(4)::before{content:"04"}
+.lookbook .lookbook-art{position:relative;aspect-ratio:1.28/1;padding:clamp(1.5rem,3vw,3rem) clamp(1rem,2vw,2rem) .65rem;border:1px solid rgba(23,23,19,.08);box-shadow:inset 0 0 0 7px rgba(255,253,248,.2);clip-path:inset(calc(var(--lookbook-curtain,0) * 3%) round 1px);transition:clip-path .18s linear,border-color .55s var(--ease)}
+.lookbook .lookbook-item:nth-child(2) .lookbook-art,.lookbook .lookbook-item:nth-child(3) .lookbook-art{aspect-ratio:1/1}
+.lookbook .lookbook-art::before{content:"Memories / one life / one design";left:1.05rem;top:1rem;opacity:calc(.34 + (1 - var(--lookbook-curtain,0)) * .45);color:rgba(23,23,19,.6)}
+.lookbook .lookbook-art::after{background:linear-gradient(150deg,#c9a16d 0%,#ad7d49 55%,#8c623a 100%);opacity:calc(var(--lookbook-curtain,0) * .96);box-shadow:inset 0 0 0 1px rgba(255,255,255,.24)}
+.lookbook .lookbook-art img,.lookbook .lookbook-art--barbados img,.lookbook .lookbook-art--angel img,.lookbook .lookbook-art--domino img,.lookbook .lookbook-art--godfather img{width:100%!important;height:100%!important;max-width:760px!important;max-height:100%!important;object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 22px 22px rgba(31,23,15,.2))!important}
+.lookbook .lookbook-item>div:last-child{position:relative;min-height:84px;padding:1.15rem .55rem .75rem;border-bottom:0;align-items:flex-end}
+.lookbook .lookbook-item>div:last-child::before{content:"";position:absolute;left:.55rem;right:.55rem;top:0;height:1px;background:linear-gradient(90deg,#a77a48 calc(var(--lookbook-progress,0) * 100%),rgba(23,23,19,.13) 0)}
+.lookbook .lookbook-item span{font-size:.55rem;letter-spacing:.16em}.lookbook .lookbook-item h3{font-size:clamp(1.85rem,2.7vw,3rem);font-weight:400;letter-spacing:-.035em}
+@media(max-width:900px){.lookbook .lookbook-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lookbook .lookbook-item:nth-child(n){grid-column:auto}.lookbook .lookbook-item:nth-child(n) .lookbook-art{aspect-ratio:1/1}.lookbook .lookbook-item>div:last-child{min-height:76px}}
+@media(max-width:540px){.lookbook::before{top:1.1em;font-size:6rem}.lookbook .lookbook-head::after{display:none}.lookbook .lookbook-grid{grid-template-columns:1fr;gap:1.15rem}.lookbook .lookbook-item{padding:.45rem}.lookbook .lookbook-item:nth-child(n) .lookbook-art{aspect-ratio:1.07/1;padding:1.45rem .55rem .35rem}.lookbook .lookbook-item>div:last-child{min-height:70px;padding:1rem .35rem .55rem}.lookbook .lookbook-item>div:last-child::before{left:.35rem;right:.35rem}.lookbook .lookbook-item h3{font-size:1.75rem}}
+
+/* Final mobile hardening — one predictable type and spacing system at phone widths. */
+@media(max-width:540px){
+  :root{--wrap:calc(100% - 28px)}
+  .wrap,.hero-inner,.hero-proof,.section-heading>*,.lookbook-head>*,.packages-head>*{min-width:0}
+  .display,.hero-title,.standard-title,.section-heading h2,.lookbook-head h2,.packages-head h2{overflow-wrap:normal;word-break:normal;text-wrap:balance}
+  .hero{min-height:max(880px,100svh)}
+  .hero-inner{padding-top:7.25rem;padding-bottom:13.25rem}
+  .hero .eyebrow{gap:.45rem;font-size:.49rem;letter-spacing:.11em;white-space:nowrap}
+  .hero .eyebrow i{width:12px;flex:0 0 12px}
+  .hero-title,.hero h1{font-size:clamp(3.05rem,15vw,4.15rem);line-height:.9;letter-spacing:-.05em}
+  .hero-copy{max-width:100%;font-size:.93rem;line-height:1.65}
+  .hero-actions{width:100%}.hero-actions .text-link{font-size:.64rem;letter-spacing:.065em}
+  .hero-proof{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:.35rem;align-items:start}
+  .hero-proof>div{display:block;min-width:0}.hero-proof strong{font-size:.9rem}.hero-proof span{max-width:none;font-size:.48rem;line-height:1.24;overflow-wrap:normal}
+  .memory-ribbon{padding:.82rem 0}.memory-ribbon span,.memory-ribbon em{font-size:1.3rem;margin-right:1.8rem}.memory-ribbon span::after{margin-left:1.8rem}
+  .display,.display--sm{font-size:clamp(2.9rem,13.8vw,4rem);line-height:.96;letter-spacing:-.045em}
+  .display.reveal{clip-path:none!important;transform:translateY(12px)!important;transition:transform .8s cubic-bezier(.16,1,.3,1)!important}.display.reveal.is-visible{transform:none!important}
+  .manifesto.motion-section .standard-title{font-size:clamp(2.9rem,13.5vw,4rem);line-height:.97}
+  .section-heading,.lookbook-head,.packages-head{gap:1.35rem;margin-bottom:2.6rem}
+  .process-list li.reveal{grid-template-columns:42px minmax(0,1fr);gap:1rem;padding:1.35rem .85rem}.process-list li.reveal:hover{padding:1.35rem .85rem}
+  .process-number{width:42px;height:42px}.process-list h3{font-size:1.65rem;line-height:1.06}.process-list p{line-height:1.55}
+  .package-card{padding:1.35rem}.assurance::before{top:.4em;font-size:5.8rem}.assurance-grid>.assurance-points{padding:0 1rem}
+  .assurance-path strong{font-size:1.38rem}.assurance-band strong{font-size:1.2rem}
+  .memory-finale{height:165svh}.memory-finale-copy{padding-block:6.5rem 5.5rem}.memory-finale-copy>.section-index{top:6.5rem}
+  .memory-echo span{font-size:clamp(2.45rem,11.5vw,3.55rem);line-height:.95}.memory-resolution{top:49%;max-width:100%}
+  .memory-resolution h2{font-size:clamp(2.75rem,12.5vw,3.9rem);line-height:.91}.memory-resolution>p{margin-top:1.2rem;font-size:.88rem;line-height:1.65}.memory-resolution .hero-actions{gap:1rem;margin-top:1.5rem}
+}
+@media(max-width:360px){:root{--wrap:calc(100% - 24px)}.hero .eyebrow{font-size:.46rem;letter-spacing:.075em}.hero-title,.hero h1{font-size:2.95rem}.hero-proof strong{font-size:.8rem}.hero-proof span{font-size:.43rem}.mobile-actions a{font-size:.58rem;letter-spacing:.055em}}
+@media(max-height:720px) and (max-width:540px){.hero{min-height:900px}.memory-finale-sticky{min-height:720px}}

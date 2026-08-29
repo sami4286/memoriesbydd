@@ -42,6 +42,12 @@ for (const file of htmlFiles) {
   if ((source.match(/<h1\b/gi) || []).length !== 1) errors.push(`${page}: expected exactly one h1`);
   if (!/<main\b/i.test(source)) errors.push(`${page}: missing main landmark`);
   if (!/<a\b[^>]*\bclass=["'][^"']*skip-link/i.test(source)) errors.push(`${page}: missing keyboard skip link`);
+  if (/refinements\.css/i.test(source) && (!/family=Hanken\+Grotesk/i.test(source) || !/family=Newsreader/i.test(source))) {
+    errors.push(`${page}: shared CSS fonts are not both requested, which can change wrapping between routes`);
+  }
+  if (page === 'prices/index.html' && !/class=["']price-scroll["']/i.test(source)) {
+    errors.push(`${page}: price comparison needs its mobile scroll region`);
+  }
 
   const canonical = source.match(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']/i)?.[1];
   if (!canonical) warnings.push(`${page}: missing canonical URL`);
