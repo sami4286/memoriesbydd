@@ -142,6 +142,48 @@
     }, { passive: true });
   }
 
+  const collectionSection = document.querySelector('.collections');
+  const collectionGrid = document.querySelector('.collection-grid');
+  const collectionCards = [...document.querySelectorAll('.collection-grid > .collection-card')];
+  let collectionRaf = 0;
+  const updateCollectionFolio = () => {
+    collectionRaf = 0;
+    if (!collectionSection || !collectionGrid || !collectionCards.length) return;
+    if (reduced) {
+      collectionSection.classList.remove('folio-enabled');
+      return;
+    }
+    collectionSection.classList.add('folio-enabled');
+    const rect = collectionGrid.getBoundingClientRect();
+    const start = window.innerHeight * .82;
+    const finish = window.innerHeight * .12;
+    const rawProgress = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
+    const progress = 1 - Math.pow(1 - rawProgress, 3);
+    const remaining = 1 - progress;
+    const directions = [
+      { x: -7, y: 76, r: -3.2, art: 34 },
+      { x: 4, y: 118, r: 2.1, art: 48 },
+      { x: -4, y: 104, r: -1.8, art: 42 },
+      { x: 7, y: 68, r: 3, art: 30 }
+    ];
+    collectionCards.forEach((card, index) => {
+      const position = directions[index] || directions[0];
+      card.style.setProperty('--folio-x', `${position.x * remaining}%`);
+      card.style.setProperty('--folio-y', `${position.y * remaining}px`);
+      card.style.setProperty('--folio-r', `${position.r * remaining}deg`);
+      card.style.setProperty('--folio-art-y', `${position.art * remaining}px`);
+    });
+    collectionSection.style.setProperty('--folio-progress', `${progress * 100}%`);
+  };
+  if (collectionSection && collectionCards.length) {
+    updateCollectionFolio();
+    const requestCollectionUpdate = () => {
+      if (!collectionRaf) collectionRaf = requestAnimationFrame(updateCollectionFolio);
+    };
+    window.addEventListener('scroll', requestCollectionUpdate, { passive: true });
+    window.addEventListener('resize', requestCollectionUpdate, { passive: true });
+  }
+
   const packageSection = document.querySelector('.packages');
   const packageGrid = document.querySelector('.package-grid');
   const packageCards = [...document.querySelectorAll('.package-grid > .package-card')];
@@ -156,8 +198,8 @@
     }
     packageSection.classList.add('deck-enabled');
     const rect = packageGrid.getBoundingClientRect();
-    const start = window.innerHeight * .94;
-    const finish = window.innerHeight * .3;
+    const start = window.innerHeight * .78;
+    const finish = window.innerHeight * .08;
     const rawProgress = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
     const progress = rawProgress * rawProgress * (3 - 2 * rawProgress);
     const close = 1 - progress;

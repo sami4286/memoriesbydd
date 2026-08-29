@@ -37,3 +37,17 @@ body .hero-media img{object-position:center center}body .hero-media::after{backg
 .collection-art{z-index:1!important;opacity:1!important;visibility:visible!important}.collection-card::after{z-index:2!important}.collection-card::before{z-index:3!important}.collection-no,.collection-meta,.collection-arrow{z-index:4!important}
 .assurance-grid{grid-template-columns:minmax(0,1.1fr) minmax(330px,.75fr);gap:clamp(3rem,8vw,8rem);align-items:start}.assurance-grid>.section-index{grid-column:1/-1;margin-bottom:1.5rem}.assurance-grid>.display{grid-column:1;max-width:850px}.assurance-grid>.assurance-points{grid-column:2}
 @media(max-width:900px){.manifesto-grid,.story-grid,.assurance-grid{grid-template-columns:1fr}.manifesto-grid>.section-index,.manifesto-grid>div,.manifesto-grid>.body-copy,.assurance-grid>.section-index,.assurance-grid>.display,.assurance-grid>.assurance-points{grid-column:1}.story-grid{gap:3.5rem}.manifesto-grid>.body-copy{max-width:620px}}
+
+/* Section-specific transforms stay free to animate after the content safety pass. */
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){
+  .collections.folio-enabled .collection-grid{perspective:1600px}
+  .collections.folio-enabled .collection-grid::before{content:"";position:absolute;left:0;right:0;top:-1.2rem;height:1px;background:linear-gradient(90deg,var(--gold) var(--folio-progress,0%),rgba(255,253,248,.13) var(--folio-progress,0%));opacity:.8}
+  .collections.folio-enabled .collection-card.reveal{transform:translate3d(var(--folio-x,0),var(--folio-y,0),0) rotate(var(--folio-r,0deg))!important;transform-origin:50% 16%;will-change:transform}
+  .collections.folio-enabled .collection-art{transform:translate3d(0,var(--folio-art-y,0),0);will-change:transform}
+  .packages.deck-enabled .package-card.reveal{transform:translate3d(var(--deck-x,0),var(--deck-y,0),0) rotate(var(--deck-r,0deg))!important;opacity:1!important;will-change:transform}
+  .packages.deck-enabled .package-card.reveal:hover{transform:translate3d(var(--deck-x,0),calc(var(--deck-y,0px) - 7px),0) rotate(var(--deck-r,0deg)) scale(1.012)!important}
+}
+@media(max-width:900px) and (prefers-reduced-motion:no-preference){
+  .packages .package-card.reveal{opacity:1!important;transform:translateY(34px) scale(.985)!important;transition:transform .85s var(--ease) var(--delay,0ms),border-color .35s ease}
+  .packages .package-card.reveal.is-visible{transform:none!important}
+}
