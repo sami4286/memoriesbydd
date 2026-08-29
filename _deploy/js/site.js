@@ -175,7 +175,7 @@
       return;
     }
     lookbookSection.classList.add('folio-motion');
-    const compact = window.innerWidth <= 900 ? .55 : 1;
+    const compact = window.innerWidth <= 620 ? .52 : window.innerWidth <= 900 ? .74 : 1;
     const directions = [-1, 1, -1, 1];
     lookbookItems.forEach((item, index) => {
       const rect = item.getBoundingClientRect();
@@ -186,11 +186,12 @@
       const progress = 1 - Math.pow(1 - staggered, 3);
       const remaining = 1 - progress;
       const direction = directions[index] || 1;
-      item.style.setProperty('--lookbook-card-y', `${(16 + index * 2) * remaining * compact}px`);
-      item.style.setProperty('--lookbook-card-r', `${direction * .35 * remaining * compact}deg`);
-      item.style.setProperty('--lookbook-art-y', `${(12 + index * 2) * remaining * compact}px`);
-      item.style.setProperty('--lookbook-art-r', `${direction * -.2 * remaining * compact}deg`);
-      item.style.setProperty('--lookbook-art-scale', (1.025 - progress * .025).toFixed(3));
+      item.style.setProperty('--lookbook-card-y', `${24 * remaining * compact}px`);
+      item.style.setProperty('--lookbook-card-r', '0deg');
+      item.style.setProperty('--lookbook-art-x', `${direction * (46 + index * 3) * remaining * compact}px`);
+      item.style.setProperty('--lookbook-art-y', `${8 * remaining * compact}px`);
+      item.style.setProperty('--lookbook-art-r', '0deg');
+      item.style.setProperty('--lookbook-art-scale', (.96 + progress * .04).toFixed(3));
       item.style.setProperty('--lookbook-curtain', (1 - progress).toFixed(3));
       item.style.setProperty('--lookbook-progress', progress.toFixed(3));
     });
