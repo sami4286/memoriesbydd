@@ -370,4 +370,34 @@ html,body{overflow-x:clip}body{font-size:18px}
 @media(max-width:900px){.hero-motion{width:220px;right:2rem;top:19%}.collection-reel{justify-self:start}.section-heading{grid-template-columns:1fr}.contact-icon{width:54px;height:54px}.site-nav a{font-size:1.3rem}.process-list li.reveal>div{opacity:1;transform:none}.footer-contact-icons{justify-self:start}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid address{grid-column:1/-1}}
 @media(max-width:540px){body{font-size:18px}.hero-inner{padding-top:7.2rem;padding-bottom:13rem}.hero-title,.hero h1{font-size:clamp(3rem,13.7vw,4rem);line-height:.94}.hero-cinema{left:0;-webkit-mask-image:none;mask-image:none}.hero-cinema video{object-position:68% center;filter:saturate(.7) sepia(.07) contrast(1.08) brightness(.7)}.hero-cinema::after{background:linear-gradient(90deg,rgba(8,8,6,.94),rgba(8,8,6,.57)),linear-gradient(0deg,rgba(8,8,6,.9),transparent 54%)}.hero-copy{font-size:1.125rem}.hero-actions{gap:1rem;margin-top:1.4rem}.hero-actions .button{width:100%;gap:1rem}.hero-actions>div:first-child{width:100%}.hero-proof{padding:.8rem 0 1rem}.hero-proof strong{font-size:1.35rem}.hero-proof span{font-size:1rem;line-height:1.2}.display,.display--sm,.manifesto.motion-section .standard-title{font-size:clamp(2.65rem,11.8vw,3.55rem);line-height:1}.story-copy .display{font-size:clamp(2.55rem,11.3vw,3.35rem)}.memory-resolution h2{font-size:clamp(2.7rem,11.8vw,3.6rem)}.collection-reel{max-width:100%}.footer .footer-bottom{font-size:1.125rem}.footer-grid{grid-template-columns:1fr}.footer-grid address{grid-column:auto}.mobile-actions .contact-icon{width:auto;height:auto;border-radius:0;border:0!important}}
 @media(prefers-reduced-motion:reduce){.hero-cinema video,.collection-reel video{display:none}.hero-cinema{background:url('/img/hero-memorial-v3.webp') center/cover no-repeat}.collection-reel{background:url('/img/jamaica.png') center/contain no-repeat;min-height:260px}.process-list li.reveal>div{opacity:1;transform:none}}
+
+/* Cinematic double exposure: a memory passes through the moving portrait like
+   light through glass. The layer is deliberately faint so grief stays human. */
+.hero-cinema{isolation:isolate}
+.hero-cinema video{position:absolute;z-index:0;inset:0}
+.hero-cinema::before{content:"";position:absolute;z-index:1;inset:-4% -3% -4% 31%;background:url('/img/hero-memorial-v3.webp') 57% center/cover no-repeat;opacity:.07;mix-blend-mode:screen;filter:grayscale(1) sepia(.25) contrast(1.15) brightness(.72);-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 30%,#000 86%,transparent);transform:translate3d(-1.2%,0,0) scale(1.035);animation:cinemaMemoryDrift 13s ease-in-out infinite;pointer-events:none}
+.hero-cinema::after{z-index:2}
+@keyframes cinemaMemoryDrift{0%,100%{opacity:.055;transform:translate3d(-1.2%,0,0) scale(1.035)}42%{opacity:.12;transform:translate3d(1.1%,-.45%,0) scale(1.018)}72%{opacity:.075;transform:translate3d(.3%,.35%,0) scale(1.028)}}
+
+/* A slight three-dimensional grammar site-wide: depth is conveyed by layered
+   light and perspective, while reading and form surfaces remain still. */
+.collection-grid,.lookbook-grid,.package-grid,.editorial-grid,.catalogue-wall,.design-gallery,.catalogue-strip,.partner-profiles,.design-views-grid{perspective:1700px;perspective-origin:50% 42%}
+:where(.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.partner-mark,.design-view){transform-style:preserve-3d;backface-visibility:hidden}
+:where(.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.partner-mark,.design-view)::after{transform:translateZ(1px)}
+:where(.collection-meta,.lookbook-item>span,.package-top,.catalogue-card-copy,.design-card>span,.design-card>h3,.design-card>i,.editorial-card>span,.editorial-card>h3,.editorial-card>p,.editorial-card>a){transform:translateZ(18px)}
+.partner-mark,.design-view{box-shadow:0 28px 75px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,253,248,.055)}
+@media(hover:hover) and (pointer:fine){
+  .content-page .editorial-card:hover{transform:translate3d(0,-5px,12px) rotateX(.35deg)}
+  .partner-profile:hover .partner-mark{transform:translate3d(0,-4px,12px) rotateX(.45deg)}
+  .design-view:hover{transform:translate3d(0,-5px,10px) rotateX(.35deg);box-shadow:0 38px 95px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,253,248,.08)}
+}
+
+/* A delayed water/wind wake follows the pointer without replacing the native
+   cursor or intercepting a single click. */
+.cursor-wake{position:fixed;z-index:9998;left:0;top:0;width:180px;height:180px;pointer-events:none;opacity:var(--wake-opacity,0);transform-origin:50% 50%;filter:blur(5px);mix-blend-mode:screen;will-change:transform,opacity}
+.cursor-wake::before{content:"";position:absolute;inset:26px;border:1px solid rgba(222,190,145,.22);border-radius:50%;background:radial-gradient(ellipse at center,rgba(216,183,135,.075),rgba(181,136,80,.025) 42%,transparent 72%);box-shadow:0 0 30px rgba(196,154,99,.07),inset 0 0 18px rgba(255,253,248,.045);transform:rotate(var(--wake-angle,0deg)) scaleX(var(--wake-stretch,1));transition:transform .1s linear}
+.cursor-wake::after{content:"";position:absolute;inset:49px;border:1px solid rgba(255,253,248,.1);border-radius:50%;box-shadow:0 0 24px rgba(220,184,132,.05)}
+
+@media(max-width:540px){.hero-cinema::before{inset:-2% -18% -2% 28%;opacity:.05;-webkit-mask-image:linear-gradient(90deg,transparent,#000 34%,#000);mask-image:linear-gradient(90deg,transparent,#000 34%,#000)}}
+@media(pointer:coarse),(prefers-reduced-motion:reduce){.cursor-wake{display:none}.hero-cinema::before{display:none}:where(.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.partner-mark,.design-view){transform-style:flat}}
 .is-clickable{cursor:pointer}.is-clickable:focus-within{outline:3px solid #e7c28b;outline-offset:4px}
