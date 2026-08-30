@@ -70,7 +70,7 @@
   // Supporting pages use the same restrained entrance language as the homepage.
   // Content remains readable before JavaScript; motion only adds a short settling pass.
   const softRevealTargets = [...document.querySelectorAll(
-    '.content-page .page-hero h1, .content-page .page-hero-copy, .content-page .page-lead > *, .content-page .editorial-card, .content-page .design-card, .content-page .catalogue-piece, .content-page .contact-list > *, .content-page .prose > *, .content-page .referral-grid article, .content-page .faq details, .content-page .page-cta-grid > *'
+    '.content-page .page-hero h1, .content-page .page-hero-copy, .content-page .page-lead > *, .content-page .editorial-card, .content-page .design-card, .content-page .catalogue-piece, .content-page .catalogue-card, .content-page .design-view, .content-page .contact-list > *, .content-page .prose > *, .content-page .referral-grid article, .content-page .faq details, .content-page .page-cta-grid > *'
   )].filter(el => !el.matches('.reveal, .reveal-image'));
   softRevealTargets.forEach((el, index) => {
     el.classList.add('soft-reveal');
@@ -268,6 +268,8 @@
     let closest = Infinity;
     processItems.forEach((item, index) => {
       const rect = item.getBoundingClientRect();
+      const itemProgress = Math.max(0, Math.min(1, (window.innerHeight * .9 - rect.top) / (window.innerHeight * .42 + rect.height)));
+      item.style.setProperty('--step-progress', itemProgress.toFixed(3));
       const distance = Math.abs(rect.top + rect.height / 2 - centre);
       if (distance < closest) {
         closest = distance;
@@ -299,8 +301,8 @@
     }
     packageSection.classList.add('deck-enabled');
     const rect = packageGrid.getBoundingClientRect();
-    const start = window.innerHeight * .78;
-    const finish = window.innerHeight * .08;
+    const start = window.innerHeight * .96;
+    const finish = window.innerHeight * .38;
     const rawProgress = Math.max(0, Math.min(1, (start - rect.top) / (start - finish)));
     const progress = rawProgress * rawProgress * (3 - 2 * rawProgress);
     const close = 1 - progress;
@@ -324,6 +326,36 @@
     window.addEventListener('scroll', requestDeckUpdate, { passive: true });
     window.addEventListener('resize', requestDeckUpdate, { passive: true });
   }
+
+  const filterButtons = [...document.querySelectorAll('[data-design-filter]')];
+  const designCards = [...document.querySelectorAll('[data-design-card]')];
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.designFilter;
+    filterButtons.forEach(item => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    designCards.forEach(card => {
+      const shown = filter === 'all' || card.dataset.category === filter;
+      card.hidden = !shown;
+    });
+  }));
+  if (filterButtons.length) {
+    const requestedCollection = new URLSearchParams(location.search).get('collection');
+    const requestedButton = filterButtons.find(button => button.dataset.designFilter === requestedCollection);
+    requestedButton?.click();
+  }
+
+  const clickableCards = [...document.querySelectorAll('.collection-card, .catalogue-card, .design-card, .catalogue-piece, .package-card, .editorial-card, .lookbook-item')]
+    .filter(card => card.querySelector('a[href]'));
+  clickableCards.forEach(card => {
+    card.classList.add('is-clickable');
+    card.addEventListener('click', event => {
+      if (event.target.closest('a,button,input,select,textarea,summary')) return;
+      card.querySelector('a[href]')?.click();
+    });
+  });
 
   const memoryFinale = document.querySelector('[data-memory-finale]');
   const memoryLines = [...document.querySelectorAll('.memory-echo > span')];

@@ -175,6 +175,10 @@
   .order-page .tribute-form{padding:1.8rem .8rem}.order-page .form-step legend{font-size:2.4rem}.order-concierge{padding:1.2rem}
 }
 
+/* The order journey follows the site-wide 18px readability floor. */
+.order-page .order-scroll,.order-concierge-top,.order-concierge li small,.order-page .order-contact>p,.order-page .order-contact a span,.order-flow-intro>p:last-child,.order-page .order-aside>.order-aside-label,.order-page .order-progress-label,.order-step-list li>span,.order-step-list li small,.order-step-list li b,.order-safety p,.order-page .form-step legend>span,.order-page .form-step legend>small,.order-page .field label,.order-page .field-label,.order-page .field input,.order-page .field select,.order-page .field textarea,.order-page .field>small,.order-page .choice-grid span small,.order-page .check-grid span small,.order-page .form-actions>p,.order-page .form-success-actions a,.order-trust p,.order-page .order-lead,.order-page b,.order-page strong,.order-page i{font-size:1.125rem!important}
+@media(max-width:540px){.order-step-list li b,.order-page .form-step legend>small,.order-page .order-lead,.order-flow-intro>p:last-child{font-size:1.125rem}.order-step-list{grid-template-columns:1fr}.order-step-list li{grid-template-columns:auto 1fr;text-align:left}.order-step-list li>span{margin:0}}
+
 /* Dark ceremonial intake — visually continuous with the site, calm under stress. */
 .order-page{background:#11110e;color:#f4eee4}
 .order-page .site-header.is-scrolled{color:#f4eee4}

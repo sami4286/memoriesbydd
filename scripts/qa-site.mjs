@@ -31,6 +31,8 @@ const localTarget = (source, value) => {
 };
 
 const canonicalOwners = new Map();
+const shellHeaders = new Map();
+const shellFooters = new Map();
 
 for (const file of htmlFiles) {
   const source = readFileSync(file, 'utf8');
@@ -38,11 +40,14 @@ for (const file of htmlFiles) {
   if (!/^<!doctype html>/i.test(source.trimStart())) errors.push(`${page}: missing HTML5 doctype`);
   if (!/<html\b[^>]*\blang=["'][^"']+["']/i.test(source)) errors.push(`${page}: missing document language`);
   if (!/<meta\b[^>]*\bname=["']viewport["']/i.test(source)) errors.push(`${page}: missing viewport meta`);
-  if (!/<meta\b[^>]*\bname=["']description["'][^>]*\bcontent=["'][^"']{40,}["']/i.test(source)) warnings.push(`${page}: description is missing or unusually short`);
+  const description = source.match(/<meta\b[^>]*\bname=["']description["'][^>]*\bcontent=(["'])(.*?)\1/i)?.[2];
+  if (!description || description.length < 40) warnings.push(`${page}: description is missing or unusually short`);
   if ((source.match(/<title\b/gi) || []).length !== 1) errors.push(`${page}: expected exactly one title`);
   if ((source.match(/<h1\b/gi) || []).length !== 1) errors.push(`${page}: expected exactly one h1`);
   if (!/<main\b/i.test(source)) errors.push(`${page}: missing main landmark`);
   if (!/<a\b[^>]*\bclass=["'][^"']*skip-link/i.test(source)) errors.push(`${page}: missing keyboard skip link`);
+  const visibleText = source.replace(/<script\b[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
+  if (/\b(?:0800\s*023\s*6263|07552\s*916\s*060|WhatsApp)\b/i.test(visibleText)) errors.push(`${page}: phone and messaging contact must be represented by an accessible icon, not visible contact text`);
   if (/refinements\.css/i.test(source) && (!/family=Hanken\+Grotesk/i.test(source) || !/family=Newsreader/i.test(source))) {
     errors.push(`${page}: shared CSS fonts are not both requested, which can change wrapping between routes`);
   }
@@ -60,6 +65,10 @@ for (const file of htmlFiles) {
       errors.push(`${page}: menu control must expose aria-expanded and aria-controls`);
     }
   }
+  const sharedHeader = source.match(/<header class="site-header"[\s\S]*?<\/header>/i)?.[0];
+  const sharedFooter = source.match(/<footer class="footer"[\s\S]*?<\/footer>/i)?.[0];
+  if (sharedHeader) shellHeaders.set(page, sharedHeader);
+  if (sharedFooter) shellFooters.set(page, sharedFooter);
 
   const canonical = source.match(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']/i)?.[1];
   if (!canonical) warnings.push(`${page}: missing canonical URL`);
@@ -100,6 +109,21 @@ for (const file of htmlFiles) {
   }
 }
 
+const distinctHeaders = new Set(shellHeaders.values());
+const distinctFooters = new Set(shellFooters.values());
+if (distinctHeaders.size > 1) errors.push(`shared navigation differs across pages (${distinctHeaders.size} variants)`);
+if (distinctFooters.size > 1) errors.push(`shared footer differs across pages (${distinctFooters.size} variants)`);
+
+const designManifestPath = resolve('_catalogue/designs.json');
+if (existsSync(designManifestPath)) {
+  const designs = JSON.parse(readFileSync(designManifestPath, 'utf8'));
+  if (designs.length !== 40) errors.push(`catalogue must contain all 40 archived designs, found ${designs.length}`);
+  for (const design of designs) {
+    if (!existsSync(join(root, 'designs', design.slug, 'index.html'))) errors.push(`missing design detail route: ${design.slug}`);
+    for (const image of design.images || []) if (!existsSync(join(root, image.src.replace(/^\//, '')))) errors.push(`missing design image: ${image.src}`);
+  }
+}
+
 for (const file of cssFiles) {
   const source = readFileSync(file, 'utf8');
   const page = label(file);
@@ -124,9 +148,9 @@ if (/\b(?:AIRTABLE_PAT|AIRTABLE_BASE_ID|AIRTABLE_TABLE_ID|MAKE_WEBHOOK_URL)\b/.t
   errors.push('public bundle references a server-side environment variable');
 }
 if (!/:focus-visible\b/.test(publicSource)) errors.push('shared UI is missing a visible keyboard focus treatment');
-if (!/\.footer \.footer-bottom[\s\S]*?font-size:\.75rem/.test(publicSource)
+if (!/\.footer \.footer-bottom[\s\S]*?font-size:1\.125rem/.test(publicSource)
   || !/\.footer \.footer-bottom span[\s\S]*?color:#aaa79f/.test(publicSource)) {
-  errors.push('footer metadata must retain its 12px high-contrast accessibility treatment');
+  errors.push('footer metadata must retain its 18px high-contrast accessibility treatment');
 }
 
 const netlifySource = readFileSync(resolve('netlify.toml'), 'utf8');

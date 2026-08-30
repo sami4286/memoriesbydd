@@ -1,0 +1,85 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve(import.meta.dirname, '..');
+const deploy = path.join(root, '_deploy');
+const designs = JSON.parse(fs.readFileSync(path.join(root, '_catalogue/designs.json'), 'utf8'));
+const esc = value => String(value ?? '').replace(/[&<>\"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[character]);
+const phoneIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.5 10 7.8 8.3 9.6c.9 2.1 2.5 3.7 4.6 4.6l1.8-1.7 4.3 2.8-.7 3.3c-.2 1-1.2 1.8-2.3 1.7C9.3 19.7 4.2 14.5 3.6 7.9c-.1-1.1.6-2.1 1.7-2.3l1.9-.4Z"/></svg>';
+const messageIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.6a8 8 0 0 1-11.8 7l-4.2 1.1 1.1-4a8 8 0 1 1 14.9-4.1Z"/><path d="M8.4 8.1c.5 2.8 2.7 5 5.5 5.5"/></svg>';
+const designPrinciples = {
+  'Caribbean & African': ['heritage-led colour', 'layered photographic rhythm', 'identity carried through every page'],
+  Football: ['club colour used with restraint', 'strong match-day geometry', 'portrait kept at the centre'],
+  Classic: ['a quiet neutral palette', 'measured editorial spacing', 'photography allowed to lead'],
+  Standard: ['an expressive colour story', 'soft layered composition', 'flexibility for faith and ceremony']
+};
+
+const premiumDescription = design => {
+  const descriptions = {
+    Classic: `${design.name} uses restrained typography, calm spacing and a neutral visual rhythm so photographs and words remain the focus. The composition is adapted around the order of service, readings and memories your family wants to preserve.`,
+    'Caribbean & African': `${design.name} carries heritage and family identity through considered colour, photography and place-led details. Every page is reshaped around the person being remembered, from the cover portrait to the final reading.`,
+    Football: `${design.name} brings club colour and match-day character into a respectful memorial composition. Photography, wording and page rhythm are balanced carefully so the person—not the theme—always remains at the centre.`,
+    Standard: `${design.name} is an expressive memorial booklet direction designed to hold photographs, hymns, readings and service details with clarity. Colour, wording and composition are refined around the character of the person being remembered.`
+  };
+  return descriptions[design.category] ?? descriptions.Standard;
+};
+
+const displaySize = value => String(value ?? 'A5 · 210 × 148 mm')
+  .replace(/^A5\s*/i, 'A5 · ')
+  .replace(/\s*x\s*/i, ' × ')
+  .replace(/mm$/i, ' mm');
+
+const displayPhotos = value => String(value ?? 'Photography arranged around the service')
+  .replace(/(\d+)gallery/gi, '$1 gallery')
+  .replace(/Photos?/gi, 'photos')
+  .replace(/Individual/gi, 'individual')
+  .replace(/\b1 individual photos\b/gi, '1 individual photo')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const head = ({ title, description, canonical, image }) => `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#11110e"><meta property="og:type" content="website"><meta property="og:site_name" content="Memories by DD"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}">${image ? `<meta property="og:image" content="https://memoriesbydd.com${image}">` : ''}<link rel="icon" href="/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&amp;display=swap" rel="stylesheet"><link rel="stylesheet" href="/css/site.css"><link rel="stylesheet" href="/css/refinements.css"><link rel="stylesheet" href="/css/pages.css"></head>`;
+
+const header = () => `<a class="skip-link" href="#main">Skip to content</a><header class="site-header" data-header><div class="nav-shell"><a class="brand brand--gold" href="/"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name"><b>Memories</b><small>by DD · Funeral Booklets</small></span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle><span></span><span></span><span></span><i>Menu</i></button><nav class="site-nav" id="site-nav" aria-label="Main navigation" data-nav><a href="/designs/">Designs</a><a href="/how-it-works/">How it works</a><a href="/prices/">Prices</a><a href="/tributes/">Our story</a><a class="nav-phone contact-icon" href="tel:08000236263" aria-label="Call Memories BY DD">${phoneIcon}</a><a class="nav-cta" href="/order.html">Create a funeral booklet <span>↗</span></a></nav></div></header>`;
+
+const footer = () => `<footer class="footer"><div class="wrap"><div class="footer-top"><a class="footer-brand" href="/"><img src="/img/logo.png" alt="Memories by DD" width="246" height="246"></a><p>Funeral booklets and tributes, made with care in London and delivered throughout the UK.</p><div class="footer-contact-icons"><a class="contact-icon" href="tel:08000236263" aria-label="Call Memories BY DD">${phoneIcon}</a><a class="contact-icon" href="https://wa.me/447552916060" aria-label="Message Memories BY DD">${messageIcon}</a></div></div><div class="footer-grid"><div><h3>Explore</h3><a href="/designs/">Designs</a><a href="/how-it-works/">How it works</a><a href="/prices/">Prices</a><a href="/hymns-and-resources/">Hymns &amp; resources</a><a href="/tributes/">Our story</a></div><div><h3>Studio</h3><a href="/contact/">Contact</a><a href="mailto:info@memoriesbydd.com">Email us</a><a href="/partners/">For funeral directors</a><a href="/order.html">Create a funeral order of service</a></div><address><h3>London</h3>Stanmore Place<br>Stanmore Innovation Centre<br>Howard Rd, London HA7 1BT</address></div><div class="footer-bottom"><span>© 2026 Memories by DD</span><span>Nationwide UK delivery</span><a href="/privacy-policy/">Privacy</a></div></div></footer><div class="mobile-actions" aria-label="Quick actions"><a class="contact-icon" href="tel:08000236263" aria-label="Call Memories BY DD">${phoneIcon}</a><a class="contact-icon" href="https://wa.me/447552916060" aria-label="Message Memories BY DD">${messageIcon}</a><a href="/order.html">Create</a></div><script type="module" src="/js/site.js"></script>`;
+
+const card = (design, index) => `<article class="catalogue-card reveal" data-design-card data-category="${esc(design.category)}" style="--design-color:${esc(design.color)}"><a href="/designs/${design.slug}/" aria-label="Explore the ${esc(design.name)} memorial design"><div class="catalogue-card-art"><figure class="catalogue-card-main"><img src="${design.images[0].src}" alt="${esc(design.name)} funeral booklet and memorial stationery design" width="${design.images[0].width}" height="${design.images[0].height}" loading="lazy" decoding="async"></figure><div class="catalogue-card-fragments">${design.images.slice(1, 3).map((image, detailIndex) => `<figure><img src="${image.src}" alt="${esc(design.name)} ${detailIndex === 0 ? 'page composition' : 'typographic detail'}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async"></figure>`).join('')}</div></div><div class="catalogue-card-copy"><span>${String(index + 1).padStart(2, '0')} · ${esc(design.category)}</span><h2>${esc(design.name)}</h2><i aria-hidden="true">↗</i></div></a></article>`;
+
+const cataloguePreview = [designs[33], designs[0], designs[35], designs[19]].map((design, index) => `<figure style="--preview-color:${esc(design.color)};--preview-delay:${index * 90}ms"><img src="${design.images[0].src}" alt="" width="${design.images[0].width}" height="${design.images[0].height}" ${index ? 'loading="lazy"' : 'fetchpriority="high"'}></figure>`).join('');
+const catalogue = `${head({ title: 'Funeral Booklet Designs | 40 Personal Memorial Templates', description: 'Explore all 40 Memories by DD funeral booklet designs, from Caribbean heritage and football tributes to quiet classic and floral collections.', canonical: 'https://memoriesbydd.com/designs/', image: designs[0]?.images[0]?.src })}<body class="content-page catalogue-page">${header()}<main id="main"><section class="catalogue-hero"><div class="wrap catalogue-hero-grid"><div><p class="section-index section-index--light">The complete collection · 40 designs</p><h1>A starting point for something entirely <em>theirs.</em></h1><p>Every design is reshaped around the photographs, colours, faith, heritage and details that made the person recognisable. Choose a direction—not a fixed template.</p></div><div class="catalogue-index-preview" aria-hidden="true">${cataloguePreview}</div></div></section><section class="catalogue-browser" aria-labelledby="catalogue-title"><div class="wrap"><div class="catalogue-intro"><h2 id="catalogue-title">The design <em>archive.</em></h2><p>Each specimen shows the cover and two details from inside. Open any card to see the complete composition, options and personalisation process.</p></div><div class="catalogue-filters" role="group" aria-label="Filter designs by collection"><button class="is-active" type="button" data-design-filter="all" aria-pressed="true">All designs</button>${['Caribbean & African','Classic','Football','Standard'].map(category => `<button type="button" data-design-filter="${esc(category)}" aria-pressed="false">${esc(category)}</button>`).join('')}</div><div class="catalogue-wall">${designs.map(card).join('')}</div></div></section></main><section class="page-cta"><div class="wrap page-cta-grid"><h2>Found a direction—or want us to choose with you?</h2><a class="button" href="/order.html">Create a funeral order of service <span>↗</span></a></div></section>${footer()}</body></html>`;
+fs.mkdirSync(path.join(deploy, 'designs'), { recursive: true });
+fs.writeFileSync(path.join(deploy, 'designs/index.html'), catalogue);
+
+for (const [index, design] of designs.entries()) {
+  const previous = designs[(index - 1 + designs.length) % designs.length];
+  const next = designs[(index + 1) % designs.length];
+  const principles = designPrinciples[design.category] ?? designPrinciples.Standard;
+  const description = premiumDescription(design);
+  const size = displaySize(design.size);
+  const photoAllowance = displayPhotos(design.photoAllowance);
+  const anatomy = `<aside class="design-anatomy wrap" style="--design-color:${esc(design.color)}" aria-labelledby="design-anatomy-${index}"><div class="design-anatomy-heading"><p class="design-anatomy-label">// Under the cover</p><h2 id="design-anatomy-${index}">Why <em>${esc(design.name)}</em> feels like itself.</h2><p>A good memorial design should never announce the mechanics. It should quietly make every photograph, name and reading feel as though it belongs.</p></div><dl class="design-anatomy-code"><div><dt>palette</dt><dd><i aria-hidden="true"></i>${esc(principles[0])}</dd></div><div><dt>rhythm</dt><dd>${esc(principles[1])}</dd></div><div><dt>frame</dt><dd>${esc(size)}</dd></div><div><dt>photographs</dt><dd>${esc(photoAllowance)}</dd></div><div><dt>purpose</dt><dd>${esc(principles[2])}</dd></div></dl><p class="design-anatomy-note">Details recede · the person remains · nothing feels templated</p></aside>`;
+  const views = design.images.slice(1).map((image, viewIndex) => `<figure class="design-view"><img src="${image.src}" alt="${esc(design.name)} design detail ${viewIndex + 1}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async"><figcaption>${viewIndex === 0 ? 'Booklet composition' : viewIndex === 1 ? 'Typography and photographic detail' : 'A closer view of the design language'}</figcaption></figure>`).join('');
+  const html = `${head({ title: `${design.name} Funeral Booklet Design | Memories by DD`, description: `${description} Explore the ${design.name} memorial booklet, its details, personalisation and proof process.`, canonical: `https://memoriesbydd.com/designs/${design.slug}/`, image: design.images[0].src })}<body class="content-page design-detail-page">${header()}<main id="main"><article><header class="design-detail-hero" style="--design-color:${esc(design.color)}"><div class="wrap design-detail-grid"><div class="design-detail-copy"><p class="section-index section-index--light">${String(index + 1).padStart(2, '0')} / 40 · ${esc(design.category)}</p><h1>${esc(design.name)}</h1><p>${esc(description)}</p><a class="button button--gold" href="/order.html?design=${design.slug}">Start with this design <span>↗</span></a></div><div class="design-detail-art"><img src="${design.images[0].src}" alt="${esc(design.name)} funeral booklet and memorial stationery design" width="${design.images[0].width}" height="${design.images[0].height}" fetchpriority="high"></div></div></header><section class="page-section design-spec-section"><div class="wrap"><div class="design-specs"><div><span>Format</span><strong>${esc(size)}</strong></div><div><span>Photography</span><strong>${esc(photoAllowance)}</strong></div><div><span>Made for</span><strong>Funeral, cremation or memorial service</strong></div><div><span>Proof</span><strong>First digital proof in 24–48 hours</strong></div></div></div></section>${views ? `<section class="design-views"><div class="wrap"><div class="catalogue-intro"><h2>Look closer.</h2><p>The design is a beginning. Names, photographs, colours, wording and page count are composed around your family’s material.</p></div><div class="design-views-grid">${views}</div></div></section>` : ''}<section class="page-section"><div class="wrap design-story-grid"><p class="section-index">Made personal</p><div><h2>No two final booklets leave the studio the same.</h2><p>We adjust the cover, photographic rhythm, typography, service order and smaller details until the tribute feels specific to the person. You see the complete digital proof and can request changes before anything is printed.</p><a class="text-link text-link--light" href="/how-it-works/">See how the process works <span>→</span></a></div></div></section><nav class="design-pagination wrap" aria-label="Browse adjacent designs"><a href="/designs/${previous.slug}/"><span>Previous design</span><strong>← ${esc(previous.name)}</strong></a><a href="/designs/">All 40 designs</a><a href="/designs/${next.slug}/"><span>Next design</span><strong>${esc(next.name)} →</strong></a></nav></article></main>${footer()}</body></html>`;
+  const directory = path.join(deploy, 'designs', design.slug);
+  fs.mkdirSync(directory, { recursive: true });
+  const themedHtml = html
+    .replace('<body class="content-page design-detail-page">', `<body class="content-page design-detail-page" data-design-theme="${esc(design.category)}" data-design="${design.slug}">`)
+    .replace('</section><section class="design-views">', `</section>${anatomy}<section class="design-views">`)
+    .replace('Start with this design', 'Create this funeral booklet');
+  fs.writeFileSync(path.join(directory, 'index.html'), themedHtml);
+}
+
+const sitemapPages = [
+  ['/', 'weekly', '1.0'], ['/designs/', 'weekly', '0.9'], ['/how-it-works/', 'monthly', '0.8'],
+  ['/prices/', 'monthly', '0.8'], ['/hymns-and-resources/', 'weekly', '0.8'],
+  ['/hymns-and-resources/funeral-arrangements/', 'monthly', '0.7'], ['/hymns-and-resources/hymns/', 'monthly', '0.7'],
+  ['/hymns-and-resources/poems-and-readings/', 'monthly', '0.7'], ['/tributes/', 'yearly', '0.7'],
+  ['/partners/', 'monthly', '0.7'], ['/contact/', 'yearly', '0.6'], ['/privacy-policy/', 'yearly', '0.2']
+];
+const urls = [
+  ...sitemapPages.map(([url, frequency, priority]) => `  <url><loc>https://memoriesbydd.com${url}</loc><changefreq>${frequency}</changefreq><priority>${priority}</priority></url>`),
+  ...designs.map(design => `  <url><loc>https://memoriesbydd.com/designs/${design.slug}/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`)
+];
+fs.writeFileSync(path.join(deploy, 'public', 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
+
+console.log(`Generated one catalogue and ${designs.length} design detail pages.`);
