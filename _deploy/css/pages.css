@@ -247,3 +247,29 @@
 
 @media(max-width:900px){.design-orbit-stage{inset:15% 0 33%}.design-orbit-tile{width:clamp(390px,64vw,530px)}.design-orbit-hud{top:6rem;grid-template-columns:1fr auto}.catalogue-page .catalogue-hero-copy{grid-template-columns:1fr;gap:.6rem}.catalogue-page .catalogue-hero-copy>p{max-width:560px}.design-views--theatre>.wrap{display:block}.design-views--theatre .design-views-intro{position:relative;top:auto;margin-bottom:3rem}.design-views--theatre .design-views-intro::after{display:none}}
 @media(max-width:560px){.catalogue-page .catalogue-hero{min-height:180svh!important}.design-orbit-stage{inset:15% 0 47%}.design-orbit-tile{left:50%;top:48%;width:270px;aspect-ratio:1.28;border-radius:9px}.design-orbit-floor{left:-48%;right:-48%;top:39%;height:48%;background-size:50px 42px}.design-orbit-hud{top:5.2rem;left:1rem;right:1rem}.design-orbit-status{gap:.35rem}.design-orbit-status span{font-size:1rem}.design-orbit-status strong{display:block;max-width:135px;font-size:1.22rem}.design-orbit-controls button{width:42px;height:42px}.catalogue-page .catalogue-hero-copy{bottom:6.2rem;width:calc(100% - 2rem)}.catalogue-page .catalogue-hero-copy h1{font-size:2.68rem;line-height:.95}.catalogue-page .catalogue-hero-copy>p{display:none}.catalogue-page .catalogue-hero-copy .section-index{font-size:1rem!important}}
+
+/* Memorial gallery v3 — a quiet three-panel room. Page scrolling is native;
+   the archive responds only to drag, swipe, buttons and arrow keys. */
+.catalogue-page .catalogue-hero{min-height:100svh!important;background:#070706!important;overflow:clip}
+.catalogue-page .design-orbit{height:100svh;touch-action:pan-y;background:radial-gradient(ellipse 38% 35% at 50% 47%,rgba(190,143,82,.14),transparent 78%),linear-gradient(180deg,#070706,#0b0b09 72%,#070706)!important}
+.catalogue-page .design-orbit-stage{inset:17% 0 27%}
+.catalogue-page .design-orbit-tile:nth-child(4n+1),.catalogue-page .catalogue-card:nth-child(4n+1){--mount-color:#164327}
+.catalogue-page .design-orbit-tile:nth-child(4n+2),.catalogue-page .catalogue-card:nth-child(4n+2){--mount-color:#d9c9b1}
+.catalogue-page .design-orbit-tile:nth-child(4n+3),.catalogue-page .catalogue-card:nth-child(4n+3){--mount-color:#6e171a}
+.catalogue-page .design-orbit-tile:nth-child(4n),.catalogue-page .catalogue-card:nth-child(4n){--mount-color:#bca896}
+.catalogue-page .design-orbit-tile{width:clamp(470px,38vw,680px);aspect-ratio:1.5;border:0!important;border-radius:2px;background:var(--mount-color)!important;box-shadow:0 48px 110px rgba(0,0,0,.48)!important;-webkit-user-drag:none}
+.catalogue-page .design-orbit-art{padding:0!important;background:var(--mount-color)!important}
+.catalogue-page .design-orbit-art img{width:78%!important;height:74%!important;max-width:78%!important;max-height:74%!important;padding:0!important;object-fit:contain!important;transform:none!important;translate:none!important;scale:1!important;-webkit-user-drag:none;user-select:none}
+.catalogue-page .design-orbit-art::after{background:linear-gradient(180deg,rgba(7,7,5,.58),transparent 38%)!important}
+.catalogue-page .design-orbit-meta{top:1.15rem!important;bottom:auto!important;align-items:start!important;opacity:.22}
+.catalogue-page .design-orbit-tile.is-near .design-orbit-meta{opacity:1}
+.catalogue-page .design-orbit-floor{opacity:.06!important}
+.catalogue-page .catalogue-hero-copy{bottom:2rem}
+.catalogue-page .catalogue-card{background:var(--mount-color)!important}
+.catalogue-page .catalogue-card-art{padding:0!important;gap:0!important;background:var(--mount-color)!important}
+.catalogue-page .catalogue-card-main,.catalogue-page .catalogue-card-fragments figure{border:0!important;background:transparent!important}
+.catalogue-page .catalogue-card-main img{width:86%!important;height:84%!important;max-width:86%!important;max-height:84%!important;padding:0!important;object-fit:contain!important}
+.catalogue-page .catalogue-card-fragments img{width:78%!important;height:76%!important;max-width:78%!important;max-height:76%!important;padding:0!important;object-fit:contain!important}
+.catalogue-page .catalogue-card:hover img{transform:none!important}
+@media(max-width:900px){.catalogue-page .design-orbit-stage{inset:17% 0 34%}.catalogue-page .design-orbit-tile{width:clamp(340px,62vw,510px)}}
+@media(max-width:560px){.catalogue-page .catalogue-hero{min-height:100svh!important}.catalogue-page .design-orbit-stage{inset:16% 0 45%}.catalogue-page .design-orbit-tile{width:min(78vw,304px);aspect-ratio:1.34}.catalogue-page .design-orbit-hud{top:5.25rem}.catalogue-page .catalogue-hero-copy{bottom:1.6rem}.catalogue-page .design-orbit-art img{width:82%!important;height:76%!important;max-width:82%!important;max-height:76%!important}}

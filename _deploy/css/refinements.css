@@ -356,6 +356,7 @@ html,body{overflow-x:clip}body{font-size:18px}
 
 /* Purposeful icon contact system; numbers remain available to assistive technology and tap targets. */
 .contact-icon{width:52px;height:52px;display:inline-grid!important;place-items:center!important;flex:0 0 52px;border:1px solid rgba(228,201,159,.42);border-radius:50%;padding:0!important;color:#e4c99f;transition:background .35s var(--ease),color .35s var(--ease),transform .35s var(--ease)}.contact-icon::after{display:none!important}.contact-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.contact-icon:hover{background:#c49a63;color:#11110e;transform:translateY(-3px)}.site-header.is-scrolled .contact-icon{border-color:rgba(155,113,63,.45);color:#956a38}.contact-icon--hero{border-color:rgba(255,253,248,.45);color:#fffdf8}.footer-contact-icons{display:flex;gap:.75rem;justify-self:end;align-self:center}.cta-reassurance{display:block;margin-top:.65rem;color:rgba(255,253,248,.7);line-height:1.4}.hero-actions>div:first-child{display:grid}
+.contact-icon--whatsapp,.footer .contact-icon--whatsapp{background:#25d366!important;border-color:#25d366!important;color:#fff!important}.contact-icon--whatsapp:hover{background:#1fba59!important;border-color:#1fba59!important;color:#fff!important}.contact-icon--whatsapp svg{stroke-width:1.65}
 
 /* A quiet motion portrait replaces the technical 1:1 badge. */
 .hero-motion{position:absolute;z-index:3;right:clamp(2rem,5vw,6rem);top:20%;width:min(27vw,380px);margin:0;padding:.5rem;background:rgba(14,14,11,.54);border:1px solid rgba(228,201,159,.28);box-shadow:0 30px 90px rgba(0,0,0,.38);backdrop-filter:blur(8px);transform:rotate(1.8deg)}.hero-motion::after{content:"";position:absolute;inset:.85rem;border:1px solid rgba(255,253,248,.25);pointer-events:none}.hero-motion video{width:100%;aspect-ratio:720/470;object-fit:cover;filter:saturate(.72) sepia(.08) contrast(1.05);background:#171713}.hero-motion figcaption{padding:.65rem .3rem .25rem;color:rgba(255,253,248,.8);font-family:var(--serif);font-style:italic}.collection-reel{position:relative;max-width:390px;justify-self:end;background:#181713;border:1px solid rgba(228,201,159,.18);padding:.45rem}.collection-reel video{width:100%;aspect-ratio:16/10;object-fit:cover;filter:saturate(.82) contrast(1.04)}.collection-reel a{display:flex;justify-content:space-between;padding:.7rem;color:#f4eee4}.collection-reel span{color:#d8b782}.memory-ribbon span,.memory-ribbon em{font-size:clamp(1.5rem,2.2vw,2.25rem)}
@@ -402,3 +403,37 @@ html,body{overflow-x:clip}body{font-size:18px}
 @media(max-width:540px){.hero-cinema::before{inset:-2% -18% -2% 28%;opacity:.05;-webkit-mask-image:linear-gradient(90deg,transparent,#000 34%,#000);mask-image:linear-gradient(90deg,transparent,#000 34%,#000)}}
 @media(pointer:coarse),(prefers-reduced-motion:reduce){.flow-refraction,.flow-contact{display:none}.flow-surface img{translate:none!important}.hero-cinema::before{display:none}:where(.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.partner-mark,.design-view){transform-style:flat}}
 .is-clickable{cursor:pointer}.is-clickable:focus-within{outline:3px solid #e7c28b;outline-offset:4px}
+
+/* Homepage section 04 is a self-contained folio. Keep its artwork and copy
+   inside the card at every width; archive rules must never leak into it. */
+.lookbook .lookbook-item,.lookbook .lookbook-art,.lookbook .lookbook-item>div:last-child{min-width:0;max-width:100%}
+.lookbook .lookbook-art{width:100%;overflow:hidden}
+.lookbook .lookbook-art img{width:88%!important;height:86%!important;max-width:88%!important;max-height:86%!important;object-fit:contain!important;padding:0!important}
+@media(max-width:620px){
+  .lookbook .lookbook-grid{width:100%;overflow:hidden}
+  .lookbook .lookbook-item,.lookbook .lookbook-item:nth-child(n){width:100%;max-width:100%}
+  .lookbook .lookbook-art,.lookbook .lookbook-item:nth-child(n) .lookbook-art{width:100%!important;max-width:100%!important;aspect-ratio:1.08/1!important;padding:1rem .45rem .25rem!important}
+  .lookbook .lookbook-art img{width:84%!important;height:82%!important;max-width:84%!important;max-height:82%!important}
+  .lookbook .lookbook-item h3{max-width:10ch;font-size:clamp(2.45rem,10vw,3.25rem)!important;line-height:.92!important;text-wrap:balance}
+  .lookbook .lookbook-item p{max-width:30ch;margin-bottom:1.1rem!important;line-height:1.55!important}
+}
+
+/* Spatial depth for supporting pages, with typography left untouched. */
+.content-page .page-hero{isolation:isolate;overflow:hidden;perspective:1400px}
+.content-page .page-hero::after{content:"";position:absolute;z-index:-1;left:-12%;right:-12%;top:52%;height:70%;background-image:linear-gradient(rgba(205,166,110,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(205,166,110,.07) 1px,transparent 1px);background-size:72px 54px;transform:perspective(760px) rotateX(68deg);transform-origin:50% 0;mask-image:linear-gradient(#000,transparent 74%);opacity:.22;pointer-events:none}
+.content-page .page-hero-grid{transform-style:preserve-3d}
+.content-page .page-hero-grid>h1{transform:translateZ(34px)}
+.content-page .page-hero-grid>.section-index{transform:translateZ(56px)}
+.content-page .page-hero-grid>.page-hero-copy{transform:translateZ(18px)}
+.content-page :where(.editorial-card,.resource-card,.partner-profile,.faq details,.contact-list>*){transition:transform .65s cubic-bezier(.16,1,.3,1),background .65s cubic-bezier(.16,1,.3,1)}
+@media(hover:hover) and (pointer:fine){.content-page :where(.editorial-card,.resource-card,.partner-profile,.faq details,.contact-list>*):hover{transform:translate3d(0,-6px,18px)}}
+@media(pointer:coarse),(prefers-reduced-motion:reduce){.content-page .page-hero-grid>*,.content-page :where(.editorial-card,.resource-card,.partner-profile,.faq details,.contact-list>*){transform:none!important}.content-page .page-hero::after{opacity:.12}}
+
+@media(max-width:620px){
+  .section-index,.eyebrow,.collection-no,.collection-meta p,.lookbook-item span,.process-list small,.package-top>span,.package-badge,.assurance-points span,.assurance-band span,.editorial-card>span,.contact-list span,.referral-grid article>span,.hero-proof span,.hero-proof a{font-size:16px!important}
+  .wrap{min-width:0;max-width:calc(100vw - 28px)!important}
+  .process-list li,.process-list li.reveal{grid-template-columns:44px minmax(0,1fr)!important;gap:1rem!important;min-width:0;padding-inline:0!important}
+  .process-list li>div{min-width:0}.process-list li>i{display:none!important}
+  .assurance-grid,.assurance-lead,.assurance-points,.assurance-band,.lookbook-head,.section-heading{min-width:0;width:100%;max-width:100%}
+  :where(h1,h2,h3,p,li,summary,a,span,strong){overflow-wrap:break-word}
+}

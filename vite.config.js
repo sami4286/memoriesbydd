@@ -18,6 +18,7 @@ export default defineConfig({
         order: page('order.html'),
         'designs/index': page('designs/index.html'),
         'how-it-works/index': page('how-it-works/index.html'),
+        'faqs/index': page('faqs/index.html'),
         'prices/index': page('prices/index.html'),
         'resources/index': page('hymns-and-resources/index.html'),
         'resources/funeral-arrangements/index': page('hymns-and-resources/funeral-arrangements/index.html'),

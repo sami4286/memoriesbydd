@@ -341,8 +341,8 @@
   }
 
   // The memorial archive is one continuous bowed scene rather than a
-  // cover-flow stack. It never auto-plays: drag, horizontal wheel, keyboard
-  // and page scroll all move the same inertial camera.
+  // cover-flow stack. It never auto-plays and never intercepts page scroll:
+  // drag, swipe, arrow buttons and keyboard move its inertial camera.
   const designOrbit = document.querySelector('[data-design-orbit]');
   const orbitTiles = [...document.querySelectorAll('[data-design-orbit-tile]')];
   if (designOrbit && orbitTiles.length) {
@@ -351,7 +351,6 @@
     const orbitCount = designOrbit.querySelector('[data-design-orbit-count]');
     const orbitName = designOrbit.querySelector('[data-design-orbit-name]');
     const orbitProgress = designOrbit.querySelector('[data-design-orbit-progress]');
-    const orbitHero = designOrbit.closest('.catalogue-hero');
     let position = 0;
     let targetPosition = 0;
     let velocity = 0;
@@ -370,7 +369,6 @@
     let cameraY = 0;
     let cameraTargetX = 0;
     let cameraTargetY = 0;
-    let scrollOffset = 0;
     let activeIndex = -1;
     let activeUntil = performance.now() + 1200;
 
@@ -416,20 +414,20 @@
       cameraY += (cameraTargetY - cameraY) * Math.min(1, elapsed * .007);
       const compact = window.innerWidth <= 560;
       const tileGap = spacing();
-      const visibleLimit = compact ? 1.75 : 3.2;
+      const visibleLimit = compact ? 1.28 : 1.72;
       orbitTiles.forEach((tile, index) => {
         const relative = signedDistance(index, position);
         const distance = Math.abs(relative);
         const visible = distance < visibleLimit;
         const curve = Math.pow(distance, 1.28);
-        const x = relative * tileGap + cameraX * Math.max(.12, 1 - distance * .2);
-        const y = curve * (compact ? 9 : 15) + cameraY * Math.max(.15, 1 - distance * .24);
-        const z = 46 - distance * (compact ? 76 : 96);
-        const rotateY = Math.max(-54, Math.min(54, relative * -13.5 - cameraX * .018));
+        const x = relative * tileGap * (compact ? .82 : .78) + cameraX * Math.max(.12, 1 - distance * .2);
+        const y = curve * (compact ? 18 : 42) + cameraY * Math.max(.15, 1 - distance * .24);
+        const z = 54 - distance * (compact ? 128 : 178);
+        const rotateY = Math.max(-48, Math.min(48, relative * -18 - cameraX * .018));
         const rotateX = Math.max(-2.5, Math.min(2.5, cameraY * -.035));
-        const scale = 1 - Math.min(compact ? .12 : .16, distance * .035);
+        const scale = 1 - Math.min(compact ? .14 : .2, distance * (compact ? .12 : .18));
         tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${z.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        tile.style.opacity = visible ? String(Math.max(.2, 1 - Math.max(0, distance - 1.2) * .24)) : '0';
+        tile.style.opacity = visible ? String(Math.max(.34, 1 - distance * .46)) : '0';
         tile.style.pointerEvents = distance < .78 ? 'auto' : 'none';
         tile.style.zIndex = String(Math.max(1, 60 - Math.round(distance * 9)));
         tile.tabIndex = distance < .54 ? 0 : -1;
@@ -480,6 +478,7 @@
       designOrbit.setPointerCapture?.(event.pointerId);
       wakeOrbit(1800);
     });
+    designOrbit.addEventListener('dragstart', event => event.preventDefault());
     designOrbit.addEventListener('pointermove', event => {
       const rect = designOrbit.getBoundingClientRect();
       cameraTargetX = ((event.clientX - rect.left) / rect.width - .5) * (window.innerWidth <= 560 ? 4 : 12);
@@ -518,24 +517,6 @@
       event.preventDefault();
       moveOrbit(event.key === 'ArrowLeft' ? -1 : 1);
     });
-    designOrbit.addEventListener('wheel', event => {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * .9) return;
-      event.preventDefault();
-      targetPosition += event.deltaX / spacing();
-      wakeOrbit(1200);
-    }, { passive: false });
-
-    const updateOrbitFromScroll = () => {
-      if (!orbitHero || reduced) return;
-      const rect = orbitHero.getBoundingClientRect();
-      const travel = Math.max(1, orbitHero.offsetHeight - window.innerHeight);
-      const progress = Math.max(0, Math.min(1, -rect.top / travel));
-      const nextOffset = progress * 3.4;
-      targetPosition += nextOffset - scrollOffset;
-      scrollOffset = nextOffset;
-      wakeOrbit(520);
-    };
-    window.addEventListener('scroll', updateOrbitFromScroll, { passive: true });
     window.addEventListener('resize', () => wakeOrbit(900), { passive: true });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
@@ -683,49 +664,6 @@
       if (!flowScrollFrame) flowScrollFrame = requestAnimationFrame(updateFlowScroll);
     }, { passive: true });
     updateFlowScroll();
-  }
-
-  // A small wheel integrator gives fine-pointer devices continuous, damped
-  // movement without replacing touch, keyboard or reduced-motion scrolling.
-  if (!reduced && window.matchMedia('(pointer:fine)').matches) {
-    let smoothPosition = window.scrollY;
-    let smoothTarget = smoothPosition;
-    let smoothFrame = 0;
-    let smoothLastTime = performance.now();
-    const runSmoothScroll = time => {
-      smoothFrame = 0;
-      const elapsed = Math.min(34, Math.max(0, time - smoothLastTime));
-      smoothLastTime = time;
-      const ease = 1 - Math.pow(.82, elapsed / 16.67);
-      smoothPosition += (smoothTarget - smoothPosition) * ease;
-      window.scrollTo(0, smoothPosition);
-      if (Math.abs(smoothTarget - smoothPosition) > .35) smoothFrame = requestAnimationFrame(runSmoothScroll);
-      else {
-        smoothPosition = smoothTarget;
-        window.scrollTo(0, smoothTarget);
-      }
-    };
-    window.addEventListener('wheel', event => {
-      if (event.defaultPrevented || event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
-      const nativeScroller = event.target.closest?.('.price-scroll,.catalogue-filters,textarea,select,[data-native-scroll]');
-      if (nativeScroller) return;
-      event.preventDefault();
-      const scale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-      const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      smoothPosition = smoothFrame ? smoothPosition : window.scrollY;
-      smoothTarget = Math.max(0, Math.min(max, smoothTarget + event.deltaY * scale));
-      // Keep one continuous time base while wheel events are streaming in.
-      // Resetting it for every trackpad event creates tiny zero-delta frames.
-      if (!smoothFrame) {
-        smoothLastTime = performance.now();
-        smoothFrame = requestAnimationFrame(runSmoothScroll);
-      }
-    }, { passive: false });
-    window.addEventListener('scroll', () => {
-      if (smoothFrame) return;
-      smoothPosition = window.scrollY;
-      smoothTarget = smoothPosition;
-    }, { passive: true });
   }
 
   document.addEventListener('click', event => {

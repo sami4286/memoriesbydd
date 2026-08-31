@@ -1,0 +1,242 @@
+/*
+  Spatial direction 2026
+  A single, quiet exhibition system: dark space, editorial type, uncropped
+  artwork and movement that comes from the page rather than decorative UI.
+*/
+:root{
+  --void:#070706;
+  --void-soft:#0d0d0b;
+  --ivory:#f3eee5;
+  --ivory-muted:rgba(243,238,229,.68);
+  --bronze:#cda66e;
+  --hairline:rgba(243,238,229,.14);
+  --wrap:min(94vw,1680px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+html{scroll-behavior:smooth;background:var(--void)}
+body{background:var(--void);color:var(--ivory);font-size:18px}
+body::before{
+  content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 16% 8%,rgba(139,92,48,.10),transparent 30%),
+    radial-gradient(circle at 84% 54%,rgba(85,57,31,.08),transparent 31%),
+    linear-gradient(180deg,#070706,#0d0d0b 48%,#070706);
+}
+main{overflow:clip}
+.wrap,.nav-shell{width:var(--wrap)}
+
+/* One navigation system on every page. */
+.site-header,.site-header.is-scrolled{
+  color:var(--ivory);background:rgba(7,7,6,.76);
+  border-bottom:1px solid var(--hairline);box-shadow:none;
+  backdrop-filter:blur(18px) saturate(120%);
+}
+.site-header::before{content:"";position:absolute;inset:0 auto 0 0;width:18%;background:linear-gradient(90deg,rgba(205,166,110,.05),transparent);pointer-events:none}
+.brand-mark{border-color:rgba(205,166,110,.52)!important;color:var(--bronze)!important;background:transparent!important}
+.brand-name b,.brand-name small{color:var(--ivory)!important}
+.site-nav>a:not(.nav-cta){color:var(--ivory-muted)}
+.site-nav>a:hover{color:var(--ivory)}
+.nav-cta{border-color:var(--hairline)!important;background:rgba(255,255,255,.025);color:var(--ivory)}
+
+/* Sections no longer read as separate boxed templates. */
+:where(.story,.lookbook,.process,.assurance,.collections,.packages,.page-section,.resource-section,.partner-section,.catalogue-browser){
+  position:relative;background:transparent!important;color:var(--ivory)!important;
+  border:0!important;
+}
+:where(.story,.lookbook,.process,.assurance,.collections,.packages,.page-section,.resource-section,.partner-section,.catalogue-browser)::before{
+  content:"";position:absolute;top:0;left:3vw;right:3vw;height:1px;
+  background:linear-gradient(90deg,transparent,var(--hairline) 18%,var(--hairline) 82%,transparent);
+}
+:where(.display,.section-heading h2,.lookbook-head h2,.packages-head h2,.page-section h2,.page-hero h1,.catalogue-intro h2){
+  color:var(--ivory);font-weight:300;letter-spacing:-.045em;text-wrap:balance;
+}
+:where(.body-copy,.section-heading p,.lookbook p,.process p,.assurance p,.page-section p){color:var(--ivory-muted)!important}
+.section-index{color:var(--bronze)!important}
+
+/* Product artwork is always shown whole. Cropping is reserved for portraits. */
+:where(.shared-asset-card,.catalogue-card-main,.catalogue-card-fragments figure,.design-orbit-art,.design-detail-art,.design-view-media,.design-pagination-art){
+  overflow:hidden;background:color-mix(in srgb,var(--design-color,#806b52) 26%,#11110e)!important;
+}
+:where(.shared-asset-card,.catalogue-card-main,.catalogue-card-fragments figure,.design-orbit-art,.design-detail-art,.design-view-media,.design-pagination-art) img{
+  width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+  object-fit:contain!important;object-position:center!important;transform:none!important;
+  translate:none!important;scale:1!important;padding:clamp(.55rem,1.25vw,1.25rem)!important;
+  filter:drop-shadow(0 20px 28px rgba(0,0,0,.26))!important;
+}
+:where(.catalogue-card,.design-view):hover img{transform:scale(1.018)!important}
+
+/* Homepage collection mounts keep their original section-03 composition. */
+.collections .collection-card{border:0!important}
+.collections .collection-card::before{display:none!important}
+.collections .collection-art{background:transparent!important}
+
+/* The archive becomes a compact cinematic index after the opening scene. */
+.catalogue-page .catalogue-hero{min-height:100svh!important;background:var(--void)!important}
+.design-orbit{background:
+  radial-gradient(ellipse 54% 42% at 50% 40%,rgba(151,100,52,.18),transparent 72%),
+  linear-gradient(180deg,#070706,#0b0b09 72%,#070706)!important;
+}
+.design-orbit::after{
+  content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#070706 0%,transparent 18%,transparent 82%,#070706 100%);
+}
+.design-orbit-stage,.design-orbit-hud,.catalogue-hero-copy{z-index:2}
+.design-orbit-tile:nth-child(4n+1),.catalogue-card:nth-child(4n+1){--mount-color:#164327}
+.design-orbit-tile:nth-child(4n+2),.catalogue-card:nth-child(4n+2){--mount-color:#d9c9b1}
+.design-orbit-tile:nth-child(4n+3),.catalogue-card:nth-child(4n+3){--mount-color:#6e171a}
+.design-orbit-tile:nth-child(4n),.catalogue-card:nth-child(4n){--mount-color:#bca896}
+.design-orbit-tile{
+  border:0!important;border-radius:2px!important;background:var(--mount-color)!important;
+  box-shadow:0 34px 90px rgba(0,0,0,.38)!important;
+}
+.design-orbit-art{padding:0!important;background:var(--mount-color)!important}
+.design-orbit-art img{
+  width:84%!important;height:82%!important;max-width:84%!important;max-height:82%!important;
+  padding:0!important;object-fit:contain!important;scale:1!important;
+}
+.design-orbit-art::after{background:linear-gradient(180deg,rgba(7,7,5,.58),transparent 38%)!important}
+.design-orbit-meta{top:1.05rem!important;bottom:auto!important;align-items:start!important}
+.design-orbit-floor{opacity:.10!important}
+.catalogue-page .catalogue-hero-copy h1{font-size:clamp(3.2rem,5vw,6.4rem)!important;max-width:800px!important;line-height:.88!important}
+
+.catalogue-page .catalogue-browser{padding:clamp(5rem,9vw,10rem) 0}
+.catalogue-page .catalogue-wall{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}
+.catalogue-page .catalogue-card,.catalogue-page .catalogue-card>a{min-height:360px!important}
+.catalogue-page .catalogue-card{border:0!important;background:var(--mount-color)!important;box-shadow:none!important}
+.catalogue-page .catalogue-card>a{grid-template-rows:270px auto!important}
+.catalogue-page .catalogue-card-art{height:270px!important;padding:0!important;gap:0!important;background:var(--mount-color)!important}
+.catalogue-page .catalogue-card-main,.catalogue-page .catalogue-card-fragments figure{border:0!important;background:transparent!important}
+.catalogue-page .catalogue-card-main img{width:86%!important;height:84%!important;max-width:86%!important;max-height:84%!important;padding:0!important}
+.catalogue-page .catalogue-card-fragments img{width:78%!important;height:76%!important;max-width:78%!important;max-height:76%!important;padding:0!important}
+.catalogue-page .catalogue-card:hover img{transform:none!important}
+.catalogue-page .catalogue-card-copy{min-height:90px!important;padding:1rem!important;background:#0b0b09!important;border-color:var(--hairline)!important}
+.catalogue-page .catalogue-card-copy h2{font-size:clamp(1.65rem,2vw,2.25rem)!important;max-width:90%!important}
+.catalogue-page .catalogue-card-copy span{font-size:18px!important;letter-spacing:0!important;color:var(--ivory-muted)!important}
+.catalogue-filters{top:99px!important;background:linear-gradient(180deg,#070706 72%,transparent)!important}
+.catalogue-filters button{font-size:18px!important;background:#0b0b09!important;color:var(--ivory)!important;border-color:var(--hairline)!important}
+.catalogue-filters button.is-active{background:var(--bronze)!important;color:#070706!important}
+
+/* Individual design pages behave like project rooms, never image crops. */
+.design-detail-page article,.design-detail-hero,.design-spec-section,.design-story-section,.design-views--theatre,.design-pagination,.design-detail-cta{background-color:var(--void)!important}
+.design-detail-art{padding:clamp(1rem,3vw,3rem)!important}
+.design-detail-primary{object-fit:contain!important;transform:none!important}
+.design-views--theatre .design-view{border:0!important;border-top:1px solid var(--hairline)!important;background:transparent!important;box-shadow:none!important}
+.design-view-media{min-height:min(72svh,860px);display:grid;place-items:center}
+.design-view-media img{padding:clamp(1rem,3vw,3rem)!important}
+.design-pagination-card{border-top:1px solid var(--hairline);padding-top:1.25rem}
+
+/* Cards read as editorial entries, not dashboard components. */
+:where(.package-card,.editorial-card,.partner-profile,.resource-card,.assurance-points>div){
+  border-color:var(--hairline)!important;background:transparent!important;box-shadow:none!important;color:var(--ivory)!important;
+}
+.process-list{border-color:var(--hairline)!important}.process-list li{border-color:var(--hairline)!important}.process-list li:hover{background:rgba(255,255,255,.025)!important}
+.package-card--featured{background:rgba(205,166,110,.09)!important}
+
+.footer{background:#070706!important;border-top:1px solid var(--hairline);color:var(--ivory)}
+.footer-bottom span,.footer-bottom a{color:rgba(243,238,229,.68)!important;font-size:18px!important}
+
+/* Tablet: remove forced desktop staging early. */
+@media(max-width:1050px){
+  .catalogue-page .catalogue-wall{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .section-heading,.lookbook-head,.packages-head{gap:2rem!important}
+}
+
+/* Mobile is a separately composed experience, not a shrunken desktop. */
+@media(max-width:700px){
+  :root{--wrap:calc(100vw - 28px)}
+  body{padding-bottom:0!important}
+  .nav-shell{height:76px!important}.brand-name{display:none!important}
+  .site-nav{inset:0!important;padding:8rem 1.1rem 3rem!important;background:#070706!important;align-items:flex-start!important}
+  .site-nav>a:not(.contact-icon){font-family:var(--serif);font-size:clamp(2.45rem,11vw,4rem)!important;line-height:.92!important;color:var(--ivory)!important}
+  .mobile-actions{display:none!important}
+
+  :where(.display,.section-heading h2,.lookbook-head h2,.packages-head h2,.page-section h2,.catalogue-intro h2){
+    font-size:clamp(2.8rem,12vw,4.25rem)!important;line-height:.92!important;
+  }
+  .section-heading,.lookbook-head,.packages-head{display:block!important;margin-bottom:2.6rem!important}
+  .section-heading>.body-copy,.lookbook-head>.body-copy,.packages-head>.body-copy{margin-top:1.2rem!important}
+
+  .catalogue-page .catalogue-hero{min-height:100svh!important}
+  .design-orbit-stage{inset:15% 0 43%!important}
+  .design-orbit-tile{width:min(78vw,320px)!important;aspect-ratio:1.34!important}
+  .design-orbit-hud{top:5.7rem!important;left:14px!important;right:14px!important}
+  .design-orbit-status strong{max-width:155px!important;font-size:1.25rem!important}
+  .design-orbit-controls span,.design-orbit-rail{display:none!important}
+  .catalogue-page .catalogue-hero-copy{bottom:2.2rem!important;width:var(--wrap)!important}
+  .catalogue-page .catalogue-hero-copy h1{font-size:clamp(2.9rem,13vw,4.35rem)!important;line-height:.9!important}
+  .catalogue-page .catalogue-hero-copy>p{display:none!important}
+
+  .catalogue-page .catalogue-browser{padding:4.5rem 0!important}
+  .catalogue-page .catalogue-intro{display:block!important;margin-bottom:1.5rem!important}
+  .catalogue-page .catalogue-intro p{margin-top:1rem!important}
+  .catalogue-filters{position:relative!important;top:auto!important;margin:0 -14px 1.2rem!important;padding:.6rem 14px 1rem!important;background:#070706!important}
+  .catalogue-filters button{font-size:18px!important;padding:.75rem .9rem!important}
+  .catalogue-page .catalogue-wall{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  .catalogue-page .catalogue-card,.catalogue-page .catalogue-card>a{min-height:268px!important}
+  .catalogue-page .catalogue-card>a{grid-template-rows:190px auto!important}
+  .catalogue-page .catalogue-card-art{display:block!important;height:190px!important;padding:.45rem!important}
+  .catalogue-card-fragments{display:none!important}
+  .catalogue-page .catalogue-card-main{height:100%!important}
+  .catalogue-page .catalogue-card-copy{min-height:78px!important;padding:.75rem!important}
+  .catalogue-page .catalogue-card-copy span{font-size:18px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .catalogue-page .catalogue-card-copy h2{font-size:clamp(1.35rem,6vw,1.8rem)!important;line-height:.95!important}
+  .catalogue-page .catalogue-card-copy i{right:.75rem!important;bottom:.7rem!important;font-size:1.2rem!important}
+
+  .design-detail-hero{min-height:100svh!important;padding:7rem 0 3rem!important}
+  .design-detail-grid{grid-template-columns:1fr!important;gap:1.5rem!important}
+  .design-detail-copy h1{font-size:clamp(3.2rem,15vw,5rem)!important;line-height:.86!important}
+  .design-detail-art{height:44svh!important;padding:.75rem!important}
+  .design-views--theatre{padding:4rem 0!important}
+  .design-views--theatre>.wrap{display:block!important}
+  .design-views--theatre .design-views-intro{position:relative!important;top:auto!important;margin-bottom:2.5rem!important}
+  .design-view-media{min-height:0!important;aspect-ratio:1/1.08}
+  .design-view-media img{padding:.7rem!important}
+  .design-views--theatre .design-view figcaption{padding:.85rem 0!important}
+  .design-pagination{grid-template-columns:1fr!important;padding-inline:14px!important}
+
+  .collection-grid,.lookbook-grid,.package-grid,.assurance-grid{grid-template-columns:1fr!important;grid-template-rows:auto!important}
+  .collection-card,.lookbook-item,.package-card{grid-column:auto!important;grid-row:auto!important;margin:0!important}
+  .collection-card{min-height:72svh!important}
+  .collection-art img{padding:1rem!important}
+  .footer{padding-bottom:2rem!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}.design-orbit-tile,.flow-surface,.reveal{transition:none!important;animation:none!important}
+}
+
+/* Deliberate vertical rhythm: generous enough to feel cinematic, compact enough
+   that every chapter remains connected to the one before it. */
+.section{padding-block:clamp(5.25rem,7.5vw,8.5rem)!important}
+:where(.page-section:not(.design-spec-section):not(.design-story-section),.resource-section,.partner-section){padding-block:clamp(5rem,7.25vw,8rem)!important}
+.section-heading,.lookbook-head,.packages-head{margin-bottom:clamp(2.5rem,4.5vw,4.25rem)!important}
+.manifesto-grid,.story-grid,.process-layout,.assurance-grid{row-gap:clamp(2rem,4vw,4.5rem)}
+.collection-grid,.lookbook-grid,.package-grid{gap:clamp(.75rem,1.35vw,1.25rem)!important}
+.page-lead,.catalogue-intro{margin-bottom:clamp(2rem,4vw,3.75rem)!important}
+.page-lead h2,.catalogue-intro h2{margin-bottom:clamp(1rem,2vw,1.5rem)!important}
+
+@media(max-width:700px){
+  .section{padding-block:4.25rem!important}
+  :where(.page-section:not(.design-spec-section):not(.design-story-section),.resource-section,.partner-section){padding-block:4.25rem!important}
+  .manifesto-grid,.story-grid,.process-layout,.assurance-grid{gap:1.75rem!important}
+  .section-heading,.lookbook-head,.packages-head{margin-bottom:2rem!important}
+  .collection-grid,.lookbook-grid,.package-grid,.process-list{gap:.8rem!important}
+  .lookbook-item{margin-bottom:0!important}
+  .assurance-band{margin-top:2.75rem!important}
+  .footer-top{padding-bottom:1.75rem!important}.footer-grid{padding-block:1.75rem!important;gap:1.75rem!important}
+
+  /* Compact drawer navigation; it should guide, not dominate the entire screen. */
+  .site-nav{justify-content:center!important;gap:.3rem!important;padding:6.25rem 1rem 2rem!important}
+  .site-nav>a:not(.nav-cta):not(.contact-icon){font-size:clamp(1.7rem,7.8vw,2.25rem)!important;line-height:1!important;padding:.62rem .25rem!important;width:100%}
+  .site-nav .contact-icon{width:44px!important;height:44px!important;margin-top:.75rem!important;padding:.65rem!important}
+  .site-nav .nav-cta{width:100%!important;min-height:54px!important;margin-top:.55rem!important;padding:.9rem 1rem!important;font-family:var(--sans)!important;font-size:16px!important;line-height:1.2!important;letter-spacing:.045em!important}
+}
+
+@media(max-width:540px){
+  .manifesto.section{padding-top:3.75rem!important}
+  .story.section,.collections.section,.lookbook.section,.process.section,.packages.section,.assurance.section{padding-block:4rem!important}
+  .story-copy{margin-top:-1.25rem!important}
+  .collection-card{min-height:min(68svh,560px)!important}
+  .package-card{padding:1.35rem!important}
+}
