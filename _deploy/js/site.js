@@ -130,13 +130,6 @@
       hero.style.setProperty('--hero-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
       hero.style.setProperty('--hero-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
     });
-    document.querySelectorAll('.button, .nav-cta').forEach(item => {
-      item.addEventListener('pointermove', event => {
-        const rect = item.getBoundingClientRect();
-        item.style.transform = `translate3d(${(event.clientX - rect.left - rect.width / 2) * .08}px,${(event.clientY - rect.top - rect.height / 2) * .12}px,0)`;
-      });
-      item.addEventListener('pointerleave', () => { item.style.transform = ''; });
-    });
     document.querySelectorAll('.collection-card').forEach(card => {
       card.addEventListener('pointermove', event => {
         const rect = card.getBoundingClientRect();
@@ -347,8 +340,9 @@
     requestedButton?.click();
   }
 
-  // The design archive behaves like an inertial exhibition wall: drag has
-  // momentum, the pointer shifts the camera, and the active work stays a link.
+  // The memorial archive is one continuous bowed scene rather than a
+  // cover-flow stack. It never auto-plays: drag, horizontal wheel, keyboard
+  // and page scroll all move the same inertial camera.
   const designOrbit = document.querySelector('[data-design-orbit]');
   const orbitTiles = [...document.querySelectorAll('[data-design-orbit-tile]')];
   if (designOrbit && orbitTiles.length) {
@@ -357,9 +351,11 @@
     const orbitCount = designOrbit.querySelector('[data-design-orbit-count]');
     const orbitName = designOrbit.querySelector('[data-design-orbit-name]');
     const orbitProgress = designOrbit.querySelector('[data-design-orbit-progress]');
+    const orbitHero = designOrbit.closest('.catalogue-hero');
     let position = 0;
     let targetPosition = 0;
-    let inertia = 0;
+    let velocity = 0;
+    let frame = 0;
     let previousTime = performance.now();
     let dragging = false;
     let pointerId = null;
@@ -370,90 +366,106 @@
     let dragDistance = 0;
     let suppressClick = false;
     let orbitInView = true;
-    let orbitFrame = 0;
-    let interactionUntil = performance.now() + 1800;
     let cameraX = 0;
     let cameraY = 0;
     let cameraTargetX = 0;
     let cameraTargetY = 0;
+    let scrollOffset = 0;
     let activeIndex = -1;
+    let activeUntil = performance.now() + 1200;
 
-    const tileSpacing = () => window.innerWidth <= 560
-      ? 178
-      : window.innerWidth <= 900
-        ? Math.min(300, window.innerWidth * .36)
-        : Math.min(355, Math.max(285, window.innerWidth * .225));
     const wrapIndex = value => ((value % orbitTiles.length) + orbitTiles.length) % orbitTiles.length;
     const signedDistance = (index, value) => {
       const half = orbitTiles.length / 2;
       return wrapIndex(index - value + half) - half;
     };
-    const scheduleOrbit = () => {
-      if (!orbitFrame) orbitFrame = requestAnimationFrame(renderOrbit);
+    const spacing = () => {
+      const tileWidth = orbitTiles[0]?.offsetWidth || Math.min(640, window.innerWidth * .44);
+      return tileWidth + (window.innerWidth <= 560 ? 16 : 26);
     };
-    const renderOrbit = time => {
-      orbitFrame = 0;
-      const elapsed = Math.min(40, Math.max(0, time - previousTime));
-      previousTime = time;
-      if (!reduced && !dragging) {
-        if (Math.abs(inertia) > .00002) {
-          targetPosition += inertia * elapsed;
-          inertia *= Math.pow(.9, elapsed / 16.67);
-        } else if (time < interactionUntil) {
-          targetPosition += (Math.round(targetPosition) - targetPosition) * Math.min(1, elapsed * .012);
-        } else if (!designOrbit.matches(':hover') && !designOrbit.matches(':focus-within')) {
-          targetPosition += elapsed * .000055;
-        }
-      }
-      position += (targetPosition - position) * Math.min(1, elapsed * (dragging ? .026 : .012));
-      cameraX += (cameraTargetX - cameraX) * Math.min(1, elapsed * .008);
-      cameraY += (cameraTargetY - cameraY) * Math.min(1, elapsed * .008);
-      const spacing = tileSpacing();
-      const compact = window.innerWidth <= 560;
-      const visibleLimit = compact ? 2.35 : 4.2;
-
-      orbitTiles.forEach((tile, index) => {
-        const relative = signedDistance(index, position);
-        const distance = Math.abs(relative);
-        const visible = distance < visibleLimit;
-        const x = relative * spacing + cameraX * Math.max(.25, 1 - distance * .16);
-        const y = Math.pow(distance, 1.34) * (compact ? 12 : 23) + cameraY * Math.max(.2, 1 - distance * .2);
-        const depth = 185 - distance * (compact ? 150 : 178);
-        const rotateY = Math.max(-58, Math.min(58, relative * -18.5 + cameraX * -.045));
-        const rotateZ = Math.max(-4, Math.min(4, relative * -.9));
-        const scale = 1 - Math.min(.32, distance * (compact ? .085 : .065));
-        tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${depth.toFixed(2)}px) rotateY(${rotateY.toFixed(2)}deg) rotateZ(${rotateZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        tile.style.opacity = visible ? String(Math.max(.06, 1 - Math.max(0, distance - .45) * .24)) : '0';
-        tile.style.pointerEvents = distance < 1.3 ? 'auto' : 'none';
-        tile.style.zIndex = String(Math.max(1, 50 - Math.round(distance * 8)));
-        tile.tabIndex = distance < .58 ? 0 : -1;
-        tile.classList.toggle('is-near', distance < .52);
-      });
-      const nearestIndex = wrapIndex(Math.round(position));
+    const scheduleOrbit = () => {
+      if (!frame) frame = requestAnimationFrame(renderOrbit);
+    };
+    const setActiveDesign = nearestIndex => {
       orbitTiles.forEach((tile, index) => {
         if (index === nearestIndex) tile.setAttribute('aria-current', 'true');
         else tile.removeAttribute('aria-current');
       });
-      if (nearestIndex !== activeIndex) {
-        activeIndex = nearestIndex;
-        const title = orbitTiles[nearestIndex].querySelector('.design-orbit-meta strong')?.textContent?.trim() || '';
-        if (orbitCount) orbitCount.textContent = `${String(nearestIndex + 1).padStart(2, '0')} / ${String(orbitTiles.length).padStart(2, '0')}`;
-        if (orbitName) orbitName.textContent = title;
-        if (orbitProgress) orbitProgress.style.width = `${((nearestIndex + 1) / orbitTiles.length) * 100}%`;
+      if (nearestIndex === activeIndex) return;
+      activeIndex = nearestIndex;
+      const title = orbitTiles[nearestIndex].querySelector('.design-orbit-meta strong')?.textContent?.trim() || '';
+      if (orbitCount) orbitCount.textContent = `${String(nearestIndex + 1).padStart(2, '0')} / ${String(orbitTiles.length).padStart(2, '0')}`;
+      if (orbitName) orbitName.textContent = title;
+      if (orbitProgress) orbitProgress.style.transform = `scaleX(${(nearestIndex + 1) / orbitTiles.length})`;
+    };
+    const renderOrbit = time => {
+      frame = 0;
+      const elapsed = Math.min(40, Math.max(0, time - previousTime));
+      previousTime = time;
+      if (!reduced && !dragging) {
+        if (Math.abs(velocity) > .000015) {
+          targetPosition += velocity * elapsed;
+          velocity *= Math.pow(.885, elapsed / 16.67);
+        } else {
+          const snap = Math.round(targetPosition);
+          targetPosition += (snap - targetPosition) * Math.min(1, elapsed * .009);
+        }
       }
-      if (!reduced && (orbitInView || dragging)) scheduleOrbit();
+      position += (targetPosition - position) * Math.min(1, elapsed * (dragging ? .032 : .014));
+      cameraX += (cameraTargetX - cameraX) * Math.min(1, elapsed * .007);
+      cameraY += (cameraTargetY - cameraY) * Math.min(1, elapsed * .007);
+      const compact = window.innerWidth <= 560;
+      const tileGap = spacing();
+      const visibleLimit = compact ? 1.75 : 3.2;
+      orbitTiles.forEach((tile, index) => {
+        const relative = signedDistance(index, position);
+        const distance = Math.abs(relative);
+        const visible = distance < visibleLimit;
+        const curve = Math.pow(distance, 1.28);
+        const x = relative * tileGap + cameraX * Math.max(.12, 1 - distance * .2);
+        const y = curve * (compact ? 9 : 15) + cameraY * Math.max(.15, 1 - distance * .24);
+        const z = 46 - distance * (compact ? 76 : 96);
+        const rotateY = Math.max(-54, Math.min(54, relative * -13.5 - cameraX * .018));
+        const rotateX = Math.max(-2.5, Math.min(2.5, cameraY * -.035));
+        const scale = 1 - Math.min(compact ? .12 : .16, distance * .035);
+        tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${z.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        tile.style.opacity = visible ? String(Math.max(.2, 1 - Math.max(0, distance - 1.2) * .24)) : '0';
+        tile.style.pointerEvents = distance < .78 ? 'auto' : 'none';
+        tile.style.zIndex = String(Math.max(1, 60 - Math.round(distance * 9)));
+        tile.tabIndex = distance < .54 ? 0 : -1;
+        tile.classList.toggle('is-near', distance < .5);
+      });
+      setActiveDesign(wrapIndex(Math.round(position)));
+      const moving = dragging || Math.abs(targetPosition - position) > .0006
+        || Math.abs(velocity) > .000015 || Math.abs(cameraTargetX - cameraX) > .08
+        || Math.abs(cameraTargetY - cameraY) > .08 || time < activeUntil;
+      if (orbitInView && moving) scheduleOrbit();
     };
 
+    const wakeOrbit = duration => {
+      activeUntil = performance.now() + duration;
+      // Never reset the animation clock while a frame is already queued.
+      // High-frequency pointer and scroll events would otherwise starve the
+      // interpolation and make the camera appear to twitch.
+      if (!frame) previousTime = performance.now();
+      scheduleOrbit();
+    };
+    const moveOrbit = direction => {
+      velocity = 0;
+      targetPosition = Math.round(targetPosition) + direction;
+      wakeOrbit(1400);
+    };
     const releaseOrbit = event => {
       if (!dragging || (event && event.pointerId !== pointerId)) return;
       dragging = false;
       designOrbit.classList.remove('is-dragging');
       if (event && designOrbit.hasPointerCapture?.(event.pointerId)) designOrbit.releasePointerCapture(event.pointerId);
       pointerId = null;
-      inertia *= 1.55;
-      interactionUntil = performance.now() + 4600;
+      velocity *= 1.35;
       suppressClick = dragDistance > 8;
+      wakeOrbit(1800);
     };
+
     designOrbit.addEventListener('pointerdown', event => {
       if (event.button !== 0 || event.target.closest('button')) return;
       dragging = true;
@@ -463,39 +475,33 @@
       lastDragX = event.clientX;
       lastDragTime = performance.now();
       dragDistance = 0;
-      inertia = 0;
+      velocity = 0;
       designOrbit.classList.add('is-dragging');
       designOrbit.setPointerCapture?.(event.pointerId);
+      wakeOrbit(1800);
     });
     designOrbit.addEventListener('pointermove', event => {
       const rect = designOrbit.getBoundingClientRect();
-      cameraTargetX = ((event.clientX - rect.left) / rect.width - .5) * (window.innerWidth <= 560 ? 9 : 30);
-      cameraTargetY = ((event.clientY - rect.top) / rect.height - .5) * (window.innerWidth <= 560 ? 6 : 17);
-      const nearTile = orbitTiles.find(tile => tile.classList.contains('is-near'));
-      if (nearTile) {
-        const tileRect = nearTile.getBoundingClientRect();
-        const nx = Math.max(0, Math.min(1, (event.clientX - tileRect.left) / tileRect.width));
-        const ny = Math.max(0, Math.min(1, (event.clientY - tileRect.top) / tileRect.height));
-        nearTile.style.setProperty('--orbit-light-x', `${(nx * 100).toFixed(1)}%`);
-        nearTile.style.setProperty('--orbit-light-y', `${(ny * 100).toFixed(1)}%`);
-        nearTile.style.setProperty('--orbit-art-x', `${((nx - .5) * 9).toFixed(2)}px`);
-        nearTile.style.setProperty('--orbit-art-y', `${((ny - .5) * 7).toFixed(2)}px`);
+      cameraTargetX = ((event.clientX - rect.left) / rect.width - .5) * (window.innerWidth <= 560 ? 4 : 12);
+      cameraTargetY = ((event.clientY - rect.top) / rect.height - .5) * (window.innerWidth <= 560 ? 3 : 8);
+      if (!dragging || event.pointerId !== pointerId) {
+        wakeOrbit(420);
+        return;
       }
-      if (!dragging || event.pointerId !== pointerId) return;
       const now = performance.now();
       const elapsed = Math.max(1, now - lastDragTime);
       const delta = event.clientX - dragStartX;
       dragDistance = Math.abs(delta);
-      targetPosition = dragStartPosition - delta / tileSpacing();
-      inertia = -(event.clientX - lastDragX) / tileSpacing() / elapsed;
+      targetPosition = dragStartPosition - delta / spacing();
+      velocity = -(event.clientX - lastDragX) / spacing() / elapsed;
       lastDragX = event.clientX;
       lastDragTime = now;
-      scheduleOrbit();
+      wakeOrbit(1800);
     });
     designOrbit.addEventListener('pointerleave', () => {
       cameraTargetX = 0;
       cameraTargetY = 0;
-      scheduleOrbit();
+      wakeOrbit(700);
     });
     designOrbit.addEventListener('pointerup', releaseOrbit);
     designOrbit.addEventListener('pointercancel', releaseOrbit);
@@ -505,12 +511,6 @@
       event.stopPropagation();
       suppressClick = false;
     }, true);
-    const moveOrbit = direction => {
-      inertia = 0;
-      targetPosition = Math.round(targetPosition) + direction;
-      interactionUntil = performance.now() + 4200;
-      scheduleOrbit();
-    };
     previousOrbit?.addEventListener('click', () => moveOrbit(-1));
     nextOrbit?.addEventListener('click', () => moveOrbit(1));
     designOrbit.addEventListener('keydown', event => {
@@ -519,19 +519,31 @@
       moveOrbit(event.key === 'ArrowLeft' ? -1 : 1);
     });
     designOrbit.addEventListener('wheel', event => {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * 1.15) return;
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * .9) return;
       event.preventDefault();
-      targetPosition += event.deltaX / tileSpacing();
-      interactionUntil = performance.now() + 3600;
-      scheduleOrbit();
+      targetPosition += event.deltaX / spacing();
+      wakeOrbit(1200);
     }, { passive: false });
+
+    const updateOrbitFromScroll = () => {
+      if (!orbitHero || reduced) return;
+      const rect = orbitHero.getBoundingClientRect();
+      const travel = Math.max(1, orbitHero.offsetHeight - window.innerHeight);
+      const progress = Math.max(0, Math.min(1, -rect.top / travel));
+      const nextOffset = progress * 3.4;
+      targetPosition += nextOffset - scrollOffset;
+      scrollOffset = nextOffset;
+      wakeOrbit(520);
+    };
+    window.addEventListener('scroll', updateOrbitFromScroll, { passive: true });
+    window.addEventListener('resize', () => wakeOrbit(900), { passive: true });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
         orbitInView = Boolean(entry?.isIntersecting);
-        previousTime = performance.now();
-        if (orbitInView) scheduleOrbit();
+        if (orbitInView) wakeOrbit(900);
       }, { threshold: .02 }).observe(designOrbit);
     }
+    setActiveDesign(0);
     scheduleOrbit();
   }
 
@@ -572,156 +584,148 @@
     }, { passive: true });
   }
 
-  // A material-aware current replaces the old follower. A smoothed filament
-  // glides between pointer positions while the actual surface underneath it
-  // receives light, depth and a directional response.
+  // Motion belongs to the page, not to a novelty cursor. The native pointer
+  // stays intact while the surface beneath it receives a slow refracted light,
+  // minute depth and a short water-ring response on intentional contact.
   if (!reduced && window.matchMedia('(pointer:fine)').matches) {
-    const currentCanvas = document.createElement('canvas');
-    currentCanvas.className = 'cursor-current';
-    currentCanvas.setAttribute('aria-hidden', 'true');
-    document.body.append(currentCanvas);
-    const currentContext = currentCanvas.getContext('2d', { alpha: true });
-    let currentWidth = 0;
-    let currentHeight = 0;
-    let currentDpr = 1;
-    let targetCurrentX = 0;
-    let targetCurrentY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let currentSeen = false;
-    let currentFrame = 0;
-    let currentPreviousTime = performance.now();
-    let lastPointerMove = 0;
-    const currentPoints = [];
+    const flowSelector = '.hero,.page-hero,.design-detail-art,.story-image--portrait,.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.design-orbit-tile,.design-view,.partner-mark,.order-step';
+    const flowSurfaces = [...document.querySelectorAll(flowSelector)];
+    const visibleFlowSurfaces = new Set();
+    let activeFlowSurface = null;
+    let lastFlowX = 0;
+    let lastFlowY = 0;
+    let lastFlowTime = performance.now();
+    let flowScrollFrame = 0;
 
-    const resizeCurrent = () => {
-      currentWidth = window.innerWidth;
-      currentHeight = window.innerHeight;
-      currentDpr = Math.min(2, window.devicePixelRatio || 1);
-      currentCanvas.width = Math.round(currentWidth * currentDpr);
-      currentCanvas.height = Math.round(currentHeight * currentDpr);
-      currentCanvas.style.width = `${currentWidth}px`;
-      currentCanvas.style.height = `${currentHeight}px`;
-    };
-    const scheduleCurrent = () => {
-      if (!currentFrame && currentContext) currentFrame = requestAnimationFrame(drawCurrent);
-    };
-    const drawCurrent = time => {
-      currentFrame = 0;
-      const elapsed = Math.min(40, Math.max(0, time - currentPreviousTime));
-      currentPreviousTime = time;
-      currentContext.setTransform(currentDpr, 0, 0, currentDpr, 0, 0);
-      currentContext.clearRect(0, 0, currentWidth, currentHeight);
-
-      if (currentSeen && time - lastPointerMove < 900) {
-        const dx = targetCurrentX - currentX;
-        const dy = targetCurrentY - currentY;
-        currentX += dx * Math.min(.42, elapsed * .018);
-        currentY += dy * Math.min(.42, elapsed * .018);
-        const speed = Math.min(1, Math.hypot(dx, dy) / 70);
-        const previous = currentPoints[currentPoints.length - 1];
-        if (!previous || Math.hypot(currentX - previous.x, currentY - previous.y) > 1.4) {
-          currentPoints.push({ x: currentX, y: currentY, born: time, speed });
-        }
-      }
-      while (currentPoints.length > 38 || (currentPoints[0] && time - currentPoints[0].born > 920)) currentPoints.shift();
-
-      const overLight = currentCanvas.classList.contains('is-over-light');
-      for (let index = 0; index < currentPoints.length - 1; index += 1) {
-        const point = currentPoints[index];
-        const next = currentPoints[index + 1];
-        const life = Math.max(0, 1 - (time - point.born) / 920);
-        const dx = next.x - point.x;
-        const dy = next.y - point.y;
-        const length = Math.max(1, Math.hypot(dx, dy));
-        const wave = Math.sin(time * .004 + index * .68) * 2.4 * life;
-        const normalX = -dy / length * wave;
-        const normalY = dx / length * wave;
-
-        currentContext.beginPath();
-        currentContext.moveTo(point.x + normalX, point.y + normalY);
-        currentContext.lineTo(next.x + normalX, next.y + normalY);
-        currentContext.lineCap = 'round';
-        currentContext.lineWidth = 10 + point.speed * 15;
-        currentContext.strokeStyle = overLight
-          ? `rgba(71,45,24,${(.035 * life).toFixed(3)})`
-          : `rgba(219,180,124,${(.055 * life).toFixed(3)})`;
-        currentContext.stroke();
-
-        currentContext.beginPath();
-        currentContext.moveTo(point.x - normalX * .45, point.y - normalY * .45);
-        currentContext.lineTo(next.x - normalX * .45, next.y - normalY * .45);
-        currentContext.lineWidth = .8 + point.speed * 1.7;
-        currentContext.strokeStyle = overLight
-          ? `rgba(91,57,30,${(.27 * life).toFixed(3)})`
-          : `rgba(239,211,169,${(.29 * life).toFixed(3)})`;
-        currentContext.stroke();
-      }
-      if (currentPoints.length || time - lastPointerMove < 950) currentFrame = requestAnimationFrame(drawCurrent);
-    };
-
-    const surfaceSelector = '.hero,.page-hero,.design-detail-art,.story-image--portrait,.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.design-orbit-tile,.design-view,.partner-mark,.order-step';
-    const cursorSurfaces = [...document.querySelectorAll(surfaceSelector)];
-    cursorSurfaces.forEach(surface => {
-      surface.classList.add('cursor-surface');
-      if (surface.matches('.collection-card--classic,.collection-card--standard,.package-card--featured')) surface.classList.add('cursor-surface--light');
-      const surfaceLight = document.createElement('span');
-      surfaceLight.className = 'cursor-surface-light';
-      surfaceLight.setAttribute('aria-hidden', 'true');
-      surface.append(surfaceLight);
-      surface.addEventListener('pointerenter', () => surface.classList.add('is-cursor-active'));
-      surface.addEventListener('pointermove', event => {
-        const rect = surface.getBoundingClientRect();
-        const nx = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-        const ny = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
-        surface.style.setProperty('--surface-x', `${(nx * 100).toFixed(1)}%`);
-        surface.style.setProperty('--surface-y', `${(ny * 100).toFixed(1)}%`);
-        surface.style.setProperty('--surface-angle', `${(Math.atan2(ny - .5, nx - .5) * 180 / Math.PI).toFixed(1)}deg`);
-        if (surface.classList.contains('design-detail-art')) {
-          surface.style.setProperty('--detail-ry', `${(-2 + (nx - .5) * 5).toFixed(2)}deg`);
-          surface.style.setProperty('--detail-rx', `${(.5 - (ny - .5) * 4).toFixed(2)}deg`);
-          surface.style.setProperty('--detail-x', `${((nx - .5) * 9).toFixed(2)}px`);
-          surface.style.setProperty('--detail-y', `${((ny - .5) * 7).toFixed(2)}px`);
-        }
-      });
-      surface.addEventListener('pointerleave', () => surface.classList.remove('is-cursor-active'));
+    flowSurfaces.forEach(surface => {
+      surface.classList.add('flow-surface');
+      const refraction = document.createElement('span');
+      refraction.className = 'flow-refraction';
+      refraction.setAttribute('aria-hidden', 'true');
+      surface.append(refraction);
     });
 
-    const magneticTargets = [...document.querySelectorAll('.button,.nav-cta,.contact-icon,.text-link,.catalogue-filters button,.design-orbit-controls button')];
-    magneticTargets.forEach(target => {
-      target.classList.add('cursor-magnetic');
-      target.addEventListener('pointermove', event => {
-        const rect = target.getBoundingClientRect();
-        target.style.setProperty('--magnetic-x', `${((event.clientX - rect.left) / rect.width - .5) * 7}px`);
-        target.style.setProperty('--magnetic-y', `${((event.clientY - rect.top) / rect.height - .5) * 7}px`);
-      });
-      target.addEventListener('pointerleave', () => {
-        target.style.setProperty('--magnetic-x', '0px');
-        target.style.setProperty('--magnetic-y', '0px');
-      });
-    });
+    const leaveFlowSurface = surface => {
+      if (!surface) return;
+      surface.classList.remove('is-flowing');
+      surface.style.setProperty('--flow-parallax-x', '0px');
+      surface.style.setProperty('--flow-parallax-y', surface.style.getPropertyValue('--flow-scroll-y') || '0px');
+    };
+    document.addEventListener('pointermove', event => {
+      const now = performance.now();
+      const elapsed = Math.max(8, now - lastFlowTime);
+      const deltaX = event.clientX - lastFlowX;
+      const deltaY = event.clientY - lastFlowY;
+      const speed = Math.min(1, Math.hypot(deltaX, deltaY) / elapsed / 1.8);
+      lastFlowX = event.clientX;
+      lastFlowY = event.clientY;
+      lastFlowTime = now;
 
-    resizeCurrent();
-    window.addEventListener('resize', resizeCurrent, { passive: true });
-    window.addEventListener('pointermove', event => {
-      targetCurrentX = event.clientX;
-      targetCurrentY = event.clientY;
-      lastPointerMove = performance.now();
-      if (!currentSeen) {
-        currentSeen = true;
-        currentX = targetCurrentX;
-        currentY = targetCurrentY;
-        currentPoints.push({ x: currentX, y: currentY, born: lastPointerMove, speed: 0 });
+      const nextSurface = event.target.closest?.(flowSelector) || null;
+      if (nextSurface !== activeFlowSurface) {
+        leaveFlowSurface(activeFlowSurface);
+        activeFlowSurface = nextSurface;
+        activeFlowSurface?.classList.add('is-flowing');
       }
-      const lightSurface = event.target.closest?.('.cursor-surface--light');
-      currentCanvas.classList.toggle('is-over-light', Boolean(lightSurface));
-      scheduleCurrent();
+      if (!activeFlowSurface) return;
+      const rect = activeFlowSurface.getBoundingClientRect();
+      const nx = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      const ny = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+      const scrollY = Number(activeFlowSurface.style.getPropertyValue('--flow-scroll-y').replace('px', '')) || 0;
+      activeFlowSurface.style.setProperty('--flow-x', `${(nx * 100).toFixed(1)}%`);
+      activeFlowSurface.style.setProperty('--flow-y', `${(ny * 100).toFixed(1)}%`);
+      activeFlowSurface.style.setProperty('--flow-stretch', (1 + speed * .42).toFixed(3));
+      activeFlowSurface.style.setProperty('--flow-angle', `${(Math.atan2(deltaY, deltaX) * 180 / Math.PI).toFixed(1)}deg`);
+      activeFlowSurface.style.setProperty('--flow-parallax-x', `${((nx - .5) * -7).toFixed(2)}px`);
+      activeFlowSurface.style.setProperty('--flow-parallax-y', `${(scrollY + (ny - .5) * -5).toFixed(2)}px`);
+      if (activeFlowSurface.classList.contains('design-detail-art')) {
+        activeFlowSurface.style.setProperty('--detail-ry', `${((nx - .5) * 3.2).toFixed(2)}deg`);
+        activeFlowSurface.style.setProperty('--detail-rx', `${((.5 - ny) * 2.6).toFixed(2)}deg`);
+        activeFlowSurface.style.setProperty('--detail-x', `${((nx - .5) * 6).toFixed(2)}px`);
+        activeFlowSurface.style.setProperty('--detail-y', `${((ny - .5) * 4).toFixed(2)}px`);
+      }
     }, { passive: true });
     document.documentElement.addEventListener('mouseleave', () => {
-      currentSeen = false;
-      lastPointerMove = performance.now() - 1000;
-      scheduleCurrent();
+      leaveFlowSurface(activeFlowSurface);
+      activeFlowSurface = null;
     });
+    document.addEventListener('pointerdown', event => {
+      const surface = event.target.closest?.(flowSelector);
+      if (!surface || event.button !== 0) return;
+      const rect = surface.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'flow-contact';
+      ripple.setAttribute('aria-hidden', 'true');
+      ripple.style.left = `${event.clientX - rect.left}px`;
+      ripple.style.top = `${event.clientY - rect.top}px`;
+      surface.append(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+    });
+
+    const updateFlowScroll = () => {
+      flowScrollFrame = 0;
+      visibleFlowSurfaces.forEach(surface => {
+        const rect = surface.getBoundingClientRect();
+        const centre = (rect.top + rect.height * .5 - window.innerHeight * .5) / window.innerHeight;
+        const drift = Math.max(-7, Math.min(7, centre * -7));
+        surface.style.setProperty('--flow-scroll-y', `${drift.toFixed(2)}px`);
+        if (surface !== activeFlowSurface) surface.style.setProperty('--flow-parallax-y', `${drift.toFixed(2)}px`);
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      const flowObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+        if (entry.isIntersecting) visibleFlowSurfaces.add(entry.target);
+        else visibleFlowSurfaces.delete(entry.target);
+      }), { rootMargin: '12% 0px' });
+      flowSurfaces.forEach(surface => flowObserver.observe(surface));
+    }
+    window.addEventListener('scroll', () => {
+      if (!flowScrollFrame) flowScrollFrame = requestAnimationFrame(updateFlowScroll);
+    }, { passive: true });
+    updateFlowScroll();
+  }
+
+  // A small wheel integrator gives fine-pointer devices continuous, damped
+  // movement without replacing touch, keyboard or reduced-motion scrolling.
+  if (!reduced && window.matchMedia('(pointer:fine)').matches) {
+    let smoothPosition = window.scrollY;
+    let smoothTarget = smoothPosition;
+    let smoothFrame = 0;
+    let smoothLastTime = performance.now();
+    const runSmoothScroll = time => {
+      smoothFrame = 0;
+      const elapsed = Math.min(34, Math.max(0, time - smoothLastTime));
+      smoothLastTime = time;
+      const ease = 1 - Math.pow(.82, elapsed / 16.67);
+      smoothPosition += (smoothTarget - smoothPosition) * ease;
+      window.scrollTo(0, smoothPosition);
+      if (Math.abs(smoothTarget - smoothPosition) > .35) smoothFrame = requestAnimationFrame(runSmoothScroll);
+      else {
+        smoothPosition = smoothTarget;
+        window.scrollTo(0, smoothTarget);
+      }
+    };
+    window.addEventListener('wheel', event => {
+      if (event.defaultPrevented || event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      const nativeScroller = event.target.closest?.('.price-scroll,.catalogue-filters,textarea,select,[data-native-scroll]');
+      if (nativeScroller) return;
+      event.preventDefault();
+      const scale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      smoothPosition = smoothFrame ? smoothPosition : window.scrollY;
+      smoothTarget = Math.max(0, Math.min(max, smoothTarget + event.deltaY * scale));
+      // Keep one continuous time base while wheel events are streaming in.
+      // Resetting it for every trackpad event creates tiny zero-delta frames.
+      if (!smoothFrame) {
+        smoothLastTime = performance.now();
+        smoothFrame = requestAnimationFrame(runSmoothScroll);
+      }
+    }, { passive: false });
+    window.addEventListener('scroll', () => {
+      if (smoothFrame) return;
+      smoothPosition = window.scrollY;
+      smoothTarget = smoothPosition;
+    }, { passive: true });
   }
 
   document.addEventListener('click', event => {
