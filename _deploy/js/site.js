@@ -347,28 +347,47 @@
     requestedButton?.click();
   }
 
-  // A slow, draggable wall of every design. CSS 3D keeps the experience
-  // lightweight and leaves all routes as normal, accessible links.
+  // The design archive behaves like an inertial exhibition wall: drag has
+  // momentum, the pointer shifts the camera, and the active work stays a link.
   const designOrbit = document.querySelector('[data-design-orbit]');
   const orbitTiles = [...document.querySelectorAll('[data-design-orbit-tile]')];
   if (designOrbit && orbitTiles.length) {
     const previousOrbit = designOrbit.querySelector('[data-design-orbit-prev]');
     const nextOrbit = designOrbit.querySelector('[data-design-orbit-next]');
-    let phase = 0;
+    const orbitCount = designOrbit.querySelector('[data-design-orbit-count]');
+    const orbitName = designOrbit.querySelector('[data-design-orbit-name]');
+    const orbitProgress = designOrbit.querySelector('[data-design-orbit-progress]');
+    let position = 0;
+    let targetPosition = 0;
+    let inertia = 0;
     let previousTime = performance.now();
     let dragging = false;
     let pointerId = null;
     let dragStartX = 0;
-    let dragStartPhase = 0;
+    let dragStartPosition = 0;
+    let lastDragX = 0;
+    let lastDragTime = 0;
     let dragDistance = 0;
     let suppressClick = false;
     let orbitInView = true;
     let orbitFrame = 0;
+    let interactionUntil = performance.now() + 1800;
+    let cameraX = 0;
+    let cameraY = 0;
+    let cameraTargetX = 0;
+    let cameraTargetY = 0;
+    let activeIndex = -1;
 
     const tileSpacing = () => window.innerWidth <= 560
-      ? 232
-      : Math.min(520, Math.max(330, window.innerWidth * .39));
-    const wrapOrbit = (value, total) => ((value % total) + total) % total;
+      ? 178
+      : window.innerWidth <= 900
+        ? Math.min(300, window.innerWidth * .36)
+        : Math.min(355, Math.max(285, window.innerWidth * .225));
+    const wrapIndex = value => ((value % orbitTiles.length) + orbitTiles.length) % orbitTiles.length;
+    const signedDistance = (index, value) => {
+      const half = orbitTiles.length / 2;
+      return wrapIndex(index - value + half) - half;
+    };
     const scheduleOrbit = () => {
       if (!orbitFrame) orbitFrame = requestAnimationFrame(renderOrbit);
     };
@@ -376,36 +395,52 @@
       orbitFrame = 0;
       const elapsed = Math.min(40, Math.max(0, time - previousTime));
       previousTime = time;
-      if (!reduced && orbitInView && !dragging && !designOrbit.matches(':focus-within')) phase += elapsed * .075;
+      if (!reduced && !dragging) {
+        if (Math.abs(inertia) > .00002) {
+          targetPosition += inertia * elapsed;
+          inertia *= Math.pow(.9, elapsed / 16.67);
+        } else if (time < interactionUntil) {
+          targetPosition += (Math.round(targetPosition) - targetPosition) * Math.min(1, elapsed * .012);
+        } else if (!designOrbit.matches(':hover') && !designOrbit.matches(':focus-within')) {
+          targetPosition += elapsed * .000055;
+        }
+      }
+      position += (targetPosition - position) * Math.min(1, elapsed * (dragging ? .026 : .012));
+      cameraX += (cameraTargetX - cameraX) * Math.min(1, elapsed * .008);
+      cameraY += (cameraTargetY - cameraY) * Math.min(1, elapsed * .008);
       const spacing = tileSpacing();
-      const total = spacing * orbitTiles.length;
-      const denominator = Math.max(310, window.innerWidth * .52);
-      let nearestIndex = 0;
-      let nearestDistance = Infinity;
+      const compact = window.innerWidth <= 560;
+      const visibleLimit = compact ? 2.35 : 4.2;
 
       orbitTiles.forEach((tile, index) => {
-        const x = wrapOrbit(index * spacing - phase + total / 2, total) - total / 2;
-        const normal = x / denominator;
-        const distance = Math.abs(normal);
-        const visible = distance < 1.52;
-        const y = Math.min(42, distance * 27);
-        const depth = 150 - Math.min(1.5, distance) * 310;
-        const rotate = Math.max(-34, Math.min(34, normal * -25));
-        const scale = 1 - Math.min(1, distance) * .08;
-        tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${depth.toFixed(2)}px) rotateY(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        tile.style.opacity = visible ? String(Math.max(.12, 1 - Math.max(0, distance - .82) * 1.25)) : '0';
-        tile.style.pointerEvents = distance < 1.18 ? 'auto' : 'none';
-        tile.tabIndex = distance < 1.08 ? 0 : -1;
-        tile.classList.toggle('is-near', distance < .45);
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestIndex = index;
-        }
+        const relative = signedDistance(index, position);
+        const distance = Math.abs(relative);
+        const visible = distance < visibleLimit;
+        const x = relative * spacing + cameraX * Math.max(.25, 1 - distance * .16);
+        const y = Math.pow(distance, 1.34) * (compact ? 12 : 23) + cameraY * Math.max(.2, 1 - distance * .2);
+        const depth = 185 - distance * (compact ? 150 : 178);
+        const rotateY = Math.max(-58, Math.min(58, relative * -18.5 + cameraX * -.045));
+        const rotateZ = Math.max(-4, Math.min(4, relative * -.9));
+        const scale = 1 - Math.min(.32, distance * (compact ? .085 : .065));
+        tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${depth.toFixed(2)}px) rotateY(${rotateY.toFixed(2)}deg) rotateZ(${rotateZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        tile.style.opacity = visible ? String(Math.max(.06, 1 - Math.max(0, distance - .45) * .24)) : '0';
+        tile.style.pointerEvents = distance < 1.3 ? 'auto' : 'none';
+        tile.style.zIndex = String(Math.max(1, 50 - Math.round(distance * 8)));
+        tile.tabIndex = distance < .58 ? 0 : -1;
+        tile.classList.toggle('is-near', distance < .52);
       });
+      const nearestIndex = wrapIndex(Math.round(position));
       orbitTiles.forEach((tile, index) => {
         if (index === nearestIndex) tile.setAttribute('aria-current', 'true');
         else tile.removeAttribute('aria-current');
       });
+      if (nearestIndex !== activeIndex) {
+        activeIndex = nearestIndex;
+        const title = orbitTiles[nearestIndex].querySelector('.design-orbit-meta strong')?.textContent?.trim() || '';
+        if (orbitCount) orbitCount.textContent = `${String(nearestIndex + 1).padStart(2, '0')} / ${String(orbitTiles.length).padStart(2, '0')}`;
+        if (orbitName) orbitName.textContent = title;
+        if (orbitProgress) orbitProgress.style.width = `${((nearestIndex + 1) / orbitTiles.length) * 100}%`;
+      }
       if (!reduced && (orbitInView || dragging)) scheduleOrbit();
     };
 
@@ -415,6 +450,8 @@
       designOrbit.classList.remove('is-dragging');
       if (event && designOrbit.hasPointerCapture?.(event.pointerId)) designOrbit.releasePointerCapture(event.pointerId);
       pointerId = null;
+      inertia *= 1.55;
+      interactionUntil = performance.now() + 4600;
       suppressClick = dragDistance > 8;
     };
     designOrbit.addEventListener('pointerdown', event => {
@@ -422,15 +459,43 @@
       dragging = true;
       pointerId = event.pointerId;
       dragStartX = event.clientX;
-      dragStartPhase = phase;
+      dragStartPosition = targetPosition;
+      lastDragX = event.clientX;
+      lastDragTime = performance.now();
       dragDistance = 0;
+      inertia = 0;
       designOrbit.classList.add('is-dragging');
       designOrbit.setPointerCapture?.(event.pointerId);
     });
     designOrbit.addEventListener('pointermove', event => {
+      const rect = designOrbit.getBoundingClientRect();
+      cameraTargetX = ((event.clientX - rect.left) / rect.width - .5) * (window.innerWidth <= 560 ? 9 : 30);
+      cameraTargetY = ((event.clientY - rect.top) / rect.height - .5) * (window.innerWidth <= 560 ? 6 : 17);
+      const nearTile = orbitTiles.find(tile => tile.classList.contains('is-near'));
+      if (nearTile) {
+        const tileRect = nearTile.getBoundingClientRect();
+        const nx = Math.max(0, Math.min(1, (event.clientX - tileRect.left) / tileRect.width));
+        const ny = Math.max(0, Math.min(1, (event.clientY - tileRect.top) / tileRect.height));
+        nearTile.style.setProperty('--orbit-light-x', `${(nx * 100).toFixed(1)}%`);
+        nearTile.style.setProperty('--orbit-light-y', `${(ny * 100).toFixed(1)}%`);
+        nearTile.style.setProperty('--orbit-art-x', `${((nx - .5) * 9).toFixed(2)}px`);
+        nearTile.style.setProperty('--orbit-art-y', `${((ny - .5) * 7).toFixed(2)}px`);
+      }
       if (!dragging || event.pointerId !== pointerId) return;
-      dragDistance = Math.abs(event.clientX - dragStartX);
-      phase = dragStartPhase - (event.clientX - dragStartX) * 1.15;
+      const now = performance.now();
+      const elapsed = Math.max(1, now - lastDragTime);
+      const delta = event.clientX - dragStartX;
+      dragDistance = Math.abs(delta);
+      targetPosition = dragStartPosition - delta / tileSpacing();
+      inertia = -(event.clientX - lastDragX) / tileSpacing() / elapsed;
+      lastDragX = event.clientX;
+      lastDragTime = now;
+      scheduleOrbit();
+    });
+    designOrbit.addEventListener('pointerleave', () => {
+      cameraTargetX = 0;
+      cameraTargetY = 0;
+      scheduleOrbit();
     });
     designOrbit.addEventListener('pointerup', releaseOrbit);
     designOrbit.addEventListener('pointercancel', releaseOrbit);
@@ -440,8 +505,26 @@
       event.stopPropagation();
       suppressClick = false;
     }, true);
-    previousOrbit?.addEventListener('click', () => { phase -= tileSpacing(); scheduleOrbit(); });
-    nextOrbit?.addEventListener('click', () => { phase += tileSpacing(); scheduleOrbit(); });
+    const moveOrbit = direction => {
+      inertia = 0;
+      targetPosition = Math.round(targetPosition) + direction;
+      interactionUntil = performance.now() + 4200;
+      scheduleOrbit();
+    };
+    previousOrbit?.addEventListener('click', () => moveOrbit(-1));
+    nextOrbit?.addEventListener('click', () => moveOrbit(1));
+    designOrbit.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      moveOrbit(event.key === 'ArrowLeft' ? -1 : 1);
+    });
+    designOrbit.addEventListener('wheel', event => {
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * 1.15) return;
+      event.preventDefault();
+      targetPosition += event.deltaX / tileSpacing();
+      interactionUntil = performance.now() + 3600;
+      scheduleOrbit();
+    }, { passive: false });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
         orbitInView = Boolean(entry?.isIntersecting);
@@ -489,43 +572,155 @@
     }, { passive: true });
   }
 
-  // A quiet cursor wake: one soft, delayed disturbance rather than a custom
-  // cursor. It never runs on touch screens or for reduced-motion visitors.
+  // A material-aware current replaces the old follower. A smoothed filament
+  // glides between pointer positions while the actual surface underneath it
+  // receives light, depth and a directional response.
   if (!reduced && window.matchMedia('(pointer:fine)').matches) {
-    const wake = document.createElement('span');
-    wake.className = 'cursor-wake';
-    wake.setAttribute('aria-hidden', 'true');
-    document.body.append(wake);
-    let wakeX = -240;
-    let wakeY = -240;
-    let targetWakeX = wakeX;
-    let targetWakeY = wakeY;
-    let lastWakeMove = 0;
-    let wakeFrame = 0;
+    const currentCanvas = document.createElement('canvas');
+    currentCanvas.className = 'cursor-current';
+    currentCanvas.setAttribute('aria-hidden', 'true');
+    document.body.append(currentCanvas);
+    const currentContext = currentCanvas.getContext('2d', { alpha: true });
+    let currentWidth = 0;
+    let currentHeight = 0;
+    let currentDpr = 1;
+    let targetCurrentX = 0;
+    let targetCurrentY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let currentSeen = false;
+    let currentFrame = 0;
+    let currentPreviousTime = performance.now();
+    let lastPointerMove = 0;
+    const currentPoints = [];
 
-    const animateWake = time => {
-      const dx = targetWakeX - wakeX;
-      const dy = targetWakeY - wakeY;
-      wakeX += dx * .13;
-      wakeY += dy * .13;
-      const speed = Math.min(1, Math.hypot(dx, dy) / 90);
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-      const freshness = Math.max(0, 1 - (time - lastWakeMove) / 850);
-      wake.style.setProperty('--wake-opacity', (freshness * .52).toFixed(3));
-      wake.style.setProperty('--wake-stretch', (1 + speed * .72).toFixed(3));
-      wake.style.setProperty('--wake-angle', `${angle.toFixed(2)}deg`);
-      wake.style.transform = `translate3d(${(wakeX - 90).toFixed(2)}px,${(wakeY - 90).toFixed(2)}px,0)`;
-      if (freshness > .01 || Math.abs(dx) + Math.abs(dy) > .25) wakeFrame = requestAnimationFrame(animateWake);
-      else wakeFrame = 0;
+    const resizeCurrent = () => {
+      currentWidth = window.innerWidth;
+      currentHeight = window.innerHeight;
+      currentDpr = Math.min(2, window.devicePixelRatio || 1);
+      currentCanvas.width = Math.round(currentWidth * currentDpr);
+      currentCanvas.height = Math.round(currentHeight * currentDpr);
+      currentCanvas.style.width = `${currentWidth}px`;
+      currentCanvas.style.height = `${currentHeight}px`;
     };
+    const scheduleCurrent = () => {
+      if (!currentFrame && currentContext) currentFrame = requestAnimationFrame(drawCurrent);
+    };
+    const drawCurrent = time => {
+      currentFrame = 0;
+      const elapsed = Math.min(40, Math.max(0, time - currentPreviousTime));
+      currentPreviousTime = time;
+      currentContext.setTransform(currentDpr, 0, 0, currentDpr, 0, 0);
+      currentContext.clearRect(0, 0, currentWidth, currentHeight);
+
+      if (currentSeen && time - lastPointerMove < 900) {
+        const dx = targetCurrentX - currentX;
+        const dy = targetCurrentY - currentY;
+        currentX += dx * Math.min(.42, elapsed * .018);
+        currentY += dy * Math.min(.42, elapsed * .018);
+        const speed = Math.min(1, Math.hypot(dx, dy) / 70);
+        const previous = currentPoints[currentPoints.length - 1];
+        if (!previous || Math.hypot(currentX - previous.x, currentY - previous.y) > 1.4) {
+          currentPoints.push({ x: currentX, y: currentY, born: time, speed });
+        }
+      }
+      while (currentPoints.length > 38 || (currentPoints[0] && time - currentPoints[0].born > 920)) currentPoints.shift();
+
+      const overLight = currentCanvas.classList.contains('is-over-light');
+      for (let index = 0; index < currentPoints.length - 1; index += 1) {
+        const point = currentPoints[index];
+        const next = currentPoints[index + 1];
+        const life = Math.max(0, 1 - (time - point.born) / 920);
+        const dx = next.x - point.x;
+        const dy = next.y - point.y;
+        const length = Math.max(1, Math.hypot(dx, dy));
+        const wave = Math.sin(time * .004 + index * .68) * 2.4 * life;
+        const normalX = -dy / length * wave;
+        const normalY = dx / length * wave;
+
+        currentContext.beginPath();
+        currentContext.moveTo(point.x + normalX, point.y + normalY);
+        currentContext.lineTo(next.x + normalX, next.y + normalY);
+        currentContext.lineCap = 'round';
+        currentContext.lineWidth = 10 + point.speed * 15;
+        currentContext.strokeStyle = overLight
+          ? `rgba(71,45,24,${(.035 * life).toFixed(3)})`
+          : `rgba(219,180,124,${(.055 * life).toFixed(3)})`;
+        currentContext.stroke();
+
+        currentContext.beginPath();
+        currentContext.moveTo(point.x - normalX * .45, point.y - normalY * .45);
+        currentContext.lineTo(next.x - normalX * .45, next.y - normalY * .45);
+        currentContext.lineWidth = .8 + point.speed * 1.7;
+        currentContext.strokeStyle = overLight
+          ? `rgba(91,57,30,${(.27 * life).toFixed(3)})`
+          : `rgba(239,211,169,${(.29 * life).toFixed(3)})`;
+        currentContext.stroke();
+      }
+      if (currentPoints.length || time - lastPointerMove < 950) currentFrame = requestAnimationFrame(drawCurrent);
+    };
+
+    const surfaceSelector = '.hero,.page-hero,.design-detail-art,.story-image--portrait,.collection-card,.lookbook-item,.package-card,.editorial-card,.catalogue-card,.design-card,.catalogue-piece,.design-orbit-tile,.design-view,.partner-mark,.order-step';
+    const cursorSurfaces = [...document.querySelectorAll(surfaceSelector)];
+    cursorSurfaces.forEach(surface => {
+      surface.classList.add('cursor-surface');
+      if (surface.matches('.collection-card--classic,.collection-card--standard,.package-card--featured')) surface.classList.add('cursor-surface--light');
+      const surfaceLight = document.createElement('span');
+      surfaceLight.className = 'cursor-surface-light';
+      surfaceLight.setAttribute('aria-hidden', 'true');
+      surface.append(surfaceLight);
+      surface.addEventListener('pointerenter', () => surface.classList.add('is-cursor-active'));
+      surface.addEventListener('pointermove', event => {
+        const rect = surface.getBoundingClientRect();
+        const nx = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+        const ny = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+        surface.style.setProperty('--surface-x', `${(nx * 100).toFixed(1)}%`);
+        surface.style.setProperty('--surface-y', `${(ny * 100).toFixed(1)}%`);
+        surface.style.setProperty('--surface-angle', `${(Math.atan2(ny - .5, nx - .5) * 180 / Math.PI).toFixed(1)}deg`);
+        if (surface.classList.contains('design-detail-art')) {
+          surface.style.setProperty('--detail-ry', `${(-2 + (nx - .5) * 5).toFixed(2)}deg`);
+          surface.style.setProperty('--detail-rx', `${(.5 - (ny - .5) * 4).toFixed(2)}deg`);
+          surface.style.setProperty('--detail-x', `${((nx - .5) * 9).toFixed(2)}px`);
+          surface.style.setProperty('--detail-y', `${((ny - .5) * 7).toFixed(2)}px`);
+        }
+      });
+      surface.addEventListener('pointerleave', () => surface.classList.remove('is-cursor-active'));
+    });
+
+    const magneticTargets = [...document.querySelectorAll('.button,.nav-cta,.contact-icon,.text-link,.catalogue-filters button,.design-orbit-controls button')];
+    magneticTargets.forEach(target => {
+      target.classList.add('cursor-magnetic');
+      target.addEventListener('pointermove', event => {
+        const rect = target.getBoundingClientRect();
+        target.style.setProperty('--magnetic-x', `${((event.clientX - rect.left) / rect.width - .5) * 7}px`);
+        target.style.setProperty('--magnetic-y', `${((event.clientY - rect.top) / rect.height - .5) * 7}px`);
+      });
+      target.addEventListener('pointerleave', () => {
+        target.style.setProperty('--magnetic-x', '0px');
+        target.style.setProperty('--magnetic-y', '0px');
+      });
+    });
+
+    resizeCurrent();
+    window.addEventListener('resize', resizeCurrent, { passive: true });
     window.addEventListener('pointermove', event => {
-      targetWakeX = event.clientX;
-      targetWakeY = event.clientY;
-      lastWakeMove = performance.now();
-      if (!wakeFrame) wakeFrame = requestAnimationFrame(animateWake);
+      targetCurrentX = event.clientX;
+      targetCurrentY = event.clientY;
+      lastPointerMove = performance.now();
+      if (!currentSeen) {
+        currentSeen = true;
+        currentX = targetCurrentX;
+        currentY = targetCurrentY;
+        currentPoints.push({ x: currentX, y: currentY, born: lastPointerMove, speed: 0 });
+      }
+      const lightSurface = event.target.closest?.('.cursor-surface--light');
+      currentCanvas.classList.toggle('is-over-light', Boolean(lightSurface));
+      scheduleCurrent();
     }, { passive: true });
     document.documentElement.addEventListener('mouseleave', () => {
-      lastWakeMove = performance.now() - 1000;
+      currentSeen = false;
+      lastPointerMove = performance.now() - 1000;
+      scheduleCurrent();
     });
   }
 
