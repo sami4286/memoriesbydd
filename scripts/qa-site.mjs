@@ -51,6 +51,11 @@ for (const file of htmlFiles) {
   if (/refinements\.css/i.test(source) && (!/family=Hanken\+Grotesk/i.test(source) || !/family=Newsreader/i.test(source))) {
     errors.push(`${page}: shared CSS fonts are not both requested, which can change wrapping between routes`);
   }
+  const sharedCssIndex = source.lastIndexOf('/css/refinements.css');
+  const spatialCssIndex = source.lastIndexOf('/css/jesper.css');
+  if (sharedCssIndex >= 0 && spatialCssIndex < sharedCssIndex) {
+    errors.push(`${page}: visual-system stylesheet must load after shared page styles`);
+  }
   if (page === 'prices/index.html' && !/class=["']price-scroll["']/i.test(source)) {
     errors.push(`${page}: price comparison needs its mobile scroll region`);
   }

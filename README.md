@@ -31,6 +31,7 @@ documents remain in the repository as project history; they no longer describe t
 | Netlify config | `netlify.toml` |
 | Vite entry points | `vite.config.js` |
 | Automated QA | `scripts/qa-site.mjs` |
+| Production design system | `docs/design-system.md` |
 
 Use Node 22 and pnpm 11. Run `pnpm install`, then `pnpm qa`. Netlify builds with `npm run build`
 and publishes `dist/`. The live enquiry function requires `AIRTABLE_PAT`, `AIRTABLE_BASE_ID` and
