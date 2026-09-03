@@ -340,9 +340,9 @@
     requestedButton?.click();
   }
 
-  // The memorial archive is one continuous bowed scene rather than a
-  // cover-flow stack. It never auto-plays and never intercepts page scroll:
-  // drag, swipe, arrow buttons and keyboard move its inertial camera.
+  // A quiet globe of memorial pages. The archive rotates in three dimensions
+  // without ever taking over page scroll; drag, swipe, buttons and arrow keys
+  // move its inertial camera, while reduced-motion visitors get a still scene.
   const designOrbit = document.querySelector('[data-design-orbit]');
   const orbitTiles = [...document.querySelectorAll('[data-design-orbit-tile]')];
   if (designOrbit && orbitTiles.length) {
@@ -351,36 +351,38 @@
     const orbitCount = designOrbit.querySelector('[data-design-orbit-count]');
     const orbitName = designOrbit.querySelector('[data-design-orbit-name]');
     const orbitProgress = designOrbit.querySelector('[data-design-orbit-progress]');
-    let position = 0;
-    let targetPosition = 0;
-    let velocity = 0;
+    let yaw = 0;
+    let targetYaw = 0;
+    let pitch = -.06;
+    let targetPitch = -.06;
+    let velocityX = 0;
+    let velocityY = 0;
     let frame = 0;
     let previousTime = performance.now();
     let dragging = false;
     let pointerId = null;
     let dragStartX = 0;
-    let dragStartPosition = 0;
+    let dragStartY = 0;
+    let dragStartYaw = 0;
+    let dragStartPitch = 0;
     let lastDragX = 0;
+    let lastDragY = 0;
     let lastDragTime = 0;
     let dragDistance = 0;
     let suppressClick = false;
     let orbitInView = true;
-    let cameraX = 0;
-    let cameraY = 0;
-    let cameraTargetX = 0;
-    let cameraTargetY = 0;
     let activeIndex = -1;
-    let activeUntil = performance.now() + 1200;
+    let activeUntil = performance.now() + 1600;
+    let lastInteraction = performance.now();
 
     const wrapIndex = value => ((value % orbitTiles.length) + orbitTiles.length) % orbitTiles.length;
-    const signedDistance = (index, value) => {
-      const half = orbitTiles.length / 2;
-      return wrapIndex(index - value + half) - half;
-    };
-    const spacing = () => {
-      const tileWidth = orbitTiles[0]?.offsetWidth || Math.min(640, window.innerWidth * .44);
-      return tileWidth + (window.innerWidth <= 560 ? 16 : 26);
-    };
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    const points = orbitTiles.map((_, index) => {
+      const vertical = 1 - ((index + .5) / orbitTiles.length) * 2;
+      const radius = Math.sqrt(Math.max(0, 1 - vertical * vertical));
+      const angle = index * goldenAngle;
+      return { x: Math.cos(angle) * radius, y: vertical, z: Math.sin(angle) * radius };
+    });
     const scheduleOrbit = () => {
       if (!frame) frame = requestAnimationFrame(renderOrbit);
     };
@@ -401,42 +403,60 @@
       const elapsed = Math.min(40, Math.max(0, time - previousTime));
       previousTime = time;
       if (!reduced && !dragging) {
-        if (Math.abs(velocity) > .000015) {
-          targetPosition += velocity * elapsed;
-          velocity *= Math.pow(.885, elapsed / 16.67);
-        } else {
-          const snap = Math.round(targetPosition);
-          targetPosition += (snap - targetPosition) * Math.min(1, elapsed * .009);
-        }
+        targetYaw += velocityX * elapsed;
+        targetPitch = Math.max(-.42, Math.min(.42, targetPitch + velocityY * elapsed));
+        velocityX *= Math.pow(.91, elapsed / 16.67);
+        velocityY *= Math.pow(.88, elapsed / 16.67);
+        // Once the visitor has paused, the archive resumes an almost
+        // imperceptible turn so it feels alive rather than promotional.
+        if (time - lastInteraction > 2400 && Math.abs(velocityX) < .00002) targetYaw += elapsed * .000055;
       }
-      position += (targetPosition - position) * Math.min(1, elapsed * (dragging ? .032 : .014));
-      cameraX += (cameraTargetX - cameraX) * Math.min(1, elapsed * .007);
-      cameraY += (cameraTargetY - cameraY) * Math.min(1, elapsed * .007);
+      yaw += (targetYaw - yaw) * Math.min(1, elapsed * (dragging ? .04 : .018));
+      pitch += (targetPitch - pitch) * Math.min(1, elapsed * (dragging ? .04 : .018));
       const compact = window.innerWidth <= 560;
-      const tileGap = spacing();
-      const visibleLimit = compact ? 1.28 : 1.72;
+      const tablet = window.innerWidth <= 900;
+      const stage = designOrbit.querySelector('.design-orbit-stage');
+      const stageRect = stage?.getBoundingClientRect();
+      const radiusX = Math.min((stageRect?.width || window.innerWidth) * (compact ? .37 : tablet ? .38 : .39), compact ? 142 : tablet ? 280 : 520);
+      const radiusY = Math.min((stageRect?.height || window.innerHeight * .55) * (compact ? .35 : .43), compact ? 112 : tablet ? 210 : 310);
+      const radiusZ = compact ? 115 : tablet ? 210 : 350;
+      const cosY = Math.cos(yaw);
+      const sinY = Math.sin(yaw);
+      const cosP = Math.cos(pitch);
+      const sinP = Math.sin(pitch);
+      let nearestIndex = 0;
+      let nearestDepth = -Infinity;
+
       orbitTiles.forEach((tile, index) => {
-        const relative = signedDistance(index, position);
-        const distance = Math.abs(relative);
-        const visible = distance < visibleLimit;
-        const curve = Math.pow(distance, 1.28);
-        const x = relative * tileGap * (compact ? .82 : .78) + cameraX * Math.max(.12, 1 - distance * .2);
-        const y = curve * (compact ? 18 : 42) + cameraY * Math.max(.15, 1 - distance * .24);
-        const z = 54 - distance * (compact ? 128 : 178);
-        const rotateY = Math.max(-48, Math.min(48, relative * -18 - cameraX * .018));
-        const rotateX = Math.max(-2.5, Math.min(2.5, cameraY * -.035));
-        const scale = 1 - Math.min(compact ? .14 : .2, distance * (compact ? .12 : .18));
+        const point = points[index];
+        const rotatedX = point.x * cosY + point.z * sinY;
+        const yawZ = -point.x * sinY + point.z * cosY;
+        const rotatedY = point.y * cosP - yawZ * sinP;
+        const rotatedZ = point.y * sinP + yawZ * cosP;
+        if (rotatedZ > nearestDepth) {
+          nearestDepth = rotatedZ;
+          nearestIndex = index;
+        }
+        const x = rotatedX * radiusX;
+        const y = rotatedY * radiusY;
+        const z = rotatedZ * radiusZ;
+        const depth = (rotatedZ + 1) * .5;
+        const visible = rotatedZ > (compact ? -.22 : -.42);
+        const scale = (compact ? .69 : .64) + depth * (compact ? .34 : .48);
+        const rotateY = Math.max(-24, Math.min(24, -rotatedX * 22));
+        const rotateX = Math.max(-8, Math.min(8, rotatedY * 7));
         tile.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}px),calc(-50% + ${y.toFixed(2)}px),${z.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        tile.style.opacity = visible ? String(Math.max(.34, 1 - distance * .46)) : '0';
-        tile.style.pointerEvents = distance < .78 ? 'auto' : 'none';
-        tile.style.zIndex = String(Math.max(1, 60 - Math.round(distance * 9)));
-        tile.tabIndex = distance < .54 ? 0 : -1;
-        tile.classList.toggle('is-near', distance < .5);
+        tile.style.opacity = visible ? String(Math.max(.13, .18 + depth * .82)) : '0';
+        tile.style.pointerEvents = rotatedZ > .52 ? 'auto' : 'none';
+        tile.style.zIndex = String(Math.max(1, Math.round(depth * 100)));
+        tile.tabIndex = rotatedZ > .66 ? 0 : -1;
+        tile.classList.toggle('is-near', rotatedZ > .66);
       });
-      setActiveDesign(wrapIndex(Math.round(position)));
-      const moving = dragging || Math.abs(targetPosition - position) > .0006
-        || Math.abs(velocity) > .000015 || Math.abs(cameraTargetX - cameraX) > .08
-        || Math.abs(cameraTargetY - cameraY) > .08 || time < activeUntil;
+      setActiveDesign(nearestIndex);
+      const moving = dragging || Math.abs(targetYaw - yaw) > .00008
+        || Math.abs(targetPitch - pitch) > .00008 || Math.abs(velocityX) > .00001
+        || Math.abs(velocityY) > .00001 || (!reduced && time - lastInteraction > 2400)
+        || time < activeUntil;
       if (orbitInView && moving) scheduleOrbit();
     };
 
@@ -449,8 +469,10 @@
       scheduleOrbit();
     };
     const moveOrbit = direction => {
-      velocity = 0;
-      targetPosition = Math.round(targetPosition) + direction;
+      velocityX = 0;
+      velocityY = 0;
+      targetYaw += direction * goldenAngle * .62;
+      lastInteraction = performance.now();
       wakeOrbit(1400);
     };
     const releaseOrbit = event => {
@@ -459,8 +481,10 @@
       designOrbit.classList.remove('is-dragging');
       if (event && designOrbit.hasPointerCapture?.(event.pointerId)) designOrbit.releasePointerCapture(event.pointerId);
       pointerId = null;
-      velocity *= 1.35;
+      velocityX *= 1.22;
+      velocityY *= .8;
       suppressClick = dragDistance > 8;
+      lastInteraction = performance.now();
       wakeOrbit(1800);
     };
 
@@ -469,38 +493,37 @@
       dragging = true;
       pointerId = event.pointerId;
       dragStartX = event.clientX;
-      dragStartPosition = targetPosition;
+      dragStartY = event.clientY;
+      dragStartYaw = targetYaw;
+      dragStartPitch = targetPitch;
       lastDragX = event.clientX;
+      lastDragY = event.clientY;
       lastDragTime = performance.now();
       dragDistance = 0;
-      velocity = 0;
+      velocityX = 0;
+      velocityY = 0;
+      lastInteraction = performance.now();
       designOrbit.classList.add('is-dragging');
       designOrbit.setPointerCapture?.(event.pointerId);
       wakeOrbit(1800);
     });
     designOrbit.addEventListener('dragstart', event => event.preventDefault());
     designOrbit.addEventListener('pointermove', event => {
-      const rect = designOrbit.getBoundingClientRect();
-      cameraTargetX = ((event.clientX - rect.left) / rect.width - .5) * (window.innerWidth <= 560 ? 4 : 12);
-      cameraTargetY = ((event.clientY - rect.top) / rect.height - .5) * (window.innerWidth <= 560 ? 3 : 8);
-      if (!dragging || event.pointerId !== pointerId) {
-        wakeOrbit(420);
-        return;
-      }
+      if (!dragging || event.pointerId !== pointerId) return;
       const now = performance.now();
       const elapsed = Math.max(1, now - lastDragTime);
-      const delta = event.clientX - dragStartX;
-      dragDistance = Math.abs(delta);
-      targetPosition = dragStartPosition - delta / spacing();
-      velocity = -(event.clientX - lastDragX) / spacing() / elapsed;
+      const deltaX = event.clientX - dragStartX;
+      const deltaY = event.clientY - dragStartY;
+      const sensitivity = window.innerWidth <= 560 ? .009 : .0065;
+      dragDistance = Math.hypot(deltaX, deltaY);
+      targetYaw = dragStartYaw + deltaX * sensitivity;
+      targetPitch = Math.max(-.42, Math.min(.42, dragStartPitch - deltaY * sensitivity * .55));
+      velocityX = (event.clientX - lastDragX) * sensitivity / elapsed;
+      velocityY = -(event.clientY - lastDragY) * sensitivity * .45 / elapsed;
       lastDragX = event.clientX;
+      lastDragY = event.clientY;
       lastDragTime = now;
       wakeOrbit(1800);
-    });
-    designOrbit.addEventListener('pointerleave', () => {
-      cameraTargetX = 0;
-      cameraTargetY = 0;
-      wakeOrbit(700);
     });
     designOrbit.addEventListener('pointerup', releaseOrbit);
     designOrbit.addEventListener('pointercancel', releaseOrbit);
