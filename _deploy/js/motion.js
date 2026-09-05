@@ -83,7 +83,7 @@
   function splitHeadings() {
     if (!canSplit) return;
 
-    gsap.utils.toArray('[data-anim="lines"]').forEach(function (el) {
+    gsap.utils.toArray('[data-anim="lines"]:not(.chap_h)').forEach(function (el) {
       var split;
       try {
         split = new SplitText(el, {
@@ -275,6 +275,72 @@
     }
   }
 
+  /* ------------------------------------------------------------------
+     CHAPTERS — the shared opening.
+
+     Every chapter reveals in the same order: index label, then the rule drawn
+     left to right, then the heading lines rising. One grammar across the whole
+     page is what stops it reading as a stack of unrelated modules, and the
+     drawn rule is the verb they have in common — in How It Works that same
+     gesture becomes the content itself.
+     ------------------------------------------------------------------ */
+  function chapters() {
+    gsap.utils.toArray('[data-chapter]').forEach(function (section) {
+      var label = section.querySelector('.chap .label');
+      var rule = section.querySelector('.chap_rule');
+      var heading = section.querySelector('.chap_h');
+
+      var tl = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 80%', once: true } });
+      if (label) tl.fromTo(label, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, 0);
+      if (rule) tl.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0.1);
+
+      if (heading && canSplit) {
+        var split;
+        try {
+          split = new SplitText(heading, {
+            type: 'lines', linesClass: 'line', mask: 'lines', reduceWhiteSpace: false
+          });
+        } catch (error) {
+          gsap.set(heading, { opacity: 1 });
+          return;
+        }
+        gsap.set(heading, { opacity: 1 });
+        tl.from(split.lines, { yPercent: 108, duration: 1.15, ease: 'expo.out', stagger: 0.085 }, 0.35);
+      } else if (heading) {
+        tl.fromTo(heading, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.1, ease: EASE }, 0.35);
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     STEPS — the rule-draw as subject.
+
+     Four lines drawn in order, first call to delivery, each with its text
+     following a beat behind. This is the only place the shared gesture is
+     also the content, which is why the section needs no pictures.
+     ------------------------------------------------------------------ */
+  function steps() {
+    var wrap = document.querySelector('[data-steps]');
+    if (!wrap) return;
+
+    var items = gsap.utils.toArray(wrap.querySelectorAll('.step'));
+    var tl = gsap.timeline({ scrollTrigger: { trigger: wrap, start: 'top 80%', once: true } });
+
+    items.forEach(function (item, i) {
+      var at = i * 0.18;
+      tl.fromTo(item.querySelector('.step_rule'), { scaleX: 0 },
+        { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, at);
+      tl.fromTo(
+        [item.querySelector('.step_n'), item.querySelector('h3'), item.querySelector('p')],
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.95, ease: EASE, stagger: 0.06 }, at + 0.25);
+    });
+
+    var end = wrap.querySelector('.steps_end');
+    if (end) tl.fromTo(end, { scaleX: 0 },
+      { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, items.length * 0.18);
+  }
+
 /* ------------------------------------------------------------------
      THE SIGNATURE MOMENT — the photograph is lit by the reader's scroll.
 
@@ -300,9 +366,9 @@
     gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: story,
-        start: 'top 90%',
-        end: mobile ? 'top 30%' : 'top 35%',
+        trigger: story.querySelector('.story_fig') || story,
+        start: 'top 95%',
+        end: mobile ? 'top 35%' : 'top 40%',
         scrub: 1.2
       }
     })
@@ -363,6 +429,8 @@
     if (started) return;
     started = true;
     root.classList.add('motion-ready');
+    chapters();
+    steps();
     splitHeadings();
     splitWords();
     revealBlocks();
