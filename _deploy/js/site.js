@@ -78,7 +78,14 @@
   ];
 
   var spot = document.getElementById('spot');
-  if (spot) {
+
+  /* Guarded by widening the condition, NOT by an early return. A return here
+     would exit the whole IIFE and take the reviews rotator below it with it —
+     exactly the failure this file already suffered once through the nav
+     scrollspy. Without both images there is nothing to drive, and wiring the
+     controls anyway would throw inside the swap timeout, leaving .is-swap
+     applied and the section invisible for good. */
+  if (spot && document.getElementById('spHero') && document.getElementById('spMood')) {
     var spHero = document.getElementById('spHero'), spMood = document.getElementById('spMood'),
         spTitle = document.getElementById('spTitle'), spB1 = document.getElementById('spBody1'),
         spB2 = document.getElementById('spBody2'), spNum = document.getElementById('spNum'),
@@ -86,13 +93,23 @@
         spTabs = Array.prototype.slice.call(document.querySelectorAll('#spTabs .spot_tab'));
     var si = 0;
 
+    /* Both images carry a srcset, so assigning .src alone changes nothing the
+       visitor can see — the browser keeps serving the candidate it already
+       picked. The srcset has to be rewritten too. */
+    function swap(el, src, alt){
+      if (!el) return;
+      el.setAttribute('srcset', src.replace('.webp', '-600.webp') + ' 600w, ' + src + ' 1200w');
+      el.src = src;
+      el.alt = alt;
+    }
+
     function showRange(i){
       si = (i + RANGES.length) % RANGES.length;
       var r = RANGES[si];
       if (!reduce) spot.classList.add('is-swap');
       setTimeout(function(){
-        spHero.src = r.hero; spHero.alt = r.heroAlt;
-        spMood.src = r.mood; spMood.alt = r.moodAlt;
+        swap(spHero, r.hero, r.heroAlt);
+        swap(spMood, r.mood, r.moodAlt);
         spTitle.innerHTML = r.title;
         spB1.textContent = r.b1; spB2.textContent = r.b2;
         spMoodText.textContent = r.moodText;

@@ -59,10 +59,14 @@ button{font:inherit;color:inherit}
    sections share one surface so the page reads as five or six blocks rather
    than ten sections — fewer, larger divisions, which is what "clean" means
    here. Do not alternate every section; that is how the congestion comes back. */
-.plate{background:var(--bg-plate)}
-/* Two adjacent sections on the same surface are one block, so the doubled
+.surface-plate{background:var(--bg-plate)}
+/* NOTE: this is .surface-plate, NOT .plate. .plate is the design CARD, and
+   naming the surface the same thing made every card rule — nth-child margins,
+   a 6px hover lift — fire on whole sections. Keep the two names apart.
+
+   Two adjacent sections on the same surface are one block, so the doubled
    padding at their seam becomes a hole. Close it. */
-.plate + .plate{padding-top:0}
+.surface-plate + .surface-plate{padding-top:0}
 
 /* ---------- Headings ---------- */
 h1,h2,h3,h4{font-family:var(--serif);font-weight:400;color:var(--text);margin:0;
@@ -113,10 +117,14 @@ p{margin:0}
 .dlink--card{--dot-bg:var(--cream)}
 
 /* ---------- Buttons ---------- */
+/* Ink on brand, not white. #fff on #ca9e67 measures 2.4:1 and fails WCAG AA
+   for text — on the most important tap target on the site. #2a2a2a on the same
+   gold is 5.9:1, and is already what .btn--onDark and .pkg_flag use. */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
   font-family:var(--sans);font-size:.875rem;font-weight:500;letter-spacing:.02em;
   padding:.9375rem 1.75rem;border:1px solid var(--brand);background:var(--brand);
-  color:#fff;cursor:pointer;transition:.25s var(--ease);white-space:nowrap}
+  color:var(--ink);cursor:pointer;white-space:nowrap;
+  transition:background .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease)}
 .btn:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
 .btn--onDark{background:var(--brand);border-color:var(--brand);color:var(--ink)}
 .btn--onDark:hover{background:var(--cream);border-color:var(--cream)}
@@ -455,7 +463,7 @@ p{margin:0}
 .mbar a{padding:.875rem .5rem;text-align:center;font-size:.75rem;font-weight:500;
   display:flex;flex-direction:column;align-items:center;gap:.25rem;
   border-right:1px solid var(--border)}
-.mbar a:last-child{border-right:none;background:var(--brand);color:#fff}
+.mbar a:last-child{border-right:none;background:var(--brand);color:var(--ink)}
 .mbar svg{width:17px;height:17px}
 
 /* ============================================================
@@ -709,22 +717,9 @@ img.cutout{mix-blend-mode:normal}
 .plate:hover .plate_img::before{transform:translateX(120%);opacity:1;
   transition:transform 1.15s var(--ease-out),opacity .5s var(--ease)}
 
-/* ---------- Warm ambient plate ----------
-   A single low-opacity gold wash that follows the pointer across a section.
-   The only thing on the page that tracks the cursor, and at .075 alpha it is
-   felt rather than seen. Pointer devices only — on touch there is no pointer
-   to follow and the wash would sit wherever the last tap landed. */
-.section[data-ambient]{position:relative;isolation:isolate}
-.section[data-ambient]::before{content:'';position:absolute;inset:0;z-index:-1;
-  pointer-events:none;opacity:var(--ambient,0);
-  transition:opacity .9s var(--ease);
-  background:radial-gradient(46rem 34rem at var(--mx,50%) var(--my,40%),
-    rgba(202,158,103,.075),transparent 68%)}
-
 @media (prefers-reduced-motion:reduce){
   .plate,.plate:hover{transform:none!important}
   .plate_img::before{display:none}
-  .section[data-ambient]::before{display:none}
   .line{overflow:visible}
 }
 
@@ -791,12 +786,17 @@ img.cutout{mix-blend-mode:normal}
 .tile_go svg{width:19px;height:19px;display:block}
 .tile:hover .tile_go{transform:translate(5px,-5px)}
 
-/* Uneven by design. A flat 4-up reads as a product listing; the offsets make
-   it read as selected work, which is what v2 got right. */
-.tiles .tile:nth-child(4n+1),.tiles .tile:nth-child(4n+4){grid-column:span 4}
-.tiles .tile:nth-child(4n+2),.tiles .tile:nth-child(4n+3){grid-column:span 2}
-.tiles .tile:nth-child(4n+2){margin-top:4rem}
-.tiles .tile:nth-child(4n+3){margin-bottom:4rem}
+/* EQUAL COLUMNS, DELIBERATELY.
+
+   This grid used to run 4/2/2/4 spans with vertical offsets, borrowed from v2.
+   It cannot work with object-fit:contain: a card spanning two columns fits the
+   same booklet into half the width of one spanning four, so identical artwork
+   rendered at visibly different sizes. That is the "some are small, some are
+   big" problem, and no amount of tuning fixes it while the boxes differ.
+
+   Every tile is now the same width, so every booklet reads at the same optical
+   size. Rhythm comes from the accent colours, not from geometry. */
+.tiles .tile{grid-column:span 3}
 
 /* An even grid, for the 40-design archive where rhythm matters more than drama. */
 .tiles--even .tile,
@@ -804,7 +804,7 @@ img.cutout{mix-blend-mode:normal}
 
 @media (max-width:1180px){
   .tiles .tile,.tiles .tile:nth-child(n){grid-column:span 6;margin:0;min-height:30rem}
-  .tiles--even .tile,.tiles--even .tile:nth-child(n){grid-column:span 4}
+  .tiles--even .tile,.tiles--even .tile:nth-child(n){grid-column:span 6}
 }
 @media (max-width:760px){
   .tiles{gap:1.25rem}
