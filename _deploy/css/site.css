@@ -496,9 +496,26 @@ p{margin:0}
   .addons{grid-template-columns:repeat(2,1fr);gap:2rem}
 }
 @media (max-width:900px){
-  .nav_menu{display:none}
-  .nav_in{grid-template-columns:auto 1fr}
-  .nav_logo{height:62px}
+  /* The menu was display:none below 900px with nothing in its place, so a
+     phone visitor could not reach Gallery, Price List or Resources at all
+     except through the footer. On a site where most traffic is mobile that is
+     not a styling choice, it is a missing navigation. */
+  .nav_in{grid-template-columns:auto 1fr;gap:1rem}
+  .nav_logo{height:auto;width:7.5rem}
+
+  .nav_menu{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;
+    align-items:flex-start;justify-content:center;gap:.5rem;
+    padding:7rem var(--gutter) 5rem;background:var(--bg);border-bottom:0;
+    transform:translateY(-100%);visibility:hidden;
+    transition:transform .55s var(--ease-out),visibility .55s}
+  .nav_menu.is-open{transform:none;visibility:visible}
+  .nav_link{font-family:var(--serif);font-size:clamp(2rem,9vw,3.25rem);line-height:1.15;
+    padding:.25rem 0}
+  .nav_link::after{display:none}
+  .nav_tel{display:block;margin-top:2.5rem;font-family:var(--serif);font-size:1.5rem;
+    color:var(--brand-deep);font-variant-numeric:tabular-nums}
+  .nav_tel small{display:block;font-family:var(--sans);font-size:.6875rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.375rem}
   .story,.promise_in,.foot_top{grid-template-columns:1fr;gap:3rem}
   .story_body{margin-top:0}
   .story_imgs{max-width:30rem}
@@ -970,4 +987,31 @@ img.cutout{mix-blend-mode:normal}
 @media (prefers-reduced-motion:reduce){
   .chap_rule,.step_rule,.steps_end{transform:none!important}
   .has-motion .chap .label,.has-motion .step > :not(.step_rule){opacity:1!important}
+}
+
+
+/* ---------- Menu toggle ----------
+   Two bars that become a cross. Hidden above 900px, where the links sit in the
+   bar itself; the in-curtain phone number is likewise desktop-hidden because
+   the header already carries one. */
+.nav_toggle{display:none;position:relative;z-index:80;width:2.75rem;height:2.75rem;
+  border:0;background:none;cursor:pointer;place-items:center;margin-left:.25rem}
+.nav_toggle span{display:block;width:22px;height:1px;background:var(--ink);
+  transition:transform .4s var(--ease-out),opacity .3s var(--ease)}
+.nav_toggle span + span{margin-top:6px}
+.nav_toggle[aria-expanded="true"] span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav_toggle[aria-expanded="true"] span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+.nav_tel{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .nav_menu{transition:none}
+  .nav_toggle span{transition:none}
+}
+
+
+/* The toggle's base rule is display:none and lives at the end of this file, so
+   the reveal has to come after it — an override sitting in an earlier media
+   query loses on source order and the button never appears. */
+@media (max-width:900px){
+  .nav_toggle{display:grid;order:9}   /* last in the actions cluster */
 }

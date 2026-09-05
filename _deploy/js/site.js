@@ -49,6 +49,48 @@
     targets.forEach(function(t){ if (t) spy.observe(t); });
   }
 
+/* ---------- Mobile menu ----------
+     A full-screen curtain, because below 900px the six primary links had no
+     representation at all. Escape closes it, focus is sent to the first link
+     on open and back to the button on close, and the body is locked so the
+     page behind cannot scroll away underneath. */
+  var toggle = document.querySelector('.nav_toggle');
+  var menu = document.getElementById('nav-menu');
+  if (toggle && menu) {
+    var setMenu = function (open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('is-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        var first = menu.querySelector('.nav_link');
+        if (first) first.focus();
+      }
+    };
+
+    toggle.addEventListener('click', function () {
+      setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+
+    /* Following a link should not leave the curtain open behind the new page
+       in browsers that restore it from the back-forward cache. */
+    Array.prototype.forEach.call(menu.querySelectorAll('a'), function (link) {
+      link.addEventListener('click', function () { setMenu(false); });
+    });
+
+    /* Resizing past the breakpoint must not strand a hidden curtain holding
+       the body scroll lock. */
+    window.matchMedia('(min-width: 901px)').addEventListener('change', function (event) {
+      if (event.matches) setMenu(false);
+    });
+  }
+
   /* ---------- reviews rotator ---------- */
   var REVIEWS = [
     { q:'We sent the photos over on WhatsApp on the Sunday and had the proof back Monday evening. I could not believe how quickly it came together — and it was exactly what she deserved.',
