@@ -110,6 +110,84 @@
     });
   }
 
+/* ------------------------------------------------------------------
+     WORDS — a step finer than lines.
+
+     For the one heading on a page that should feel authored. Words rise out
+     of their own masks a beat apart, slower and shorter than a line reveal
+     because there are more of them.
+
+     Opt-in via data-anim="words", and never used on a heading carrying an
+     Italianno .sc span — that face overhangs its box in both directions and a
+     per-word mask shears it. Line masks have the padding to absorb it; word
+     masks, being narrower, do not.
+     ------------------------------------------------------------------ */
+  function splitWords() {
+    if (!canSplit) return;
+
+    gsap.utils.toArray('[data-anim="words"]').forEach(function (el) {
+      var split;
+      try {
+        split = new SplitText(el, { type: 'words', wordsClass: 'word', mask: 'words' });
+      } catch (error) {
+        gsap.set(el, { opacity: 1 });
+        return;
+      }
+
+      gsap.set(el, { opacity: 1 });
+      gsap.from(split.words, {
+        yPercent: 112,
+        duration: 0.95,
+        ease: 'expo.out',
+        stagger: 0.045,
+        delay: authoredDelay(el),
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     FIRST-LOAD VEIL
+
+     Shown once per session. Built here rather than in the markup so that a
+     visitor without JS never meets it, and torn down on a hard timeout so a
+     failure part-way through cannot leave anyone looking at a blank screen.
+
+     It never blocks: the page behind is already rendered, the veil takes no
+     pointer events, and it starts lifting as soon as the fonts settle. On a
+     site people reach in a hurry, an animation that delays a phone number by
+     even half a second is not worth having.
+     ------------------------------------------------------------------ */
+  function veil() {
+    var KEY = 'mbdd-seen';
+    try {
+      if (sessionStorage.getItem(KEY)) return;
+      sessionStorage.setItem(KEY, '1');
+    } catch (error) {
+      return;   /* private mode: skip rather than show it on every page */
+    }
+
+    var el = document.createElement('div');
+    el.className = 'veil';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<img src="/img/logo-mark.webp" alt="" width="360" height="360">';
+    document.body.appendChild(el);
+
+    var done = false;
+    function lift() {
+      if (done) return;
+      done = true;
+      el.classList.add('is-gone');
+      setTimeout(function () { el.remove(); }, 700);
+    }
+
+    /* Whichever comes first: the fonts settling, or 1.1s. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
+      setTimeout(lift, 420);
+    });
+    setTimeout(lift, 1100);
+  }
+
   /* ------------------------------------------------------------------
      EVERYTHING ELSE — fade and lift on entry.
      ------------------------------------------------------------------ */
@@ -118,8 +196,8 @@
     gsap.utils.toArray('[data-stagger]').forEach(function (group) {
       var step = (parseFloat(group.getAttribute('data-stagger')) || 100) / 1000;
       var items = gsap.utils.toArray(group.children).filter(function (child) {
-        return child.matches('[data-anim]:not([data-anim="lines"])') ||
-          child.querySelector('[data-anim]:not([data-anim="lines"])');
+        var generic = '[data-anim]:not([data-anim="lines"]):not([data-anim="words"])';
+        return child.matches(generic) || child.querySelector(generic);
       });
       if (!items.length) return;
 
@@ -135,7 +213,7 @@
       items.forEach(function (item) { item.setAttribute('data-anim-done', ''); });
     });
 
-    gsap.utils.toArray('[data-anim]:not([data-anim="lines"]):not([data-anim-done])')
+    gsap.utils.toArray('[data-anim]:not([data-anim="lines"]):not([data-anim="words"]):not([data-anim-done])')
       .forEach(function (el) {
         if (el.closest('.hero')) return;           /* the hero has its own timeline */
         gsap.fromTo(el, fromVars(el), Object.assign(toVars(el), {
@@ -242,12 +320,15 @@
      motion-ready is set inside start(), not before it. Setting it earlier
      would disarm the head snippet's 2.6s safety timeout while the content was
      still hidden — the precise failure this guards against. */
+  veil();
+
   var started = false;
   function start() {
     if (started) return;
     started = true;
     root.classList.add('motion-ready');
     splitHeadings();
+    splitWords();
     revealBlocks();
     heroMotion();
     depth();

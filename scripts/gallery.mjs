@@ -73,6 +73,59 @@ function webpSize(file) {
 }
 
 /* --------------------------------------------------------------------------
+   Transparency, and what to do about the accent colour.
+
+   The tile floats the package art on a block of the design's own colour, which
+   only works if the art has an alpha channel. It usually does: "package" is the
+   cutout variant (20 of 25 carry alpha) while "cover" is mostly a photograph on
+   a grey studio backdrop (28 of 40 opaque). Leading with cover is what made the
+   old cards read as white boxes on beige.
+
+   So the tile prefers a transparent image, and where none exists it falls back
+   to filling the card photographically instead of floating a rectangle on it.
+   -------------------------------------------------------------------------- */
+function webpHasAlpha(file) {
+  let fd;
+  try {
+    fd = fs.openSync(file, 'r');
+    const buf = Buffer.alloc(24);
+    fs.readSync(fd, buf, 0, 24, 0);
+    const chunk = buf.toString('ascii', 12, 16);
+    if (chunk === 'VP8X') return Boolean(buf[20] & 0x10);   /* extended: alpha flag */
+    if (chunk === 'VP8L') return true;                      /* lossless always carries alpha */
+    return false;                                           /* simple lossy cannot */
+  } catch {
+    return false;
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+  }
+}
+
+/* Accents run from near-black greens to pale taupes, so the type on top cannot
+   be one fixed colour. Relative luminance decides, per WCAG's formula. */
+function isLight(hex) {
+  const value = String(hex || '').replace('#', '');
+  if (value.length !== 6) return false;
+  const channel = i => {
+    const c = parseInt(value.slice(i, i + 2), 16) / 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * channel(0) + 0.7152 * channel(2) + 0.0722 * channel(4) > 0.42;
+}
+
+/* Cutout first, and among cutouts the fullest package shot. */
+const CUTOUT_ORDER = ['package', 'package2', 'cover', 'cover2', 'stack', 'banner2', 'g1'];
+function tileArt(list) {
+  const cutouts = list.filter(image => image.alpha);
+  const pick = source => source.slice().sort((a, b) => {
+    const ai = CUTOUT_ORDER.indexOf(a.variant);
+    const bi = CUTOUT_ORDER.indexOf(b.variant);
+    return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+  })[0];
+  return cutouts.length ? pick(cutouts) : list[0];
+}
+
+/* --------------------------------------------------------------------------
    Copy tidying. Narrow, and never inventive.
    -------------------------------------------------------------------------- */
 
@@ -141,7 +194,8 @@ function buildImageIndex(deploy, slugs) {
       src: `/img/designs/${file}`,
       small: small.has(`${stem}-600.webp`) ? `/img/designs/${stem}-600.webp` : null,
       width: size.width,
-      height: size.height
+      height: size.height,
+      alpha: webpHasAlpha(path.join(dir, file))
     });
   }
 
@@ -203,16 +257,17 @@ function galleryIndex(designs, images) {
   }).join('\n');
 
   const plates = designs.map((design, i) => {
-    const image = images.get(design.slug)[0];
-    return `<a href="/gallery/${design.slug}/" class="plate" data-anim="up"
-   data-category="${esc(CATEGORY_SLUGS[design.category] || 'standard')}">
-  <div class="plate_img"><img src="${image.src}"${srcsetFor(image, '(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw')}
+    const image = tileArt(images.get(design.slug));
+    const light = isLight(design.color);
+    return `<a href="/gallery/${design.slug}/" class="tile${image.alpha ? '' : ' tile--photo'}"
+   data-anim="up" data-category="${esc(CATEGORY_SLUGS[design.category] || 'standard')}"
+   style="--tint:${esc(design.color)}"${light ? ' data-light' : ''}>
+  <span class="tile_no">${String(i + 1).padStart(2, '0')}</span>
+  <span class="tile_art"><img src="${image.src}"${srcsetFor(image, '(max-width:760px) 92vw, (max-width:1180px) 44vw, 24vw')}
     alt="${esc(design.name)} funeral order of service booklet"
-    width="${image.width}" height="${image.height}" loading="lazy" decoding="async"></div>
-  <div class="plate_row">
-    <div><h3>${esc(design.name)}</h3><p class="plate_meta">${esc(design.category)}</p></div>
-    <svg class="plate_ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-  </div>
+    width="${image.width}" height="${image.height}" loading="lazy" decoding="async"></span>
+  <span class="tile_m"><h3>${esc(design.name)}</h3><p>${esc(design.category)}</p></span>
+  <span class="tile_go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
 </a>`;
   }).join('\n');
 
@@ -295,7 +350,7 @@ ${tiles}
       </div>
     </div>
 
-    <div class="plates plates--gallery" data-gallery-grid>
+    <div class="tiles tiles--even" data-gallery-grid>
 ${plates}
     </div>
 
@@ -368,7 +423,7 @@ ${rest.map((image, i) => `      <figure class="dgrid_i${i % 3 === 0 ? ' dgrid_i-
     <div class="dhero_copy">
       <p class="label label--muted" data-anim="up">
         <a href="/gallery/">The Gallery</a> &nbsp;·&nbsp; ${esc(design.category)}</p>
-      <h1 class="h1" data-anim="lines">${esc(design.name)}</h1>
+      <h1 class="h1" data-anim="words">${esc(design.name)}</h1>
       <p class="body" data-anim="up" style="--d:140ms">${esc(description)}</p>
 
       <dl class="dspec" data-anim="up" style="--d:220ms">
