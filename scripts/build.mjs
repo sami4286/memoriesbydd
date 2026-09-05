@@ -73,7 +73,7 @@ const withMotion = html => html
 /* index.html stays at the root; every other page becomes <name>/index.html. */
 const outputFor = name => name === 'index'
   ? path.join(deploy, 'index.html')
-  : path.join(deploy, name, 'index.html');
+  : path.join(deploy, ...name.split('/'), 'index.html');
 
 /* One finisher for every page the site emits, hand-authored or generated, so
    the catalogue cannot drift out of step with the rest of the site. */
@@ -83,11 +83,23 @@ const finish = html => withMotion(rootRelative(
     .replace(/<!--#footer-->/g, partial('footer'))
 ));
 
-const pages = fs.readdirSync(src).filter(name => name.endsWith('.html'));
+/* _src is walked recursively so a page can nest: _src/hymns-and-resources/
+   hymns.html becomes /hymns-and-resources/hymns/. partials/ is the shell
+   fragments, not pages. */
+function pagesIn(dir, prefix = '') {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+    if (entry.isDirectory()) {
+      return entry.name === 'partials' ? [] : pagesIn(path.join(dir, entry.name), `${prefix}${entry.name}/`);
+    }
+    return entry.name.endsWith('.html') ? [prefix + entry.name] : [];
+  });
+}
+
+const pages = pagesIn(src);
 const built = [];
 
 for (const file of pages) {
-  const name = path.basename(file, '.html');
+  const name = file.slice(0, -'.html'.length);
   const html = finish(read(path.join(src, file)));
 
   const target = outputFor(name);
@@ -100,8 +112,8 @@ for (const file of pages) {
    URLs above. Remove them so two URLs never serve the same page — netlify.toml
    301s the old paths across. */
 for (const file of pages) {
-  const name = path.basename(file, '.html');
-  if (name === 'index') continue;
+  const name = file.slice(0, -'.html'.length);
+  if (name === 'index' || name.includes('/')) continue;
   const stale = path.join(deploy, `${name}.html`);
   if (fs.existsSync(stale)) fs.rmSync(stale);
 }

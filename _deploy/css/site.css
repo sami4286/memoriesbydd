@@ -48,6 +48,22 @@ button{font:inherit;color:inherit}
 .section--flushBot{padding-bottom:2.5rem}
 .band{background:var(--bg-band)}
 
+/* ---------- Surface rhythm ----------
+   The client's note on v2 was that the page felt congested and that sections
+   needed to be broken up by colour. They were right, and it applies here too:
+   story, ranges and spotlight ran cream-on-cream-on-cream, and .band is only a
+   2% step off --bg, which reads as a printing inconsistency rather than a
+   deliberate division.
+
+   --bg-plate is a real step down and is what separates the blocks. Related
+   sections share one surface so the page reads as five or six blocks rather
+   than ten sections — fewer, larger divisions, which is what "clean" means
+   here. Do not alternate every section; that is how the congestion comes back. */
+.plate{background:var(--bg-plate)}
+/* Two adjacent sections on the same surface are one block, so the doubled
+   padding at their seam becomes a hole. Close it. */
+.plate + .plate{padding-top:0}
+
 /* ---------- Headings ---------- */
 h1,h2,h3,h4{font-family:var(--serif);font-weight:400;color:var(--text);margin:0;
   letter-spacing:-.015em}

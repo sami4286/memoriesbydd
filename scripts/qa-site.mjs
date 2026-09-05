@@ -52,6 +52,56 @@ for (const file of files) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   INTERNAL LINKS
+
+   The nav and footer have pointed at /gallery/, /contact/, /tributes/ and the
+   rest since long before those pages existed, and nothing ever noticed. A
+   47-page site cannot be held together by memory, so every root-relative link
+   is resolved against what the build actually produced.
+
+   Netlify redirects are honoured: a link is fine if netlify.toml 301s it.
+   --------------------------------------------------------------------------- */
+const pageUrls = new Set();
+for (const file of files) {
+  if (!/index\.html$/.test(file)) continue;
+  const rel = relative(root, file).replace(/\\/g, '/').replace(/index\.html$/, '');
+  pageUrls.add('/' + rel);
+}
+
+/* from = "/order.html" style rules, plus :splat and :param wildcards. */
+const redirects = [];
+try {
+  const toml = readFileSync(resolve('netlify.toml'), 'utf8');
+  for (const match of toml.matchAll(/from\s*=\s*"([^"]+)"/g)) redirects.push(match[1]);
+} catch { /* no netlify.toml: treat every link as needing a real page */ }
+
+const redirected = url => redirects.some(rule => {
+  const pattern = '^' + rule
+    .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*/g, '.*')
+    .replace(/:[A-Za-z_]+/g, '[^/]+') + '$';
+  return new RegExp(pattern).test(url);
+});
+
+const ASSET = /\.(css|js|png|jpe?g|webp|svg|mp4|webm|txt|xml|ico|pdf|woff2?)$/i;
+
+for (const file of files) {
+  if (!/\.html$/.test(file)) continue;
+  const source = readFileSync(file, 'utf8');
+  const label = relative(root, file);
+  const seen = new Set();
+
+  for (const match of source.matchAll(/href="(\/[^"]*)"/g)) {
+    let url = match[1].split('#')[0].split('?')[0];
+    if (!url || ASSET.test(url) || seen.has(url)) continue;
+    seen.add(url);
+    const withSlash = url.endsWith('/') ? url : url + '/';
+    if (pageUrls.has(withSlash) || redirected(url)) continue;
+    errors.push(`${label}: broken internal link ${url}`);
+  }
+}
+
 console.log(`Checked ${files.length} HTML/CSS/JS files.`);
 if (errors.length) {
   errors.forEach(error => console.error(`ERROR ${error}`));

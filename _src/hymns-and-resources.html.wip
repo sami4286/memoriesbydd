@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funeral Hymns, Poems &amp; Readings | Free Resources | Memories</title>
+<meta name="description" content="Funeral hymns, poems, prayers and readings to choose from, plus a plain-English guide to UK bereavement benefits. Free to use, from Memories Funeral Booklets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://memoriesbydd.com/hymns-and-resources/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Hymns, Readings and Guidance",
+  "url": "https://memoriesbydd.com/hymns-and-resources/",
+  "description": "Funeral hymns, poems, prayers and readings, plus guidance on writing an order of service and claiming UK bereavement support.",
+  "isPartOf": { "@type": "WebSite", "name": "Memories Funeral Booklets", "url": "https://memoriesbydd.com/" }
+}
+</script>
+<link rel="stylesheet" href="css/site.css">
+<style>
+/* ---------- page-local: resource cards ---------- */
+.rcards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.75rem;margin-top:3.5rem}
+.rcard{display:flex;flex-direction:column;border:1px solid var(--border);
+  padding:2.5rem 2.25rem;background:var(--bg);transition:.35s var(--ease)}
+.rcard:hover{border-color:var(--brand);transform:translateY(-5px);
+  box-shadow:0 26px 52px -26px rgba(90,68,40,.32)}
+.rcard_n{font-family:var(--serif);font-size:.875rem;color:var(--brand-deep);
+  letter-spacing:.1em}
+.rcard h3{font-size:1.4375rem;font-weight:400;margin:1rem 0 .875rem;line-height:1.25}
+.rcard p{flex:1;font-size:.9375rem;line-height:1.75;color:var(--text-muted)}
+.rcard_go{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.75rem;
+  font-family:var(--serif);font-size:1.0625rem;color:var(--brand-deep)}
+.rcard_go svg{width:18px;height:18px;transition:transform .45s var(--ease-out)}
+.rcard:hover .rcard_go svg{transform:translateX(6px)}
+
+.rsoft{margin-top:3.5rem;padding:2rem 2.25rem;background:var(--bg-band);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem 2rem}
+.rsoft p{font-family:var(--serif);font-size:1.1875rem;max-width:40rem}
+
+@media (max-width:900px){.rcards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!--#nav-->
+
+<!-- ═════════════════════════ HEADER ═════════════════════════ -->
+<header class="section section--flushBot">
+  <div class="wrap">
+    <p class="label label--muted" data-anim="up">Resources</p>
+    <h1 class="h-display" data-anim="lines" style="font-size:clamp(2.6rem,5vw,4.4rem);margin-top:.75rem">
+      Hymns, Readings and <span class="sc">Guidance</span></h1>
+    <p class="body measure" data-anim="up" style="--d:160ms;margin-top:1.5rem">Choosing what goes into
+    a service is one of the hardest parts of arranging a funeral, and most people are doing it for the
+    first time. Everything here is free to use, whether or not you order a booklet from us. Take what
+    helps.</p>
+  </div>
+</header>
+
+<!-- ═════════════════════════ THE FOUR ═════════════════════════ -->
+<section class="section" data-ambient>
+  <div class="wrap">
+    <div class="rcards" data-stagger="110">
+      <a href="/hymns-and-resources/hymns/" class="rcard" data-anim="up">
+        <span class="rcard_n">01</span>
+        <h3>Funeral hymns</h3>
+        <p>The hymns most often sung at UK funerals, with full words you are welcome to use. Browse by
+        letter, or tell us the feeling you are after and we will suggest a few.</p>
+        <span class="rcard_go">Browse Hymns
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a href="/hymns-and-resources/poems-and-readings/" class="rcard" data-anim="up">
+        <span class="rcard_n">02</span>
+        <h3>Poems, prayers and readings</h3>
+        <p>Poems, prayers, psalms and readings for a service or a graveside &mdash; including shorter
+        pieces for a child or grandchild to read.</p>
+        <span class="rcard_go">Browse Poems and Readings
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a href="/hymns-and-resources/what-to-write/" class="rcard" data-anim="up">
+        <span class="rcard_n">03</span>
+        <h3>What to write in a funeral programme</h3>
+        <p>The wording families ask us about most: the running order, a life story, a tribute, and
+        acknowledgements.</p>
+        <span class="rcard_go">Read the Guide
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a href="/hymns-and-resources/funeral-arrangements/" class="rcard" data-anim="up">
+        <span class="rcard_n">04</span>
+        <h3>UK bereavement benefits and support</h3>
+        <p>What financial help exists after a death, who qualifies, and how to claim it. Plain English,
+        no jargon.</p>
+        <span class="rcard_go">Read the Guide
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+    </div>
+
+    <!-- The soft CTA is the commercial point of this page. Once, no pressure,
+         and once per child page — never twice on the same page.
+         ⚠️ "at no extra cost" is flagged in the deck for Ashley to confirm. -->
+    <div class="rsoft" data-anim="fade">
+      <p>We can set any of these into your loved one&rsquo;s booklet for you, laid out properly, at no
+      extra cost.</p>
+      <a href="/order/" class="btn">Start Your Booklet</a>
+    </div>
+  </div>
+</section>
+
+<!--#footer-->
+</body>
+</html>
