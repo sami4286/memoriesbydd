@@ -858,3 +858,63 @@ img.cutout{mix-blend-mode:normal}
   .veil{display:none}
   .word{overflow:visible}
 }
+
+
+/* ============================================================================
+   02 · OUR STORY
+
+   The one flat dark block on the page, and the only image on the site with no
+   drift and no scale. Stillness is the treatment: everything else moves, so
+   she does not.
+   ============================================================================ */
+.story{background:var(--ink);color:var(--cream);padding:var(--section) 0;
+  min-height:100svh;display:flex;align-items:center}
+.story_in{display:grid;grid-template-columns:repeat(12,1fr);
+  column-gap:var(--gutter);align-items:center;width:100%}
+
+/* Image left, type right — deliberately. See her, then read why. */
+.story_fig{grid-column:2 / span 5;margin:0;position:relative;max-width:30rem}
+/* A 4% feather on all four edges. The card's damask ground is a shade lighter
+   than --ink, so without this its square outline still reads against the
+   section. The inset is small enough to leave the gold frame, the dove and the
+   candles untouched — it only blends the empty ground at the margins. */
+.story_fig img{position:relative;z-index:1;width:100%;height:auto;display:block;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),
+    linear-gradient(180deg,transparent,#000 4%,#000 96%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),
+    linear-gradient(180deg,transparent,#000 4%,#000 96%,transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+
+/* The card's own ground is near-black. This pool of the same darkness spreads
+   well beyond its edges so the square dissolves into the section instead of
+   sitting on it as a rectangle. Candlelight falloff, using the hero scrim's
+   own rgba — no new colour enters the palette. */
+.story_glow{position:absolute;inset:-45%;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side,
+    rgba(18,15,12,.9), rgba(18,15,12,.55) 45%, transparent 100%)}
+
+/* Lifted by the reader's scroll (see storyMotion in motion.js). Only ever
+   opaque when motion is actually running: without JS, html.has-motion is
+   never set and she is simply visible. */
+.story_shade{position:absolute;inset:0;z-index:2;background:var(--ink);opacity:0;
+  pointer-events:none}
+.has-motion .story_shade{opacity:1}
+
+.story_fig figcaption{position:relative;z-index:3;margin-top:1.5rem;
+  font-family:var(--serif);font-style:italic;font-size:.9375rem;line-height:1.55;
+  color:rgba(250,248,245,.58);max-width:24rem}
+
+.story_txt{grid-column:8 / span 5;max-width:26rem}
+.story_txt>*+*{margin-top:1.75rem}
+.story_txt .h1{color:var(--cream)}
+
+@media (max-width:900px){
+  .story{min-height:0;display:block}
+  .story_in{grid-template-columns:1fr;row-gap:3.5rem}
+  .story_fig{grid-column:1/-1;max-width:20rem;margin-inline:auto}
+  .story_txt{grid-column:1/-1;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .story_shade,.has-motion .story_shade{display:none}
+  .story_glow{opacity:1}
+}

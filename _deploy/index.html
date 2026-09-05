@@ -185,29 +185,43 @@
 </header>
 
 <!-- ═════════════════════════ STORY ═════════════════════════ -->
-<section class="section section--flushBot" id="story">
-  <div class="wrap">
-    <div class="story">
-      <div>
-        <p class="label" data-anim="up">Our Story</p>
-        <div class="story_body stack-lg">
-          <h2 class="h1" data-anim="lines">A Tribute <span class="sc">Worthy</span> of Them</h2>
-          <p class="body" data-anim="up" style="--d:100ms">Ashley lost his mother at seven months
-          old. What stayed with him was watching families spare nothing for a wedding, then send
-          someone off with photocopied paper. Memories exists because of her.</p>
-          <div data-anim="up" style="--d:260ms"><a href="/tributes/" class="dlink">Read Our Story</a></div>
-        </div>
-      </div>
+<!-- ═════════════════════════ 02 · OUR STORY ═════════════════════════
+     img/sharon.jpg is NOT a photograph. It is a 600x600 composited memorial
+     card: an ornate gold frame around a small black-and-white print, on black
+     damask, with candles at the foot and a dove above.
 
-      <div class="story_imgs">
-        <figure class="a">
-          <span class="rmask" data-anim="scale"><img src="/img/sharon.jpg" alt="A gold-framed photograph of Sharon Delrose Patricia Whittick with her children" width="600" height="600" loading="lazy" decoding="async"></span>
-          <figcaption>Sharon Delrose Patricia Whittick — mother of Jason, Charmaine and Ashley.</figcaption>
-        </figure>
-        <figure class="b">
-          <span class="rmask" data-anim="scale" style="--d:160ms"><img src="/img/booklet-ribbon.jpeg" alt="A memorial order of service booklet tied with a black ribbon" width="1080" height="589" loading="lazy" decoding="async"></span>
-        </figure>
-      </div>
+     Two consequences that dictate this whole layout.
+     · It cannot be cropped. The frame, the candles and the dove ARE the
+       content — they are the founder's tribute to his mother, and recomposing
+       them is an editorial judgement nobody here is entitled to make.
+     · It cannot be shown large. The source is 600px.
+
+     So the section stops fighting that. It goes dark, the card is left whole
+     and small, and the weight is carried by the emptiness around her rather
+     than by scale. The glow beneath pulls the page ground down to the card's
+     own near-black so its square edge dissolves instead of sitting on cream.
+
+     ASK ASHLEY for the original scan at 1600px or more. Nothing here changes
+     when it arrives except that she gains resolution.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="story" id="story">
+  <div class="wrap story_in">
+    <figure class="story_fig">
+      <span class="story_glow" aria-hidden="true"></span>
+      <img src="/img/sharon.jpg"
+           alt="A gold-framed photograph of Sharon Delrose Patricia Whittick with her children"
+           width="600" height="600" loading="lazy" decoding="async">
+      <span class="story_shade" aria-hidden="true"></span>
+      <figcaption>Sharon Delrose Patricia Whittick &mdash; mother of Jason, Charmaine and Ashley.</figcaption>
+    </figure>
+
+    <div class="story_txt">
+      <p class="label label--onDark" data-anim="up">02 &mdash; Our Story</p>
+      <h2 class="h1" data-anim="lines" style="--d:120ms">A Tribute <span class="sc">Worthy</span> of Them</h2>
+      <p class="body body--onDark" data-anim="up" style="--d:380ms">Ashley lost his mother at seven
+      months old. What stayed with him was watching families spare nothing for a wedding, then send
+      someone off with photocopied paper. Memories exists because of her.</p>
+      <div data-anim="up" style="--d:560ms"><a href="/tributes/" class="dlink dlink--onDark">Read Our Story</a></div>
     </div>
   </div>
 </section>
@@ -280,50 +294,6 @@
   </div>
 </section>
 
-<!-- ═════════════════════════ SPOTLIGHT SLIDER ═════════════════════════ -->
-<section class="section--tight surface-plate" id="spotlight">
-  <div class="wrap">
-    <div class="spot_top">
-      <p class="label label--muted" data-anim="up">The Ranges, Up Close</p>
-      <p class="spot_num" id="spNum" data-anim="fade">01<small>/04</small></p>
-    </div>
-
-    <div class="spot" id="spot">
-      <span class="rmask spot_hero" data-anim="scale">
-        <img id="spHero" src="/img/designs/jamaica-cover.webp" srcset="/img/designs/jamaica-cover-600.webp 600w, /img/designs/jamaica-cover.webp 1200w" sizes="(max-width:640px) 90vw, (max-width:1180px) 44vw, 22vw" alt="Jamaica funeral order of service booklet cover" width="1200" height="1200" loading="lazy" decoding="async">
-      </span>
-
-      <div class="spot_copy stack">
-        <h2 class="h1" data-anim="up" id="spTitle">Caribbean <span class="sc">&amp;</span> African</h2>
-        <p class="body" data-anim="up" style="--d:100ms" id="spBody1">Nine designs built around the
-        flags and colours of home — Jamaica, Trinidad, Grenada, Barbados, St Lucia, Antigua,
-        Dominica, Nigeria and Ghana, with a Rasta theme alongside them.</p>
-        <p class="body" data-anim="up" style="--d:180ms" id="spBody2">Each one is made for a
-        send-off where heritage matters, and where the booklet is kept for years afterwards.</p>
-        <div data-anim="up" style="--d:260ms"><a href="/gallery/?range=caribbean-african" class="dlink" id="spCta">Explore This Range</a></div>
-      </div>
-
-      <div class="spot_mood" data-anim="right" style="--d:200ms">
-        <div class="spot_mood_img"><img id="spMood" src="/img/designs/jamaica-package.webp" srcset="/img/designs/jamaica-package-600.webp 600w, /img/designs/jamaica-package.webp 1158w" sizes="(max-width:1180px) 60vw, 26vw" alt="The full Jamaica package" width="1158" height="953" class="cutout" loading="lazy" decoding="async"></div>
-        <p><b>The Mood:</b> <span id="spMoodText">Flag colours, gold detailing, generous photo
-        galleries and space for a full life story.</span></p>
-      </div>
-    </div>
-
-    <div class="spot_foot">
-      <div class="spot_tabs" id="spTabs" data-anim="fade">
-        <button class="spot_tab is-on" type="button">Caribbean &amp; African</button>
-        <button class="spot_tab" type="button">Classic</button>
-        <button class="spot_tab" type="button">Football</button>
-        <button class="spot_tab" type="button">Standard</button>
-      </div>
-      <div class="spot_arrows" data-anim="fade">
-        <button class="arrow" id="spPrev" type="button" aria-label="Previous range"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
-        <button class="arrow" id="spNext" type="button" aria-label="Next range"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═════════════════════════ FEATURED DESIGNS ═════════════════════════
      Closes the gap in 06-HOMEPAGE-AUDIT.md: nothing on this page reached an
@@ -560,52 +530,6 @@
   </div>
 </section>
 
-<!-- ═════════════════════════ ADD-ONS ═════════════════════════
-     Audit finding D5 was that these four products existed "only as rows inside
-     the price table". They were about to repeat that as bullets inside the
-     package lists, so they get their own section.
-
-     Text-led because there is no photography for any of them yet — requested
-     in 05-CLIENT-ACTIONS.md item 9. Add images when they arrive.
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="section surface-plate" id="addons">
-  <div class="wrap">
-    <div class="center stack" style="margin-bottom:4.5rem">
-      <p class="label label--muted" data-anim="up">Add-ons</p>
-      <h2 class="h-display" data-anim="lines" style="--d:80ms;font-size:clamp(2.4rem,4.6vw,4rem)">
-        More Ways to Remember <span class="sc">Them</span></h2>
-      <p class="body measure" data-anim="up" style="--d:160ms">Add any of these to a booklet order,
-      or order them on their own. All are included in our packages.</p>
-    </div>
-
-    <div class="addons" data-stagger="110">
-      <div class="addon" data-anim="up">
-        <div class="addon_nm">Motion Obituary</div>
-        <div class="addon_pr">£50<small>Standard £50 &middot; Motion £75</small></div>
-        <p>A short animated announcement, made to be shared on WhatsApp.</p>
-        <div class="addon_cta"><a href="/order/" class="dlink dlink--card">Add a Motion Obituary</a></div>
-      </div>
-      <div class="addon" data-anim="up">
-        <div class="addon_nm">Motion Gallery</div>
-        <div class="addon_pr">£50<small>20 photos &middot; 40 from £100 &middot; 60 from £130</small></div>
-        <p>Their photographs set to music, for the reception or the wake.</p>
-        <div class="addon_cta"><a href="/order/" class="dlink dlink--card">Add a Motion Gallery</a></div>
-      </div>
-      <div class="addon" data-anim="up">
-        <div class="addon_nm">Pull-up Banners</div>
-        <div class="addon_pr">£125<small>One £125 &middot; two £170, with carry cases</small></div>
-        <p>A full-height portrait for the service, matched to your booklet design.</p>
-        <div class="addon_cta"><a href="/order/" class="dlink dlink--card">Add a Banner</a></div>
-      </div>
-      <div class="addon" data-anim="up">
-        <div class="addon_nm">Bookmarkers</div>
-        <div class="addon_pr">£85<small>50 from £85 &middot; 100 from £105 &middot; 250 from £150</small></div>
-        <p>Something to keep and to give away, with your wording or ours.</p>
-        <div class="addon_cta"><a href="/order/" class="dlink dlink--card">Add Bookmarkers</a></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═════════════════════════ VOICES ═════════════════════════ -->
 <section class="section" id="voices">

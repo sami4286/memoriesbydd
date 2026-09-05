@@ -275,6 +275,42 @@
     }
   }
 
+/* ------------------------------------------------------------------
+     THE SIGNATURE MOMENT — the photograph is lit by the reader's scroll.
+
+     Scrubbed, not triggered, and that is the whole point: it is the visitor's
+     own hand that brings her out of the dark. It never performs by itself, and
+     someone scrolling fast simply arrives to find her already lit rather than
+     catching an animation mid-flight.
+
+     The words are separate and triggered once, because text must never be
+     half-revealed while somebody is reading it. Since the type is vertically
+     centred it fires with her about three-quarters lit, and she is full by the
+     time the last line settles.
+     ------------------------------------------------------------------ */
+  function storyMotion() {
+    var story = document.querySelector('#story');
+    if (!story) return;
+
+    var img = story.querySelector('.story_fig img');
+    var shade = story.querySelector('.story_shade');
+    var glow = story.querySelector('.story_glow');
+    if (!img || !shade) return;
+
+    gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: story,
+        start: 'top 90%',
+        end: mobile ? 'top 30%' : 'top 35%',
+        scrub: 1.2
+      }
+    })
+      .fromTo(shade, { opacity: 1 }, { opacity: 0, duration: 1 }, 0)
+      .fromTo(img, { scale: 1.06 }, { scale: 1, duration: 1 }, 0)
+      .fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.85 }, 0.15);
+  }
+
   /* ------------------------------------------------------------------
      DEPTH — images drift inside their frames.
 
@@ -331,6 +367,7 @@
     splitWords();
     revealBlocks();
     heroMotion();
+    storyMotion();
     depth();
     ScrollTrigger.refresh();
   }
