@@ -1,76 +1,77 @@
 (function(){
+  /* Behaviour only. All motion lives in motion.js. */
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hero   = document.querySelector('.hero');
-  var anims  = document.querySelectorAll('[data-anim]');
-
-  Array.prototype.forEach.call(document.querySelectorAll('[data-stagger]'), function(group){
-    var step = parseFloat(group.getAttribute('data-stagger')) || 100;
-    Array.prototype.forEach.call(group.children, function(child, i){
-      var t = child.hasAttribute('data-anim') ? child : child.querySelector('[data-anim]');
-      if (t && !t.style.getPropertyValue('--d')) t.style.setProperty('--d', (i * step) + 'ms');
-    });
-  });
-
-  if (reduce) {
-    Array.prototype.forEach.call(anims, function(el){ el.classList.add('is-in'); });
-    if (hero) hero.classList.add('is-in');
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    Array.prototype.forEach.call(anims, function(el){ io.observe(el); });
-    requestAnimationFrame(function(){
-      if (!hero) return;
-      hero.classList.add('is-in');
-      Array.prototype.forEach.call(hero.querySelectorAll('[data-anim]'), function(el){
-        el.classList.add('is-in');
-      });
-    });
+  /* ---------- nav state ----------
+     NOTE: this block previously did querySelector(link.getAttribute('href'))
+     across every .nav_link to build a scrollspy. Those hrefs are page paths
+     ("/our-products"), which are not valid CSS selectors, so querySelector
+     threw a SyntaxError on the first link. Being inside this IIFE, the throw
+     took everything below it with it — the range spotlight slider and the
+     reviews rotator have both been dead on the live site since the nav moved
+     from in-page anchors to real pages. Do not reintroduce a selector built
+     from an href without checking it is a hash first. */
+  var nav = document.querySelector('.nav');
+  if (nav) {
+    var onScroll = function(){ nav.classList.toggle('is-stuck', window.scrollY > 12); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
-  var nav = document.querySelector('.nav');
-  var onScroll = function(){ nav.classList.toggle('is-stuck', window.scrollY > 12); };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  /* Current page, matched on the partial's data-nav attribute rather than on
+     the href, so the markup stays the single source of truth. */
+  var path = window.location.pathname.replace(/\/+$/, '') || '/';
+  var slug = path === '/' ? '' : path.split('/').filter(Boolean)[0];
+  Array.prototype.forEach.call(document.querySelectorAll('.nav_link'), function(link){
+    var target = link.getAttribute('data-nav');
+    if (target && target === slug) {
+      link.classList.add('is-active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
 
-  var links   = Array.prototype.slice.call(document.querySelectorAll('.nav_link'));
-  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
-  var spy = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if (!en.isIntersecting) return;
-      var i = targets.indexOf(en.target);
-      if (i < 0) return;
-      links.forEach(function(l){ l.classList.remove('is-active'); });
-      links[i].classList.add('is-active');
+  /* In-page anchors still get a scrollspy — hash links only. */
+  var hashLinks = Array.prototype.slice.call(document.querySelectorAll('.nav_link'))
+    .filter(function(link){ return (link.getAttribute('href') || '').charAt(0) === '#'; });
+  if (hashLinks.length) {
+    var targets = hashLinks.map(function(link){
+      try { return document.querySelector(link.getAttribute('href')); }
+      catch (error) { return null; }
     });
-  }, { threshold: 0.2, rootMargin: '-15% 0px -65% 0px' });
-  targets.forEach(function(t){ if (t) spy.observe(t); });
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting) return;
+        var i = targets.indexOf(entry.target);
+        if (i < 0) return;
+        hashLinks.forEach(function(link){ link.classList.remove('is-active'); });
+        hashLinks[i].classList.add('is-active');
+      });
+    }, { threshold: 0.2, rootMargin: '-15% 0px -65% 0px' });
+    targets.forEach(function(t){ if (t) spy.observe(t); });
+  }
 
   /* ---------- range spotlight slider ---------- */
   var RANGES = [
     { title:'Caribbean <span class="sc">&amp;</span> African',
-      hero:'img/single-caribbean.jpg', heroAlt:'Jamaica funeral order of service booklet cover',
-      mood:'img/jamaica.png', moodAlt:'The full Jamaica package',
+      hero:'/img/designs/jamaica-cover.webp', heroAlt:'Jamaica funeral order of service booklet cover',
+      mood:'/img/designs/jamaica-package.webp', moodAlt:'The full Jamaica package',
       b1:'Nine designs built around the flags and colours of home — Jamaica, Trinidad, Grenada, Barbados, St Lucia, Antigua, Dominica, Nigeria and Ghana, with a Rasta theme alongside them.',
       b2:'Each one is made for a send-off where heritage matters, and where the booklet is kept for years afterwards.',
       moodText:'Flag colours, gold detailing, generous photo galleries and space for a full life story.' },
     { title:'Classic',
-      hero:'img/single-classic.jpg', heroAlt:'Classic funeral order of service booklet cover',
-      mood:'img/classic-one.png', moodAlt:'The full Classic package',
+      hero:'/img/designs/classic-one-cover.webp', heroAlt:'Classic funeral order of service booklet cover',
+      mood:'/img/designs/classic-one-package.webp', moodAlt:'The full Classic package',
       b1:'Three understated designs for a traditional service — clean type, generous white space and nothing competing with the photograph.',
       b2:'Chosen most often for formal church services, and by families who want the words to carry the day.',
       moodText:'Black, white and soft grey. Formal type, a single portrait, no distractions.' },
     { title:'Football',
-      hero:'img/single-football.jpg', heroAlt:'Arsenal themed funeral order of service booklet cover',
-      mood:'img/arsenal.png', moodAlt:'The full Arsenal package',
+      hero:'/img/designs/liverpool-f-c-cover.webp', heroAlt:'Liverpool FC themed funeral order of service booklet cover',
+      mood:'/img/designs/liverpool-f-c-package.webp', moodAlt:'The full Liverpool FC package',
       b1:'Arsenal, Chelsea, Tottenham, Liverpool, Manchester United and Manchester City — club colours and crest, done with restraint.',
       b2:'For the person whose Saturdays were spoken for. It says something true about them without turning the day into a matchday.',
       moodText:'Club colours, crest as the focal point, and room for the order of service and photographs.' },
     { title:'Standard',
-      hero:'img/single-standard.jpg', heroAlt:'White Lilies funeral order of service booklet cover',
-      mood:'img/white-lilies.png', moodAlt:'The full White Lilies package',
+      hero:'/img/designs/white-lilies-cover.webp', heroAlt:'White Lilies funeral order of service booklet cover',
+      mood:'/img/designs/white-lilies-stack.webp', moodAlt:'The full White Lilies package',
       b1:'Twenty-two designs — florals, feathers, dominoes, satins and skies. Our widest choice of colours and moods.',
       b2:'If nothing else feels quite right, this is where most families find the one. We stock every theme in several colourways.',
       moodText:'Soft florals through to bold, masculine tones — up to 23 photographs on the larger layouts.' }

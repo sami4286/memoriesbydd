@@ -1,0 +1,41 @@
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { resolve, relative } from 'node:path';
+
+const root = resolve('_deploy');
+const files = [];
+const walk = dir => readdirSync(dir).forEach(name => {
+  if (name === 'dist') return;
+  /* Third-party, minified, and not ours to lint. The brace counter below is a
+     crude balance check that cannot tell a brace in a regex or string literal
+     from a real one, so minified bundles always trip it. */
+  if (name === 'vendor') return;
+  const path = resolve(dir, name);
+  if (statSync(path).isDirectory()) walk(path);
+  else if (/\.(html|css|js)$/.test(name)) files.push(path);
+});
+walk(root);
+
+const errors = [];
+for (const file of files) {
+  const source = readFileSync(file, 'utf8');
+  const label = relative(root, file);
+  if (/\.html$/.test(file)) {
+    if (!/<html\b[^>]*lang="en-GB"/i.test(source)) errors.push(`${label}: missing lang=en-GB`);
+    if ((source.match(/<h1\b/gi) || []).length !== 1) errors.push(`${label}: expected exactly one h1`);
+    if (!/<meta\s+name="description"/i.test(source)) errors.push(`${label}: missing description`);
+    if (/href="#"/.test(source)) errors.push(`${label}: placeholder href found`);
+    if (/<img\b(?![^>]*\balt=)/i.test(source)) errors.push(`${label}: image without alt`);
+  }
+  if (/\.(css|js)$/.test(file)) {
+    const opens = (source.match(/\{/g) || []).length;
+    const closes = (source.match(/\}/g) || []).length;
+    if (opens !== closes) errors.push(`${label}: unbalanced braces (${opens}/${closes})`);
+  }
+}
+
+console.log(`Checked ${files.length} HTML/CSS/JS files.`);
+if (errors.length) {
+  errors.forEach(error => console.error(`ERROR ${error}`));
+  process.exit(1);
+}
+console.log('0 errors.');

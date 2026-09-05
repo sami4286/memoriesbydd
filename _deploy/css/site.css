@@ -445,14 +445,7 @@ p{margin:0}
 /* ============================================================
    SCROLL ANIMATIONS
    ============================================================ */
-[data-anim]{opacity:0;will-change:opacity,transform;
-  transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);
-  transition-delay:var(--d,0ms)}
-[data-anim="up"]{transform:translateY(30px)}
-[data-anim="fade"]{transform:none}
-[data-anim="right"]{transform:translateX(28px)}
-[data-anim="scale"]{transform:scale(.97)}
-[data-anim].is-in{opacity:1;transform:none}
+.has-motion [data-anim]{opacity:0;will-change:opacity,transform}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -634,3 +627,87 @@ img.cutout{mix-blend-mode:normal}
 .pcard_img img.cutout,
 .spot_mood_img img.cutout,
 .prow_media img.cutout{width:80%;height:80%}
+
+
+/* ============================================================================
+   SPATIAL DEPTH — the premium pass.
+
+   Nothing here changes a colour, a typeface or a measurement. The theme is
+   the theme. What it adds is depth: layers that move at different rates,
+   light that answers the pointer, and reveals with some weight behind them.
+
+   GSAP owns every transform on the elements it animates (see /js/motion.js).
+   The CSS transitions that used to drive .rmask and .hero_bg are therefore
+   switched off under .has-motion — two systems writing the same property is
+   how you get jitter. Without JS, .has-motion is never set, those original
+   transitions still run, and the page is exactly what it was before.
+   ============================================================================ */
+
+/* ---------- Hand transforms to GSAP ---------- */
+.has-motion .rmask img,
+.has-motion .hero_bg img{transition:none}
+.has-motion .rmask img{transform:none}
+.has-motion .rmask.is-in img{transform:none}
+
+/* ---------- SplitText line masks ----------
+   SplitText writes the mask wrappers; the padding here is what stops them
+   shearing the type.
+
+   The house display style sets Italianno (.sc) at font-size:1.5em with
+   line-height:.7, so those glyphs overhang their own line box in BOTH
+   directions — a tight mask clips them permanently once the line settles, not
+   just while it travels. The padding opens the mask up and the matching
+   negative margin takes the space back out, so the mask gets bleed room and
+   the page layout is unchanged. Do not remove one without the other. */
+.has-motion .line{overflow:hidden;
+  padding:.38em 0 .28em;margin:-.38em 0 -.28em}
+.has-motion [data-anim="lines"]{opacity:0}
+
+/* ---------- Layered nav ----------
+   Once scrolled, the nav becomes a plane above the content rather than part
+   of it: translucent, blurred, with a warm hairline. Falls back to the solid
+   background wherever backdrop-filter is unsupported. */
+.nav.is-stuck{background:rgba(250,248,245,.82);
+  box-shadow:0 1px 0 rgba(226,221,212,.9),0 10px 34px rgba(42,42,42,.06)}
+@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+  .nav.is-stuck{-webkit-backdrop-filter:saturate(1.18) blur(14px);
+    backdrop-filter:saturate(1.18) blur(14px)}
+}
+
+/* ---------- Plates: lift and sheen ----------
+   The card rises a little and casts a warmer, wider shadow. A slow highlight
+   crosses the image once per hover — the way light moves across something
+   held up and turned, which is what these booklets are for. */
+.plate{transition:transform .7s var(--ease-out)}
+.plate_img{transition:box-shadow .7s var(--ease-out)}
+.plate:hover{transform:translateY(-6px)}
+.plate:hover .plate_img{box-shadow:0 26px 52px -18px rgba(90,68,40,.34)}
+
+.plate_img::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(104deg,
+    rgba(255,255,255,0) 38%,
+    rgba(255,252,246,.30) 48%,
+    rgba(242,233,220,.16) 55%,
+    rgba(255,255,255,0) 66%);
+  transform:translateX(-120%);opacity:0}
+.plate:hover .plate_img::before{transform:translateX(120%);opacity:1;
+  transition:transform 1.15s var(--ease-out),opacity .5s var(--ease)}
+
+/* ---------- Warm ambient plate ----------
+   A single low-opacity gold wash that follows the pointer across a section.
+   The only thing on the page that tracks the cursor, and at .075 alpha it is
+   felt rather than seen. Pointer devices only — on touch there is no pointer
+   to follow and the wash would sit wherever the last tap landed. */
+.section[data-ambient]{position:relative;isolation:isolate}
+.section[data-ambient]::before{content:'';position:absolute;inset:0;z-index:-1;
+  pointer-events:none;opacity:var(--ambient,0);
+  transition:opacity .9s var(--ease);
+  background:radial-gradient(46rem 34rem at var(--mx,50%) var(--my,40%),
+    rgba(202,158,103,.075),transparent 68%)}
+
+@media (prefers-reduced-motion:reduce){
+  .plate,.plate:hover{transform:none!important}
+  .plate_img::before{display:none}
+  .section[data-ambient]::before{display:none}
+  .line{overflow:visible}
+}

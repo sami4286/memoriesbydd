@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
 <meta property="og:locale" content="en_GB">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="/css/site.css">
 <style>
 /* ============================================================
    ORDER PAGE — page-local only. Anything reused elsewhere moves
@@ -80,12 +80,12 @@
   .oform_body{padding:2.5rem 1.25rem}
 }
 </style>
-</head>
+<script>(function(d){var r=d.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('has-motion');setTimeout(function(){if(!r.classList.contains('motion-ready'))r.classList.remove('has-motion')},2600)}})(document)</script></head>
 <body>
 
 <div class="nav">
   <div class="nav_in">
-    <a href="/"><img src="img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"
+    <a href="/"><img src="/img/logo.png" alt="Memories Funeral Booklets" class="nav_logo"
        width="246" height="246" fetchpriority="high"></a>
     <nav class="nav_menu">
       <a href="/our-products" class="nav_link" data-nav="our-products">Our Products</a>
@@ -108,9 +108,10 @@
   </div>
 </div>
 
+
 <!-- ═════════════════════════ HEAD ═════════════════════════ -->
 <header class="ohead">
-  <div class="ohead_bg"><img src="img/hero-candles.jpeg" alt="" width="2600" height="1418" loading="lazy" decoding="async"></div>
+  <div class="ohead_bg"><img src="/img/hero-candles.jpeg" alt="" width="2600" height="1418" loading="lazy" decoding="async"></div>
   <div class="wrap">
     <div class="ohead_in">
       <p class="label" data-anim="up">Order Now</p>
@@ -165,7 +166,7 @@
           <p class="body measure" style="margin:1.5rem auto 0">Take a deep breath &mdash; there's no
           rush. We'll guide you step by step, and you can always come back to add or adjust details
           later.</p>
-          <div style="margin-top:2.5rem"><a href="#" class="btn">Click to start</a></div>
+          <div style="margin-top:2.5rem"><a href="/order/#form" class="btn">Click to start</a></div>
 
           <p class="oform_note"><b>Prototype note.</b> The live page embeds the 20-screen Typeform
           specified in the client brief. Welcome copy above is quoted verbatim from that brief.
@@ -247,7 +248,7 @@
 
     <div class="foot_cols">
       <div>
-        <img src="img/logo.png" alt="Memories Funeral Booklets" class="foot_logo" width="246" height="246" loading="lazy" decoding="async">
+        <img src="/img/logo.png" alt="Memories Funeral Booklets" class="foot_logo" width="246" height="246" loading="lazy" decoding="async">
         <address>
           Stanmore Place, Stanmore Innovation Centre<br>
           Howard Rd, London HA7 1BT<br>
@@ -301,7 +302,8 @@
   </div>
 </div>
 
-<script src="js/site.js" defer></script>
+
+<script src="/js/site.js" defer></script>
 <script>
 /* Carry ?design= and ?ref= through to the form and show what was chosen.
    03-FUNNEL.md: the design page must not make the customer re-explain what
@@ -318,5 +320,5 @@
   if (ref) document.documentElement.setAttribute('data-ref', ref);
 })();
 </script>
-</body>
+<script src="/js/vendor/gsap.min.js" defer></script><script src="/js/vendor/ScrollTrigger.min.js" defer></script><script src="/js/vendor/SplitText.min.js" defer></script><script src="/js/motion.js" defer></script></body>
 </html>

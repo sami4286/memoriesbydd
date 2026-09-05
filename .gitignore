@@ -45,3 +45,12 @@ $RECYCLE.BIN/
 # Mac zip junk (the client's asset drops arrive with these)
 __MACOSX/
 ._*
+
+# Build tooling and output.
+# Added with the same caution as the note at the top of this file: these three
+# are reproducible from the repo, so losing them between machines costs a
+# `npm install` and a `npm run build` — nothing else. Everything that is NOT
+# reproducible stays tracked.
+node_modules/
+/dist/
+/_deploy/dist/
