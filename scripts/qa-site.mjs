@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
 
 const root = resolve('_deploy');
@@ -25,6 +25,25 @@ for (const file of files) {
     if (!/<meta\s+name="description"/i.test(source)) errors.push(`${label}: missing description`);
     if (/href="#"/.test(source)) errors.push(`${label}: placeholder href found`);
     if (/<img\b(?![^>]*\balt=)/i.test(source)) errors.push(`${label}: image without alt`);
+
+    /* Every local asset a page asks for must actually be on disk.
+
+       All eight spotlight images were referenced for months without existing.
+       Nothing in the build looked, so nothing complained — the slider would
+       have swapped to broken images the moment the script crash was fixed. */
+    const assets = new Set();
+    for (const match of source.matchAll(/(?:src|href)="(\/(?:img|css|js|video)\/[^"]+)"/g)) {
+      assets.add(match[1]);
+    }
+    for (const match of source.matchAll(/srcset="([^"]+)"/g)) {
+      for (const candidate of match[1].split(',')) {
+        const url = candidate.trim().split(/\s+/)[0];
+        if (url.startsWith('/')) assets.add(url);
+      }
+    }
+    for (const asset of assets) {
+      if (!existsSync(resolve(root, '.' + asset))) errors.push(`${label}: missing asset ${asset}`);
+    }
   }
   if (/\.(css|js)$/.test(file)) {
     const opens = (source.match(/\{/g) || []).length;

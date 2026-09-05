@@ -20,6 +20,7 @@
    ============================================================================ */
 import fs from 'node:fs';
 import path from 'node:path';
+import { buildGallery } from './gallery.mjs';
 
 const root    = path.resolve(import.meta.dirname, '..');
 const src     = path.join(root, '_src');
@@ -74,16 +75,20 @@ const outputFor = name => name === 'index'
   ? path.join(deploy, 'index.html')
   : path.join(deploy, name, 'index.html');
 
+/* One finisher for every page the site emits, hand-authored or generated, so
+   the catalogue cannot drift out of step with the rest of the site. */
+const finish = html => withMotion(rootRelative(
+  html
+    .replace(/<!--#nav-->/g, partial('nav'))
+    .replace(/<!--#footer-->/g, partial('footer'))
+));
+
 const pages = fs.readdirSync(src).filter(name => name.endsWith('.html'));
 const built = [];
 
 for (const file of pages) {
   const name = path.basename(file, '.html');
-  const html = withMotion(rootRelative(
-    read(path.join(src, file))
-      .replace(/<!--#nav-->/g, partial('nav'))
-      .replace(/<!--#footer-->/g, partial('footer'))
-  ));
+  const html = finish(read(path.join(src, file)));
 
   const target = outputFor(name);
   fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -101,5 +106,8 @@ for (const file of pages) {
   if (fs.existsSync(stale)) fs.rmSync(stale);
 }
 
+const catalogue = buildGallery({ root, deploy, finish });
+
 console.log(`build: ${built.length} pages`);
+console.log(`  gallery: ${catalogue.pages} pages from ${catalogue.images} images`);
 for (const page of built) console.log(`  /${page.replace(/index\.html$/, '')}`);

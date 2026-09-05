@@ -1,0 +1,205 @@
+/* ============================================================================
+   GALLERY — /gallery/ and the 40 design pages.
+
+   Loaded only on those pages. Uses the site's own tokens throughout; there is
+   no new colour, typeface or spacing unit in this file.
+   ============================================================================ */
+
+/* ============================================================
+   THE ARCHIVE — a drum of forty covers
+
+   Tiles sit on one large-radius ring: each is rotated to its own angle and
+   pushed out along Z, and the stage is pulled back by the same radius so the
+   front tile lands at z:0. Turning the archive rotates the stage.
+
+   The radius is written by gallery.js, because it has to agree exactly with
+   the tile width and the angular step or the covers overlap. Do not hard-code
+   it here.
+
+   WITHOUT JS, AND UNDER REDUCED MOTION, none of that applies: .orbit_stage is
+   a plain horizontally scrolling row and every cover is still reachable. The
+   3D only switches on when gallery.js adds .is-drum.
+   ============================================================ */
+.orbit{position:relative;margin-top:4rem;padding-bottom:2rem;
+  outline:none}
+.orbit:focus-visible{outline:2px solid var(--brand);outline-offset:6px}
+
+/* Fallback presentation: a scroller. The wrapper generates no box at all, so
+   the stage lays out as if it were a direct child of .orbit. The drum rules
+   below MUST restore display:block — height and overflow are both ignored on
+   a display:contents element, and the tiles spill across the whole page. */
+.orbit_view{display:contents}
+.orbit_stage{display:flex;gap:1.5rem;overflow-x:auto;padding:1rem var(--gutter) 2rem;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.orbit_stage::-webkit-scrollbar{height:3px}
+.orbit_stage::-webkit-scrollbar-thumb{background:var(--rule)}
+.orbit_tile{flex:0 0 auto;width:15rem;scroll-snap-align:center}
+
+/* Drum presentation, once gallery.js takes over.
+
+   The clipped, masked box is .orbit_view — NOT .orbit. The HUD is a sibling
+   below it, so it must sit outside the overflow:hidden or it gets buried
+   under the absolutely-positioned stage.
+
+   perspective belongs on the view, the ancestor of the rotating stage. Without
+   it, preserve-3d still orders the tiles but applies no foreshortening, and
+   forty covers at identical size read as a flat fan rather than a drum. */
+.orbit.is-drum .orbit_view{display:block;position:relative;height:30rem;overflow:hidden;
+  perspective:1180px;perspective-origin:50% 48%;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent)}
+.orbit.is-drum .orbit_stage{position:absolute;inset:0;display:block;overflow:visible;
+  padding:0;transform-style:preserve-3d;
+  transform:translateZ(calc(var(--radius) * -1)) rotateY(var(--turn,0deg));
+  will-change:transform;cursor:grab}
+.orbit.is-drum.is-held .orbit_stage{cursor:grabbing}
+.orbit.is-drum .orbit_tile{position:absolute;top:50%;left:50%;
+  width:var(--tile);margin:calc(var(--tile) * -0.72) 0 0 calc(var(--tile) / -2);
+  transform:rotateY(var(--a)) translateZ(var(--radius));
+  transition:opacity .5s var(--ease),filter .5s var(--ease);
+  /* The far half of the ring faces away from the viewer. Without this its
+     covers show through the middle of the drum reversed, captions and all. */
+  -webkit-backface-visibility:hidden;backface-visibility:hidden}
+
+.orbit_tile_img{display:block;overflow:hidden;background:var(--bg-plate);
+  aspect-ratio:3/4;position:relative;
+  box-shadow:0 24px 48px -22px rgba(60,44,24,.42)}
+.orbit_tile_img img{width:100%;height:100%;object-fit:cover;display:block}
+/* A thin warm edge picked from the design's own colour — the only place the
+   per-design tint is used, and kept at low alpha so forty of them together
+   still read as one archive rather than a colour chart. */
+.orbit_tile_img::after{content:'';position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tint,#ca9e67) 42%,transparent)}
+
+.orbit_tile_cap{display:flex;align-items:baseline;gap:.5rem;padding-top:.875rem;
+  font-size:.8125rem;color:var(--text-muted);letter-spacing:.04em}
+.orbit_tile_cap b{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--text)}
+
+/* Depth cueing. gallery.js sets --off (0 at the front, 1 at the edge). */
+.orbit.is-drum .orbit_tile{opacity:calc(1 - var(--off,0) * .72);
+  filter:saturate(calc(1 - var(--off,0) * .55))}
+.orbit.is-drum .orbit_tile[data-front]{opacity:1;filter:none}
+/* The cover at the front is the one being offered; give it a little more
+   presence than its neighbours so the eye has somewhere to rest. */
+.orbit_tile_img{transition:transform .6s var(--ease-out),box-shadow .6s var(--ease-out)}
+.orbit.is-drum .orbit_tile[data-front] .orbit_tile_img{transform:scale(1.045);
+  box-shadow:0 34px 64px -24px rgba(60,44,24,.55)}
+.orbit.is-drum .orbit_tile[data-front] .orbit_tile_cap b{color:var(--brand-deep)}
+
+/* ---------- HUD ---------- */
+.orbit_hud{position:relative;z-index:3;max-width:var(--container);margin:0 auto;
+  padding:0 var(--gutter);display:grid;
+  grid-template-columns:auto 1fr auto;align-items:center;gap:1.5rem 2rem}
+.orbit.is-drum .orbit_hud{margin-top:1.5rem}
+.orbit_count{font-family:var(--serif);font-size:2rem;line-height:1;color:var(--ink)}
+.orbit_count small{font-size:.5em;color:var(--text-muted)}
+.orbit_name{font-family:var(--serif);font-size:1.125rem;font-weight:500}
+.orbit_rail{grid-column:1/-1;order:3;height:1px;background:var(--rule);position:relative}
+.orbit_rail i{position:absolute;left:0;top:-1px;height:3px;width:var(--p,2.5%);
+  background:var(--brand);transition:width .35s var(--ease-out)}
+.orbit_ctl{display:flex;align-items:center;gap:1rem;font-size:.8125rem;
+  color:var(--text-muted)}
+.orbit_ctl button{width:2.75rem;height:2.75rem;border:1px solid var(--border);
+  background:transparent;border-radius:50%;display:grid;place-items:center;
+  cursor:pointer;transition:.25s var(--ease)}
+.orbit_ctl button:hover{border-color:var(--brand);color:var(--brand-deep)}
+.orbit_ctl button svg{width:18px;height:18px}
+.orbit_ctl span{display:none}
+@media (min-width:900px){.orbit_ctl span{display:inline}}
+
+.ghero{padding-top:4.5rem}
+.ghero_top{display:grid;gap:1.25rem;max-width:var(--container)}
+.ghero_top .measure{margin-top:.5rem}
+
+/* ============================================================
+   BROWSE — filters and the full grid
+   ============================================================ */
+.gbrowse_top{display:flex;flex-wrap:wrap;align-items:flex-end;
+  justify-content:space-between;gap:2rem;margin-bottom:3.5rem}
+.gfilters{display:flex;flex-wrap:wrap;gap:.625rem}
+.gfilter{font-family:var(--sans);font-size:.8125rem;letter-spacing:.02em;
+  padding:.5rem 1.125rem;border:1px solid var(--border);background:transparent;
+  color:var(--text-muted);cursor:pointer;transition:.25s var(--ease)}
+.gfilter:hover{border-color:var(--brand);color:var(--brand-deep)}
+.gfilter.is-on{border-color:var(--brand);background:var(--brand);color:#fff}
+
+/* The homepage .plates grid staggers every second card downwards. That reads
+   well for four cards; across forty it becomes noise, and it breaks outright
+   when filtering hides arbitrary children. Flat grid here. */
+.plates--gallery{grid-template-columns:repeat(4,1fr);gap:2rem 1.75rem}
+.plates--gallery .plate:nth-child(even){margin-top:0}
+.plates--gallery .plate[hidden]{display:none}
+.gempty{margin-top:3rem;color:var(--text-muted);font-family:var(--serif)}
+
+/* ============================================================
+   ONE DESIGN
+   ============================================================ */
+.dhero{padding:4rem 0 var(--section)}
+.dhero_in{display:grid;grid-template-columns:1fr 1.05fr;gap:var(--gutter);
+  align-items:center}
+.dhero_copy .label a{color:var(--brand-deep);border-bottom:1px solid currentColor}
+.dhero_copy h1{margin:1rem 0 1.5rem}
+.dhero_art .rmask{display:block;background:var(--bg-plate);
+  box-shadow:0 40px 80px -40px rgba(60,44,24,.5)}
+.dhero_art img{width:100%;height:auto;display:block}
+
+.dspec{margin-top:2.5rem;border-top:1px solid var(--border)}
+.dspec>div{display:grid;grid-template-columns:9.5rem 1fr;gap:1.5rem;
+  padding:.9375rem 0;border-bottom:1px solid var(--border)}
+.dspec dt{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);padding-top:.15rem}
+.dspec dd{margin:0;font-family:var(--serif);font-size:1.0625rem}
+
+.dhero_cta{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem 2rem;
+  margin-top:2.5rem}
+
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;margin-top:2.5rem}
+.dgrid_i{margin:0}
+.dgrid_i--wide{grid-column:span 2}
+.dgrid_i .rmask{display:block;background:var(--bg-plate);aspect-ratio:4/3}
+.dgrid_i img{width:100%;height:100%;object-fit:cover;display:block}
+
+.dnav_in{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.dnav_l,.dnav_r{display:grid;gap:.25rem;max-width:16rem}
+.dnav_r{text-align:right}
+.dnav_l span,.dnav_r span{font-size:.75rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-muted)}
+.dnav_l strong,.dnav_r strong{font-family:var(--serif);font-size:1.25rem;
+  font-weight:400;transition:color .25s var(--ease)}
+.dnav_l:hover strong,.dnav_r:hover strong{color:var(--brand-deep)}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1180px){
+  .plates--gallery{grid-template-columns:repeat(3,1fr)}
+  .dhero_in{grid-template-columns:1fr;gap:3rem}
+  .dgrid{grid-template-columns:repeat(2,1fr)}
+  .dgrid_i--wide{grid-column:span 2}
+  .orbit.is-drum .orbit_view{height:26rem}
+}
+@media (max-width:900px){
+  .plates--gallery{grid-template-columns:repeat(2,1fr)}
+  .gbrowse_top{flex-direction:column;align-items:flex-start}
+  .orbit.is-drum .orbit_view{height:23rem}
+  .orbit_hud{grid-template-columns:auto 1fr;gap:1rem}
+  .orbit_ctl{grid-column:1/-1;order:4;justify-content:space-between;width:100%}
+}
+@media (max-width:640px){
+  .plates--gallery{grid-template-columns:1fr;gap:2.5rem}
+  .dgrid{grid-template-columns:1fr}
+  .dgrid_i--wide{grid-column:span 1}
+  .dnav_in{flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .dnav_r{text-align:left}
+  .dspec>div{grid-template-columns:1fr;gap:.25rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* The drum is motion by definition. Stay on the scroller. */
+  .orbit.is-drum .orbit_view{display:contents;height:auto;overflow:visible;
+    perspective:none;-webkit-mask-image:none;mask-image:none}
+  .orbit.is-drum .orbit_stage{position:static;display:flex;overflow-x:auto;
+    transform:none;padding:1rem var(--gutter) 2rem}
+  .orbit.is-drum .orbit_tile{position:static;width:15rem;margin:0;transform:none;
+    opacity:1;filter:none;backface-visibility:visible}
+}
