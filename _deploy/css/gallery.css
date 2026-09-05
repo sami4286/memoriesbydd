@@ -206,8 +206,11 @@
 
 /* Designs with no cutout available fill the card photographically instead of
    floating an opaque rectangle on the accent colour. */
-.tile--photo .tile_art img{width:100%;height:100%;object-fit:cover;
-  filter:none;transform:scale(1.02)}
+/* No cutout available, so the photograph fills the whole card rather than
+   floating inside the contain box the cutouts use. */
+.tile--photo .tile_art{inset:0}
+.tile--photo .tile_art img{object-fit:cover;filter:none;transform:scale(1.02)}
+.tile--photo:hover .tile_art img{transform:scale(1.07)}
 .tile--photo::after{
   background:linear-gradient(0deg,rgba(12,10,8,.72),rgba(12,10,8,.28) 48%,transparent 74%)}
 .tile--photo[data-light]{color:var(--cream)}
