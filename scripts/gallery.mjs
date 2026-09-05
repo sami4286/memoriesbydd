@@ -17,6 +17,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+/* The word a catalogue would use for each variant, rather than the file's
+   own suffix. g1..g9 are all simply details. */
+const PLATE_WORDS = {
+  cover: 'Cover', spread: 'Inside spread', stack: 'The set', package: 'The full package',
+  banner: 'Pull-up banner', bookmark: 'Bookmarker', emblem: 'Emblem', colourway: 'Colourway'
+};
+const plateWord = variant => PLATE_WORDS[String(variant).replace(/\d+$/, '')] || 'Detail';
+
 const CATEGORY_SLUGS = {
   'Caribbean & African': 'caribbean-african',
   'Classic': 'classic',
@@ -387,11 +395,13 @@ function designPage(design, index, designs, images) {
     ? `<section class="section section--tight" id="detail">
   <div class="wrap">
     <p class="label label--muted" data-anim="up">Inside the Booklet</p>
-    <div class="dgrid" data-stagger="90">
-${rest.map((image, i) => `      <figure class="dgrid_i${i % 3 === 0 ? ' dgrid_i--wide' : ''}" data-anim="up">
-        <span class="rmask"><img src="${image.src}"${srcsetFor(image, '(max-width:640px) 90vw, 45vw')}
-          alt="${esc(design.name)} — ${esc(image.variant.replace(/\d+$/, '') || 'detail')}"
+    <div class="plates_seq" data-stagger="90">
+${rest.map((image, i) => `      <figure class="plate${i % 3 === 0 ? ' plate--wide' : ''}${image.alpha ? '' : ' plate--photo'}"
+        style="--tint:${esc(design.color)}" data-anim="up">
+        <span class="plate_art"><img src="${image.src}"${srcsetFor(image, '(max-width:640px) 90vw, 45vw')}
+          alt="${esc(design.name)} — ${esc(plateWord(image.variant).toLowerCase())}"
           width="${image.width}" height="${image.height}" loading="lazy" decoding="async"></span>
+        <figcaption>Plate ${String(i + 2).padStart(2, '0')} &mdash; ${esc(plateWord(image.variant))}</figcaption>
       </figure>`).join('\n')}
     </div>
   </div>
