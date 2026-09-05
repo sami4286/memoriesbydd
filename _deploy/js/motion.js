@@ -58,6 +58,8 @@
     if (kind === 'fade') return { opacity: 0 };
     if (kind === 'scale') return { opacity: 0, scale: 0.97 };
     if (kind === 'right') return { opacity: 0, x: 28 };
+    /* An object settling onto a surface, rather than sliding in from nowhere. */
+    if (kind === 'settle') return { opacity: 0, y: 24, scale: 0.985 };
     return { opacity: 0, y: mobile ? 22 : 30 };
   }
 
@@ -66,6 +68,7 @@
     if (kind === 'fade') return { opacity: 1 };
     if (kind === 'scale') return { opacity: 1, scale: 1 };
     if (kind === 'right') return { opacity: 1, x: 0 };
+    if (kind === 'settle') return { opacity: 1, y: 0, scale: 1 };
     return { opacity: 1, y: 0 };
   }
 
@@ -339,42 +342,51 @@
     var end = wrap.querySelector('.steps_end');
     if (end) tl.fromTo(end, { scaleX: 0 },
       { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, items.length * 0.18);
-  }
+  }  /* ------------------------------------------------------------------
+     02 · OUR STORY — the dedication.
 
-/* ------------------------------------------------------------------
-     THE SIGNATURE MOMENT — the photograph is lit by the reader's scroll.
+     The account rises line by line, the site's heading grammar at reading
+     size: it is being told. The last sentence does not travel — it fades up
+     in place once the account has settled, because a dedication is not
+     announced, it is found to be there.
 
-     Scrubbed, not triggered, and that is the whole point: it is the visitor's
-     own hand that brings her out of the dark. It never performs by itself, and
-     someone scrolling fast simply arrives to find her already lit rather than
-     catching an animation mid-flight.
-
-     The words are separate and triggered once, because text must never be
-     half-revealed while somebody is reading it. Since the type is vertically
-     centred it fires with her about three-quarters lit, and she is full by the
-     time the last line settles.
+     Triggered once and never scrubbed. Nothing here performs, and no line is
+     left half-shown while somebody is reading it.
      ------------------------------------------------------------------ */
   function storyMotion() {
     var story = document.querySelector('#story');
     if (!story) return;
 
-    var img = story.querySelector('.story_fig img');
-    var shade = story.querySelector('.story_shade');
-    var glow = story.querySelector('.story_glow');
-    if (!img || !shade) return;
+    var block = story.querySelector('.story_ded:not(.story_ded--last)');
+    var last = story.querySelector('.story_ded--last');
+    var go = story.querySelector('.story_go');
+    if (!block) return;
 
-    gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: story.querySelector('.story_fig') || story,
-        start: 'top 95%',
-        end: mobile ? 'top 35%' : 'top 40%',
-        scrub: 1.2
-      }
-    })
-      .fromTo(shade, { opacity: 1 }, { opacity: 0, duration: 1 }, 0)
-      .fromTo(img, { scale: 1.06 }, { scale: 1, duration: 1 }, 0)
-      .fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.85 }, 0.15);
+    var tl = gsap.timeline({
+      scrollTrigger: { trigger: story.querySelector('.story_in'), start: 'top 78%', once: true }
+    });
+
+    var split = null;
+    if (canSplit) {
+      try {
+        split = new SplitText(block, {
+          type: 'lines', linesClass: 'line', mask: 'lines', reduceWhiteSpace: false
+        });
+      } catch (error) { split = null; }
+    }
+
+    var settled;
+    if (split) {
+      gsap.set(block, { opacity: 1 });
+      tl.from(split.lines, { yPercent: 108, duration: 1.15, ease: 'expo.out', stagger: 0.11 }, 0);
+      settled = 0.11 * (split.lines.length - 1) + 0.7;
+    } else {
+      tl.fromTo(block, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.1, ease: EASE }, 0);
+      settled = 0.8;
+    }
+
+    if (last) tl.fromTo(last, { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.inOut' }, settled);
+    if (go) tl.fromTo(go, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, settled + 0.9);
   }
 
   /* ------------------------------------------------------------------

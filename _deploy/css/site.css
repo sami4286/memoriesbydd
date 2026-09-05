@@ -225,15 +225,6 @@ p{margin:0}
 /* ============================================================
    STORY
    ============================================================ */
-.story{display:grid;grid-template-columns:1fr 1.05fr;gap:var(--gutter);align-items:start}
-.story_body{margin-top:7rem}
-.story_imgs{display:grid;grid-template-columns:.9fr 1fr;gap:1.5rem;align-items:start}
-.story_imgs figure{margin:0}
-.story_imgs .b{margin-top:4.5rem}
-.story_imgs figcaption{font-size:.8125rem;color:var(--text-muted);
-  font-style:italic;padding-top:.625rem;line-height:1.5}
-.story_imgs .a img{aspect-ratio:1/1;object-fit:cover;width:100%}
-.story_imgs .b img{aspect-ratio:3/4;object-fit:cover;width:100%}
 .rmask{overflow:hidden;display:block}
 .rmask img{transform:scale(1.12);transition:transform 1.6s var(--ease-out)}
 .rmask.is-in img{transform:scale(1)}
@@ -501,6 +492,7 @@ p{margin:0}
      except through the footer. On a site where most traffic is mobile that is
      not a styling choice, it is a missing navigation. */
   .nav_in{grid-template-columns:auto 1fr;gap:1rem}
+  .nav_actions{justify-self:end}
   .nav_logo{height:auto;width:7.5rem}
 
   .nav_menu{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;
@@ -516,9 +508,7 @@ p{margin:0}
     color:var(--brand-deep);font-variant-numeric:tabular-nums}
   .nav_tel small{display:block;font-family:var(--sans);font-size:.6875rem;
     letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.375rem}
-  .story,.promise_in,.foot_top{grid-template-columns:1fr;gap:3rem}
-  .story_body{margin-top:0}
-  .story_imgs{max-width:30rem}
+  .promise_in,.foot_top{grid-template-columns:1fr;gap:3rem}
   .pkgs{grid-template-columns:1fr}
   .pkg--hero{margin-top:0}
   .pcard:nth-child(2),.pcard:nth-child(4){margin-top:0}
@@ -878,48 +868,54 @@ img.cutout{mix-blend-mode:normal}
 
 
 /* ============================================================================
-   02 · OUR STORY — the one ink page, and the one scrubbed moment.
+   02 · OUR STORY — the dedication page.
+
+   No picture here, deliberately. img/sharon.jpg is the founder's memorial card
+   for his mother: a 600px composite on black, two thirds of its pixels below
+   L40, every edge pixel pure black. It cannot be cropped — the frame, candles
+   and dove are the content — and it cannot be enlarged. It is a black square
+   on cream and a black hole on ink, and two treatments that displayed it here
+   were rejected. It belongs on /tributes/, captioned, where a visitor has
+   chosen to read the story rather than met it mid-task.
+
+   Dropping it also removes the only unconsented instance of the caption naming
+   Sharon and her three children.
+
+   So the chapter carries the words alone, set the way an order of service sets
+   its dedication: one size, one measure, room around it. Which is also exactly
+   what the words are arguing for.
+
+   The surface is --bg, not ink. Ink now appears twice on the page, hero and
+   footer — open and close — and the cut from a full-bleed candlelit photograph
+   to a near-empty cream page becomes the strongest transition on the site.
    ============================================================================ */
-.story{background:var(--ink);color:var(--cream)}
-.story .chap_h{color:var(--cream)}
+.story{background:var(--bg)}
+.story .chap_h{text-wrap:balance}
 .story_in{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gutter);
-  align-items:center;margin-top:clamp(3rem,6vw,4.5rem)}
+  align-items:start;margin-top:clamp(3rem,6vw,4.5rem)}
 
-.story_fig{grid-column:2 / span 5;position:relative;margin:0}
-/* The card's ground is near-black. This pool of the same darkness spreads well
-   past its edges so the square dissolves into the section instead of sitting
-   on it. Uses the hero scrim's own rgba — no new colour enters the palette. */
-.story_glow{position:absolute;inset:-45%;z-index:0;pointer-events:none;
-  background:radial-gradient(closest-side,
-    rgba(18,15,12,.9), rgba(18,15,12,.55) 45%, transparent 100%)}
-/* A 4% feather on all four edges, small enough to leave the gold frame, the
-   dove and the candles untouched — it only blends the empty damask at the
-   margins. No border and no shadow: a shadow would define the very edge the
-   glow exists to lose. */
-.story_fig img{position:relative;z-index:1;width:100%;height:auto;display:block;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),
-    linear-gradient(180deg,transparent,#000 4%,#000 96%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),
-    linear-gradient(180deg,transparent,#000 4%,#000 96%,transparent);
-  -webkit-mask-composite:source-in;mask-composite:intersect}
-.story_shade{position:absolute;inset:0;z-index:2;background:var(--ink);opacity:0;
-  pointer-events:none}
-.has-motion .story_shade{opacity:1}
-.story_fig figcaption{position:relative;z-index:1;margin-top:1.25rem;
-  font-family:var(--serif);font-style:italic;font-size:.9375rem;line-height:1.55;
-  color:rgba(250,248,245,.55);max-width:24rem}
+/* Reading-display scale: above body, below any heading. One size for all 32
+   words, in ink rather than muted — this is the page speaking in its own
+   voice. Column 7 is the How It Works steps column, so chapters 02 and 03
+   share an axis and read as one document. */
+.story_ded{grid-column:7 / -1;max-width:36rem;
+  font-family:var(--serif);font-weight:400;color:var(--text);
+  font-size:clamp(1.5rem,2.3vw,2.125rem);line-height:1.42;letter-spacing:-.01em;
+  text-wrap:pretty;margin:0}
 
-.story_txt{grid-column:8 / span 5;max-width:26rem}
-.story_txt>div{margin-top:2rem}
+/* The dedication proper. Nothing marks it but the silence before it. */
+.story_ded--last{margin-top:clamp(2.5rem,5vw,4rem)}
+.story_go{grid-column:7 / -1;margin-top:clamp(2.5rem,4vw,3.5rem)}
+
+.has-motion .story_ded,
+.has-motion .story_go{opacity:0}
 
 @media (max-width:900px){
   .story_in{grid-template-columns:1fr}
-  .story_fig{grid-column:1/-1;max-width:22rem}
-  .story_txt{grid-column:1/-1;max-width:none;margin-top:2.5rem}
+  .story_ded,.story_go{grid-column:1/-1;max-width:none}
 }
 @media (prefers-reduced-motion:reduce){
-  .story_shade,.has-motion .story_shade{display:none}
-  .story_glow{opacity:1}
+  .has-motion .story_ded,.has-motion .story_go{opacity:1!important}
 }
 
 /* ============================================================================

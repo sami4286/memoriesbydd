@@ -41,6 +41,56 @@ const VARIANT_ORDER = [
   'colourway', 'colourway2', 'bookmark'
 ];
 
+/* --------------------------------------------------------------------------
+   WHAT EACH OBJECT IS, AND WHERE IT BELONGS IN THE DAY
+
+   The variant suffix is not a reliable type. Several files named "cover" are
+   device-set composites or stacks of three booklets, and a few are neither
+   product nor photograph.
+
+   QUARANTINED, and the reason matters: the g* and colourway files are
+   screenshots taken off the old website's slider. angel-wings-g1 and
+   angel-wings-colourway have the words "Drag Slider" baked into the pixels.
+   The emblem files are stock pennant renders on a dark ground — a flag, not a
+   booklet. None of it is product photography and none of it should ever have
+   been on a page a bereaved family is looking at.
+
+   Five designs lose everything but their cover as a result. That is the
+   honest outcome; the alternative is shipping a screenshot of a UI control as
+   a picture of someone's memorial booklet.
+   -------------------------------------------------------------------------- */
+const QUARANTINE = /^(g\d*|colourway\d*|emblem\d*)$/;
+
+/* A portrait booklet stands between these ratios once trimmed. Outside them
+   the file is a set, a stack or a spread, whatever it is called. */
+const isBooklet = image => image.ratio >= 0.5 && image.ratio <= 0.9;
+
+function role(image) {
+  const kind = String(image.variant).replace(/\d+$/, '');
+  if (QUARANTINE.test(image.variant)) return null;
+  if (kind === 'spread') return 'inside';
+  if (kind === 'banner') return 'front';
+  if (kind === 'stack' || kind === 'bookmark') return 'keep';
+  if (kind === 'package') return 'set';
+  if (kind === 'cover') return isBooklet(image) ? 'cover' : 'set';
+  return 'keep';
+}
+
+/* The day, in order. Copy is identical on all forty pages: it describes what
+   happens to the object, which is true of every design, and asserts nothing
+   about any individual one. */
+const CHAPTERS = [
+  { id: 'inside', n: '02', label: 'Inside', line: 'Followed through the service.' },
+  { id: 'front',  n: '03', label: 'At the front', line: 'Stands beside them through the service.' },
+  { id: 'keep',   n: '04', label: 'To keep', line: 'Taken home, and kept for the years after.' },
+  { id: 'set',    n: '05', label: 'The whole set', line: 'Everything for the day, together.' }
+];
+
+const OBJECT_ALT = {
+  cover: 'closed', inside: 'open at the order of service', front: 'pull-up banner',
+  keep: 'keepsakes', set: 'the full set'
+};
+
 const esc = value => String(value ?? '').replace(/[&<>"]/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -124,6 +174,12 @@ function isLight(hex) {
 /* Cutout first, and among cutouts the fullest package shot. */
 const CUTOUT_ORDER = ['package', 'package2', 'cover', 'cover2', 'stack', 'banner2', 'g1'];
 function tileArt(list) {
+  const usable = list.filter(image => role(image));
+  /* A portrait booklet reads as a booklet at card size; a laptop-and-phone
+     composite does not. Prefer one, fall back to whatever exists. */
+  const booklets = usable.filter(image => image.alpha && isBooklet(image));
+  if (booklets.length) list = booklets;
+  else if (usable.length) list = usable;
   const cutouts = list.filter(image => image.alpha);
   const pick = source => source.slice().sort((a, b) => {
     const ai = CUTOUT_ORDER.indexOf(a.variant);
@@ -182,8 +238,9 @@ const tidyTurnaround = value => String(value ?? '')
 function buildImageIndex(deploy, slugs) {
   const dir = path.join(deploy, 'img', 'designs');
   const files = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
-  const full = files.filter(f => f.endsWith('.webp') && !f.endsWith('-600.webp'));
+  const full = files.filter(f => f.endsWith('.webp') && !f.endsWith('-600.webp') && !f.includes('-trim'));
   const small = new Set(files.filter(f => f.endsWith('-600.webp')));
+  const trims = new Set(files.filter(f => f.includes('-trim.webp')));
   const index = new Map(slugs.map(s => [s, []]));
 
   for (const file of full) {
@@ -196,14 +253,25 @@ function buildImageIndex(deploy, slugs) {
     if (!owner) continue;
 
     const variant = stem.slice(owner.length + 1);
-    const size = webpSize(path.join(dir, file)) || { width: 1200, height: 1200 };
+
+    /* Prefer the trimmed cutout. Untrimmed, a booklet cover is a 1200 square
+       with a quarter of its width as dead margin on each side, so the file's
+       aspect describes the canvas and not the object — which is why the old
+       layout had to guess a box and then crop to fill it. Trimmed, width and
+       height describe the booklet, and nothing needs cropping at all. */
+    const trimmed = `${stem}-trim.webp`;
+    const useTrim = trims.has(trimmed);
+    const chosen = useTrim ? trimmed : file;
+    const size = webpSize(path.join(dir, chosen)) || { width: 1200, height: 1200 };
+
     index.get(owner).push({
       variant,
-      src: `/img/designs/${file}`,
-      small: small.has(`${stem}-600.webp`) ? `/img/designs/${stem}-600.webp` : null,
+      src: `/img/designs/${chosen}`,
+      small: (!useTrim && small.has(`${stem}-600.webp`)) ? `/img/designs/${stem}-600.webp` : null,
       width: size.width,
       height: size.height,
-      alpha: webpHasAlpha(path.join(dir, file))
+      ratio: size.width / size.height,
+      alpha: webpHasAlpha(path.join(dir, chosen))
     });
   }
 
@@ -376,37 +444,68 @@ ${plates}
 /* --------------------------------------------------------------------------
    /gallery/<slug>/ — one design
    -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   /gallery/<slug>/ — THE ORDER OF THE DAY
+
+   Not a listing of a design's images. The day the object will have, in order:
+   handed to you at the door, followed through the service, standing at the
+   front, taken home and kept, and the whole set together.
+
+   The founder's grievance was never about design. It was about what a family
+   was left holding. So the page narrates holding.
+
+   Every object stands on the page at its own aspect — no box, no ground, no
+   crop, no drift. That is what makes one template hold for all forty: a design
+   with two images is a two-chapter page and one with fourteen is a five-chapter
+   page, and neither needs hand-tuning, because a chapter simply does not render
+   when it has nothing to show.
+   -------------------------------------------------------------------------- */
 function designPage(design, index, designs, images) {
-  const list = images.get(design.slug);
-  const cover = list[0];
-  const rest = list.slice(1, 9);
+  const all = images.get(design.slug).filter(image => role(image));
   const previous = designs[(index - 1 + designs.length) % designs.length];
   const next = designs[(index + 1) % designs.length];
   const description = tidyDescription(design.description, design.name);
 
-  const spec = [
-    ['Size', tidySize(design.size)],
-    ['Photographs', tidyPhotos(design.photoAllowance)],
-    ['Suitable for', tidySuitability(design.suitability)],
-    ['Turnaround', tidyTurnaround(design.turnaround)]
-  ].map(([term, value]) => `<div><dt>${esc(term)}</dt><dd>${esc(value)}</dd></div>`).join('\n        ');
+  const byRole = {};
+  for (const image of all) (byRole[role(image)] ||= []).push(image);
 
-  const gallery = rest.length
-    ? `<section class="section section--tight" id="detail">
+  const cover = (byRole.cover || [])[0] || (byRole.set || [])[0] || all[0];
+  const rest = role => (byRole[role] || []).filter(i => i !== cover).slice(0, 2);
+
+  const img = (image, alt, eager) =>
+    `<img src="${image.src}"${srcsetFor(image, '(max-width:900px) 88vw, 42vw')}
+        alt="${esc(alt)}" width="${image.width}" height="${image.height}"
+        ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+
+  /* One image is centred; two share a table line, bottom-aligned so objects of
+     different heights stand together rather than floating at different levels. */
+  const plate = (image, i, count, alt, caption) => {
+    const span = count > 1
+      ? (i === 0 ? 'pl--a' : 'pl--b')
+      : (image.ratio < 0.95 ? 'pl--one-tall' : 'pl--one-wide');
+    return `      <figure class="pl ${span}" data-anim="settle">
+        <span class="pl_stage">${img(image, alt)}</span>${caption ? `
+        <figcaption class="pl_cap"><span>${esc(caption)}</span></figcaption>` : ''}
+      </figure>`;
+  };
+
+  const chapters = CHAPTERS.map(chapter => {
+    const items = rest(chapter.id);
+    if (!items.length) return '';
+    const caption = chapter.id === 'inside' ? tidyPhotos(design.photoAllowance) : '';
+    return `
+<section class="section--tight dchap" id="ch-${chapter.id}" aria-labelledby="ch-${chapter.id}-h">
   <div class="wrap">
-    <p class="label label--muted" data-anim="up">Inside the Booklet</p>
-    <div class="plates_seq" data-stagger="90">
-${rest.map((image, i) => `      <figure class="plate${i % 3 === 0 ? ' plate--wide' : ''}${image.alpha ? '' : ' plate--photo'}"
-        style="--tint:${esc(design.color)}" data-anim="up">
-        <span class="plate_art"><img src="${image.src}"${srcsetFor(image, '(max-width:640px) 90vw, 45vw')}
-          alt="${esc(design.name)} — ${esc(plateWord(image.variant).toLowerCase())}"
-          width="${image.width}" height="${image.height}" loading="lazy" decoding="async"></span>
-        <figcaption>Plate ${String(i + 2).padStart(2, '0')} &mdash; ${esc(plateWord(image.variant))}</figcaption>
-      </figure>`).join('\n')}
+    <p class="label label--muted" id="ch-${chapter.id}-h">${chapter.n} &mdash; ${esc(chapter.label)}</p>
+    <p class="body--sm dchap_line">${esc(chapter.line)}</p>
+    <div class="pls">
+${items.map((image, i) => plate(image, i, items.length,
+      `${design.name} funeral booklet — ${OBJECT_ALT[chapter.id]}`,
+      i === 0 ? caption : '')).join('\n')}
     </div>
   </div>
-</section>`
-    : '';
+</section>`;
+  }).join('');
 
   const schema = {
     '@context': 'https://schema.org',
@@ -428,45 +527,51 @@ ${rest.map((image, i) => `      <figure class="plate${i % 3 === 0 ? ' plate--wid
   }) + `
 <!--#nav-->
 
-<header class="dhero" style="--tint:${esc(design.color)}">
-  <div class="wrap dhero_in">
-    <div class="dhero_copy">
-      <p class="label label--muted" data-anim="up">
-        <a href="/gallery/">The Gallery</a> &nbsp;·&nbsp; ${esc(design.category)}</p>
-      <h1 class="h1" data-anim="words">${esc(design.name)}</h1>
-      <p class="body" data-anim="up" style="--d:140ms">${esc(description)}</p>
+<article class="dpage" style="--tint:${esc(design.color)}">
 
-      <dl class="dspec" data-anim="up" style="--d:220ms">
-        ${spec}
-      </dl>
+  <section class="section dcover" id="ch-cover" data-chapter>
+    <div class="wrap">
+      <header class="chap">
+        <p class="label label--muted">${String(index + 1).padStart(2, '0')} / ${designs.length}
+        &nbsp;&mdash;&nbsp; <a href="/gallery/">${esc(design.category)}</a></p>
+        <span class="chap_rule" aria-hidden="true"></span>
+      </header>
 
-      <div class="dhero_cta" data-anim="up" style="--d:300ms">
-        <a href="/order/" class="btn">Start with this design</a>
-        <a href="tel:08000236263" class="dlink">Or call 0800 023 6263</a>
+      <h1 class="h1 chap_h" data-anim="words">${esc(design.name)}</h1>
+
+      <div class="dcover_in">
+        <figure class="pl pl--cover" data-anim="settle">
+          <span class="pl_stage">${img(cover, `${design.name} funeral order of service booklet, ${OBJECT_ALT.cover}`, true)}</span>
+          <figcaption class="pl_cap">
+            <span>Handed to each guest at the door.</span>
+            <span>${esc(tidySize(design.size))}</span>
+          </figcaption>
+        </figure>
+
+        <div class="dcover_txt">
+          <p class="body" data-anim="up">${esc(description)}</p>
+          <div class="dcover_cta" data-anim="up" style="--d:160ms">
+            <a href="/order/" class="btn">Start With This Design</a>
+            <a href="tel:08000236263" class="dlink">Or call 0800 023 6263</a>
+            <p class="body--sm">${esc(tidyTurnaround(design.turnaround))}
+            &nbsp;&middot;&nbsp; ${esc(tidySuitability(design.suitability))}</p>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+${chapters}
 
-    <div class="dhero_art">
-      <span class="rmask" data-anim="scale">
-        <img src="${cover.src}"${srcsetFor(cover, '(max-width:900px) 90vw, 44vw')}
-          alt="${esc(design.name)} funeral order of service booklet cover"
-          width="${cover.width}" height="${cover.height}" fetchpriority="high" decoding="async">
-      </span>
+  <section class="section dnav">
+    <div class="wrap dnav_in">
+      <a href="/gallery/${previous.slug}/" class="dnav_l" data-anim="up">
+        <span>Previous</span><strong>${esc(previous.name)}</strong></a>
+      <a href="/gallery/" class="dlink" data-anim="fade">All ${designs.length} Designs</a>
+      <a href="/gallery/${next.slug}/" class="dnav_r" data-anim="up">
+        <span>Next</span><strong>${esc(next.name)}</strong></a>
     </div>
-  </div>
-</header>
-
-${gallery}
-
-<section class="section band dnav">
-  <div class="wrap dnav_in">
-    <a href="/gallery/${previous.slug}/" class="dnav_l" data-anim="up">
-      <span>Previous</span><strong>${esc(previous.name)}</strong></a>
-    <a href="/gallery/" class="dlink" data-anim="fade">All 40 Designs</a>
-    <a href="/gallery/${next.slug}/" class="dnav_r" data-anim="up">
-      <span>Next</span><strong>${esc(next.name)}</strong></a>
-  </div>
-</section>
+  </section>
+</article>
 
 <!--#footer-->
 </body>
